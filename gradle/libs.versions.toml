@@ -1,0 +1,7 @@
+[versions]
+# Kotlin le plus ancien des applications consommatrices (Marculus) : un binaire compilé en 2.2
+# se lit depuis Kotlin 2.2 et suivants, l'inverse non.
+kotlin = "2.2.10"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
