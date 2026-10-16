@@ -26,15 +26,23 @@ Publié par tag via [JitPack](https://jitpack.io/#pobsteta/terrain) :
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-        maven("https://jitpack.io") { content { includeGroup("com.github.pobsteta.terrain") } }
+        maven("https://jitpack.io") { content { includeModule("com.github.pobsteta", "terrain") } }
     }
 }
 
 // build.gradle.kts du module
 dependencies {
-    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.1.0")
+    implementation("com.github.pobsteta:terrain:v0.1.2") // terrain-gnss
 }
 ```
+
+Tant que le dépôt n'a qu'un module, JitPack le publie sous les coordonnées du dépôt
+(`com.github.pobsteta:terrain`). Dès le deuxième module, chacun aura les siennes
+(`com.github.pobsteta.terrain:terrain-gnss`, `…:terrain-journal`) : changer la coordonnée en
+montant de version.
+
+Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
+machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
 
 ```kotlin
 import fr.nemeton.terrain.gnss.NmeaParser
