@@ -11,10 +11,10 @@ Licence : **GPL-3.0-or-later** (`LICENSE`).
 
 | Module | Contenu | Plateforme |
 |---|---|---|
+| `terrain-journal` | `fr.nemeton.terrain.journal` : `Fusion` (union sur l'UUID, « dernière écriture gagne » sur `modifie`, la locale à égalité, rien d'effacé), `HorlogeMonotone` (`modifie` strictement croissant), `Identifiants` (UUID v4) | Kotlin pur, JVM 17 |
 | `terrain-gnss` | `fr.nemeton.terrain.gnss` : NMEA (découpe du flux, GGA/GSA/GST/RMC/GSV, fix, précision, skyplot), client NTRIP (requête, réponse, sourcetable, GGA renvoyée au caster) ; `fr.nemeton.terrain.geo` : position WGS 84, aire, distance et azimut, point dans polygone, Lambert-93 ↔ WGS 84 ↔ Web Mercator | Kotlin pur, JVM 17 |
 
-Prévus, dans cet ordre : `terrain-journal` (saisies à UUID, fusion « dernière écriture
-gagne »), `terrain-gpkg`, `terrain-voix` (Vosk à grammaire fermée, push-to-talk),
+Prévus, dans cet ordre : `terrain-gpkg`, `terrain-voix` (Vosk à grammaire fermée, push-to-talk),
 `terrain-carte`.
 
 ## Utiliser
@@ -26,20 +26,19 @@ Publié par tag via [JitPack](https://jitpack.io/#pobsteta/terrain) :
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-        maven("https://jitpack.io") { content { includeModule("com.github.pobsteta", "terrain") } }
+        maven("https://jitpack.io") { content { includeGroup("com.github.pobsteta.terrain") } }
     }
 }
 
 // build.gradle.kts du module
 dependencies {
-    implementation("com.github.pobsteta:terrain:v0.1.2") // terrain-gnss
+    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.2.0")
+    implementation("com.github.pobsteta.terrain:terrain-journal:v0.2.0")
 }
 ```
 
-Tant que le dépôt n'a qu'un module, JitPack le publie sous les coordonnées du dépôt
-(`com.github.pobsteta:terrain`). Dès le deuxième module, chacun aura les siennes
-(`com.github.pobsteta.terrain:terrain-gnss`, `…:terrain-journal`) : changer la coordonnée en
-montant de version.
+Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
+`com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
 
 Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
 machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
