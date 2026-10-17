@@ -14,10 +14,12 @@ Licence : **GPL-3.0-or-later** (`LICENSE`).
 | `terrain-journal` | `fr.nemeton.terrain.journal` : `Fusion` (union sur l'UUID, « dernière écriture gagne » sur `modifie`, la locale à égalité, rien d'effacé), `HorlogeMonotone` (`modifie` strictement croissant), `Identifiants` (UUID v4) | Kotlin pur, JVM 17 |
 | `terrain-gpkg` | `fr.nemeton.terrain.gpkg` : couches vecteur d'un GeoPackage en SQL simple (`GeoPackage` : couches, entités, insertion), format des géométries (`FormatGpkg`, WKB ISO / EWKB, Z et M ignorés), systèmes `Systeme` (Lambert-93, WGS 84, Web Mercator ; les autres refusés par `SystemeNonGere`) | Kotlin pur, JVM 17 ; l'application fournit une `BaseSqlite` |
 | `terrain-voix` | `fr.nemeton.terrain.voix` : `NoyauPtt` (push-to-talk : une seule session quelle que soit la source tenue, bip obligatoire, coupure pendant une annonce TTS), `NombresFrancais`, `AlphabetRadio` (replis quand le modèle ignore le mot OTAN), `GrammaireFermee` (JSON Vosk, jeton `[unk]` de rejet), `VocabulaireVosk` (mots connus du modèle, lus dans `graph/Gr.fst`), `InstallationModele` (téléchargement ou archive locale, SHA-256, témoin de fin) | Kotlin pur, JVM 17 |
+| `terrain-carte` | `fr.nemeton.terrain.carte` : couches WMTS de la Géoplateforme (`Geoplateforme` : Plan IGN, Ortho IGN, cadastre ; URL d'une tuile), `Attributions`, `Echelle` (résolution au sol, distance ronde, libellé), `Emprise` / `Tuile` / `ZoneTuiles` (tuiles à télécharger pour le hors-ligne), `GrilleWebMercator` (ortho déjà sur la grille XYZ) | Kotlin pur, JVM 17 |
 | `terrain-gnss` | `fr.nemeton.terrain.gnss` : NMEA (découpe du flux, GGA/GSA/GST/RMC/GSV, fix, précision, skyplot), client NTRIP (requête, réponse, sourcetable, GGA renvoyée au caster) ; `fr.nemeton.terrain.geo` : position WGS 84, aire, distance et azimut, point dans polygone, Lambert-93 ↔ WGS 84 ↔ Web Mercator | Kotlin pur, JVM 17 |
 
-Prévu : `terrain-carte`. L'enveloppe Android de Vosk (`SpeechService`, `Recognizer`) et la
-grammaire métier restent dans chaque application.
+Restent dans chaque application (Android, décision du 2026-10-17) : l'affichage osmdroid de la
+carte (une `OnlineTileSourceBase` d'une ligne autour de `CoucheWmts.url`), l'enveloppe Vosk
+(`SpeechService`, `Recognizer`), l'adaptateur `BaseSqlite`, et la grammaire métier de la dictée.
 
 ## Utiliser
 
@@ -34,10 +36,11 @@ dependencyResolutionManagement {
 
 // build.gradle.kts du module
 dependencies {
-    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.4.0")
-    implementation("com.github.pobsteta.terrain:terrain-journal:v0.4.0")
-    implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.4.0") // apporte terrain-gnss
-    implementation("com.github.pobsteta.terrain:terrain-voix:v0.4.0")
+    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.5.0")
+    implementation("com.github.pobsteta.terrain:terrain-journal:v0.5.0")
+    implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.5.0") // apporte terrain-gnss
+    implementation("com.github.pobsteta.terrain:terrain-voix:v0.5.0")
+    implementation("com.github.pobsteta.terrain:terrain-carte:v0.5.0")
 }
 ```
 
