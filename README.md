@@ -12,9 +12,10 @@ Licence : **GPL-3.0-or-later** (`LICENSE`).
 | Module | Contenu | Plateforme |
 |---|---|---|
 | `terrain-journal` | `fr.nemeton.terrain.journal` : `Fusion` (union sur l'UUID, « dernière écriture gagne » sur `modifie`, la locale à égalité, rien d'effacé), `HorlogeMonotone` (`modifie` strictement croissant), `Identifiants` (UUID v4) | Kotlin pur, JVM 17 |
+| `terrain-gpkg` | `fr.nemeton.terrain.gpkg` : couches vecteur d'un GeoPackage en SQL simple (`GeoPackage` : couches, entités, insertion), format des géométries (`FormatGpkg`, WKB ISO / EWKB, Z et M ignorés), systèmes `Systeme` (Lambert-93, WGS 84, Web Mercator ; les autres refusés par `SystemeNonGere`) | Kotlin pur, JVM 17 ; l'application fournit une `BaseSqlite` |
 | `terrain-gnss` | `fr.nemeton.terrain.gnss` : NMEA (découpe du flux, GGA/GSA/GST/RMC/GSV, fix, précision, skyplot), client NTRIP (requête, réponse, sourcetable, GGA renvoyée au caster) ; `fr.nemeton.terrain.geo` : position WGS 84, aire, distance et azimut, point dans polygone, Lambert-93 ↔ WGS 84 ↔ Web Mercator | Kotlin pur, JVM 17 |
 
-Prévus, dans cet ordre : `terrain-gpkg`, `terrain-voix` (Vosk à grammaire fermée, push-to-talk),
+Prévus, dans cet ordre : `terrain-voix` (Vosk à grammaire fermée, push-to-talk),
 `terrain-carte`.
 
 ## Utiliser
@@ -34,6 +35,7 @@ dependencyResolutionManagement {
 dependencies {
     implementation("com.github.pobsteta.terrain:terrain-gnss:v0.2.0")
     implementation("com.github.pobsteta.terrain:terrain-journal:v0.2.0")
+    implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.3.0") // apporte terrain-gnss
 }
 ```
 
@@ -51,6 +53,21 @@ val gga = NmeaParser.parseGga(phrase) ?: return   // null si somme de contrôle 
 val fix = NmeaParser.fixDepuis(gga)
 if (fix.qualite == QualiteFix.RTK_FIXE) { /* position centimétrique */ }
 ```
+
+### GeoPackage sur Android
+
+`terrain-gpkg` ne dépend pas d'Android : l'application branche son `SQLiteDatabase` sur
+l'interface `BaseSqlite` (une trentaine de lignes : `rawQuery` → liste de maps `Long` / `Double` /
+`String` / `ByteArray`, `execSQL`, `beginTransaction…`). Les tests JVM font la même chose avec
+sqlite-jdbc (`terrain-gpkg/src/test/.../SqliteJdbc.kt`).
+
+L'écriture n'utilise aucune fonction `ST_*` : les déclencheurs de l'index spatial (`rtree_*`,
+posés par GDAL et QGIS, qui appellent `ST_IsEmpty`…) sont mis de côté pendant l'insertion, la
+ligne d'index est écrite à la main, puis ils sont recréés, dans la même transaction. Les tuiles
+(ortho) ne sont pas traitées.
+
+Jeu d'essai : `terrain-gpkg/src/test/resources/gpkg/essai.gpkg`, fabriqué par GDAL
+(`fabriquer.sh`), avec la référence PROJ de chaque sommet en WGS 84 (`reference.csv`).
 
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
 Kotlin 2.2 et suivants.

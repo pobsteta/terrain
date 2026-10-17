@@ -22,3 +22,4 @@ rootProject.name = "terrain"
 
 include(":terrain-gnss")
 include(":terrain-journal")
+include(":terrain-gpkg")
