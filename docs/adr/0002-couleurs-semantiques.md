@@ -69,8 +69,9 @@ ISO 22324 et IEC 60073 à comparer).
 - MDC-Android, `docs/theming/Color.md` (couleurs personnalisées et contraste) —
   https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md
 - ISO 3864-1 (couleurs de sécurité et de contraste) et ISO 3864-4 (colorimétrie), textes
-  payants, à acquérir — https://www.iso.org/standard/51000.html
-- ISO 22324:2022 (alertes codées par couleur) — https://www.iso.org/standard/80097.html
+  payants, à acquérir (références exactes à fournir par l'`acquereur`)
+- ISO 22324:2022 (alertes codées par couleur), aperçu —
+  https://webstore.ansi.org/preview-pages/ISO/preview_ISO+22324-2022.pdf
 - WCAG 2.2, 1.4.1 (ne pas coder par la seule couleur) — https://www.w3.org/TR/WCAG22/#use-of-color
 
 ## Question de contrôle
