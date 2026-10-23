@@ -56,3 +56,11 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 Pascal distingue réussi de `primary` et reconnaît le jaune d'alerte sur l'écran.
+
+## Précisions de l'orchestrateur (2026-10-23, décisions de Pascal)
+
+- **Branche** : partir de la branche de la mission 006 ; fusion groupée 005-006-007.
+- **Alerte** : `#E2AA00` (ISO 3864-4) et noir `#000000` (ADR 0002) ; `alerte.couleur`
+  interdit en texte, écrit au README entre accents graves.
+- **Réussi** : le vert de départ est choisi par Pascal après la mesure HCT que cette mission
+  rend d'abord (plan).

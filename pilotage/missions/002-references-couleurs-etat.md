@@ -7,7 +7,7 @@
 
 **En une phrase (quoi, et pourquoi) :** Rassembler et comparer les conventions publiées des couleurs d'état (teinte de « réussi », jaune de sécurité et sa couleur de contraste, en sRGB sourcé), pour que Pascal choisisse les valeurs de l'ADR 0002.
 
-**Redite par l'agent :** _à compléter par l'agent avant d'agir — s'il n'y arrive pas, il s'arrête._
+**Redite par l'agent :** Réunir, avec leurs sources et leurs écarts, les valeurs sRGB publiées de « réussi » (vert) et du jaune de sécurité avec son noir, sans en choisir aucune, pour que Pascal fixe les valeurs de l'ADR 0002 en une lecture.
 
 ## Les trois questions (règle de staffing)
 
@@ -56,3 +56,52 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 Pascal choisit la teinte de réussi et le jaune en une lecture, sans nouvelle recherche.
+
+## Remarques du relecteur — aller-retour 1/3 (2026-10-23)
+
+À reprendre dans `docs/referentiels/couleurs-etat.md`, sans rien trancher :
+
+1. **Bloquant : `#237F52`** (« autre copie » de RAL 6032) n'a pas de source retrouvée :
+   ni Wikipédia « ISO 3864 », ni Wikipédia « List of RAL colours » (qui donne `#0F8558`
+   pour RAL 6032). Citer sa source ou le retirer, y compris de l'échantillon §6.2.
+2. **Citer en §9** la source de `#F9A800` : Wikipédia, « List of RAL colours ».
+3. **Ligne J2** : à β 0,70, l'écrêtage déplace la couleur (`#FFD000` ≈ β 0,66,
+   chromaticité ≈ (0,457 ; 0,475), toujours dans la région) ; à β 0,45, B < 0 est aussi
+   écrêté ; noter en §5 que la conversion a été rejouée une fois par le relecteur
+   (conforme : `#E2AA00`, `#FFD000`).
+4. **Recommandé : nuancier officiel RAL** (ral-farben.de), source primaire : `#E6B019`
+   pour 1003, `#417E57` pour 6032, à ajouter comme valeur la plus primaire.
+5. **Utile, à ton jugement** : retour hex → chromaticité (écran ≈ couleur d'objet sous
+   D65, approximatif) : `#F6D04D` (ANSI) hors de la région jaune ISO ; `#31865C` et
+   `#00843D` hors de la région verte ISO ; `#0F8558` dedans. Si tu l'ajoutes, refais le
+   calcul ou cite-le comme calcul du relecteur.
+6. **§4** : écrire l'effet de l'harmonisation comme « hypothèse à mesurer » (écart HSL ≠
+   rotation HCT), pas « rapprocherait déjà ».
+7. Remplir « Redite par l'agent » en tête de fiche.
+
+## Remarques du relecteur — aller-retour 2/3 (2026-10-23)
+
+Points 1 à 7 traités ; quatre retouches mineures dans `docs/referentiels/couleurs-etat.md` :
+
+1. **Inscrire les URL du nuancier RAL** (relues par le relecteur le 2026-10-23, réponse 200)
+   en §9, J3b et R2b, et remplacer « rapporté par le relecteur, non relue » par
+   « relue 2026-10-23 (relecteur) » ; retirer ou reformuler le point 9 de §5 :
+   - vue d'ensemble : https://www.ral-farben.de/en/all-ral-colours
+   - RAL 1003 : https://www.ral-farben.de/en/colour/ral-classic/ral-1003/9086 → `#E6B019`
+   - RAL 6032 : https://www.ral-farben.de/en/colour/ral-classic/ral-6032/9218 → `#417E57`
+   - Fiabilité : couleur d'affichage des pastilles du site, **méthode non précisée** par
+     RAL ; ne pas la présenter comme une mesure.
+2. **Concordance §4** : « R2 et R3 (≈ 148° à 151°) concordent » n'est plus exact ; donner
+   l'étendue réelle (142° à 157° avec R2 et R2b).
+3. **Échantillon §6.1 et question §8** : ajouter `#E6B019` au côte à côte jaune, et le citer
+   en §8 à côté de `#F9A900`, pour que les deux côtés suivent la même règle.
+4. **Numérotation de §5** : remettre dans l'ordre (aujourd'hui 1-6, 9, 7, 8).
+
+## Remarque du relecteur — aller-retour 3/3 (2026-10-23)
+
+Une seule retouche, dans `docs/referentiels/couleurs-etat.md`, §4 (l. 104 à 109) : l'écart
+des verts candidats avec `primary` (`#374742`, ≈ 161° HSL) n'est plus « 10 à 13° » mais
+**4° (`#0F8558`, R2) à 19° (`#417E57`, R2b)** ; remplacer les deux occurrences par
+« 4 à 19° (R2, R2b, R3) ». Facultatif, au même passage : situer J3b (`#E6B019`, ≈ 44°,
+famille ambre) en §3 « Écart relevé » ; en §8, ne pas dire « normatif » de R2/R3 et citer
+R2b. C'est le dernier renvoi : au-delà, la décision remonte à Pascal.

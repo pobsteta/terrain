@@ -1,7 +1,7 @@
 # ADR 0003 — publication de `terrain-style` : tag sur `main` vert, construit par JitPack
 
 - **Date :** 2026-10-23
-- **Statut :** proposée (corrigée après la critique du `contradicteur` du 2026-10-23)
+- **Statut :** acceptée par Pascal le 2026-10-23 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur), sur une remarque du `contradicteur`
 - **Tranchée par :** Pascal
 
@@ -42,12 +42,12 @@ une étape qui échoue si `git merge-base --is-ancestor "$GITHUB_SHA" origin/mai
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | Option 1 : deux lignes de déclencheur et une étape dans `ci.yml` | — | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | Pascal pose le tag (porte n° 3) ; la CI vérifie qu'il est sur `main` ; Surculus déclenche le SHA, note sa date de construction et fige la somme | une date et un fichier à tenir côté Surculus | _à trancher_ |
-| **A**nticiper | Si JitPack reconstruit ou tombe en panne ? | la somme figée détecte une reconstruction dans les 7 jours ; JitPack garde les artefacts même si le dépôt disparaît | une panne de JitPack bloque la construction des applications | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | Option 1 : deux lignes de déclencheur et une étape dans `ci.yml` | — | inconnu |
+| **R**esponsable | Qui fait quoi ? | Pascal pose le tag (porte n° 3) ; la CI vérifie qu'il est sur `main` ; Surculus déclenche le SHA, note sa date de construction et fige la somme | une date et un fichier à tenir côté Surculus | inconnu |
+| **A**nticiper | Si JitPack reconstruit ou tombe en panne ? | la somme figée détecte une reconstruction dans les 7 jours ; JitPack garde les artefacts même si le dépôt disparaît | une panne de JitPack bloque la construction des applications | inconnu |
 | **N**ovateur | Toutes les idées ? | quatre options, dont Maven Central | — | — |
-| **C**oût | Dépense inutile ? | pas de nouvel outil | une exécution de CI de plus par tag | _à trancher_ |
-| **É**cologique | Réutilisation ? | même chaîne que les cinq autres modules | — | _à trancher_ |
+| **C**oût | Dépense inutile ? | pas de nouvel outil | une exécution de CI de plus par tag | inconnu |
+| **É**cologique | Réutilisation ? | même chaîne que les cinq autres modules | — | inconnu |
 
 ## Valeurs sacrifiées
 

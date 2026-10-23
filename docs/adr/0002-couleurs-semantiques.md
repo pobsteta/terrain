@@ -1,7 +1,7 @@
 # ADR 0002 — couleurs sémantiques communes (réussi, alerte, erreur)
 
 - **Date :** 2026-10-23
-- **Statut :** proposée ; erreur, alerte et repli arbitrés par Pascal le 2026-10-23
+- **Statut :** acceptée par Pascal le 2026-10-23 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur), sur une proposition du `contradicteur`
 - **Tranchée par :** Pascal
 
@@ -36,6 +36,12 @@ Options envisagées : (1) erreur = `error`, réussi par `errorPalette`, alerte s
 convention de sécurité — **retenue** ; (2) les trois harmonisées et générées ; (3) trois
 couleurs fixes à la main ; (4) rien dans le module.
 
+**Valeurs choisies par Pascal le 2026-10-23** (sur `docs/referentiels/couleurs-etat.md`,
+mission 002) : alerte = **`#E2AA00`**, jaune de sécurité d'ISO 3864-4 (Table 1, β 0,45, D65,
+converti en sRGB ; un ambre plutôt qu'un « jaune clair »), texte noir `#000000` (9,98:1) ;
+le vert de départ de « réussi » attend la mesure HCT de la mission 007 ; ISO 3864-1 et
+l'annexe E d'ISO 3864-4 ne sont pas achetées pour l'instant.
+
 Restent à acquérir (`acquereur`) : la teinte de référence de « réussi » et la décision
 d'harmoniser ou non (mesure de l'écart HCT à `primary`) ; la valeur sRGB sourcée du jaune
 de sécurité et de sa couleur de contraste (ISO 3864-1 ; ISO 3864-4 pour la colorimétrie ;
@@ -45,12 +51,12 @@ ISO 22324 et IEC 60073 à comparer).
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | erreur ne coûte rien ; réussi réutilise la chaîne MCU ; alerte = deux valeurs figées | un schéma MCU de plus ; un mécanisme `errorPalette` à vérifier | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | `acquereur` source les teintes ; Pascal les choisit ; `dev` génère ; le test juge | — | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | erreur ne coûte rien ; réussi réutilise la chaîne MCU ; alerte = deux valeurs figées | un schéma MCU de plus ; un mécanisme `errorPalette` à vérifier | inconnu |
+| **R**esponsable | Qui fait quoi ? | `acquereur` source les teintes ; Pascal les choisit ; `dev` génère ; le test juge | — | inconnu |
 | **A**nticiper | Et si un rôle ne tient pas 7:1 ? | il est listé et documenté « interdit en texte » (arbitrage de Pascal) ; si `errorPalette` n'est pas accessible, retour à Pascal | — | oui (Pascal, 2026-10-23) |
 | **N**ovateur | Toutes les idées ? | quatre options, dont le statu quo et la convention de sécurité | — | — |
-| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus reprend ses trois états communs | _à trancher_ |
-| **É**cologique | Réutilisation ? | `error` de Material, convention de sécurité publiée | — | _à trancher_ |
+| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus reprend ses trois états communs | inconnu |
+| **É**cologique | Réutilisation ? | `error` de Material, convention de sécurité publiée | — | inconnu |
 
 ## Valeurs sacrifiées
 
