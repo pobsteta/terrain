@@ -3,7 +3,7 @@
 - **Statut :** validée par Pascal le 2026-10-23 (porte n° 1)
 - **Tirée de :** `docs/brief.md` (arbitrages de Pascal du 2026-10-23), issue
   [#1](https://github.com/pobsteta/terrain/issues/1)
-- **Décisions structurantes :** ADR 0001 à 0003 (`docs/adr/`), proposées
+- **Décisions structurantes :** ADR 0001 à 0004 (`docs/adr/`), acceptées par Pascal le 2026-10-23
 - **Critiquée par :** `contradicteur`, 2026-10-23 (corrections reportées)
 
 ## Parcours
@@ -19,10 +19,12 @@
 4. À l'aube, au crépuscule ou en sous-bois, l'application peut proposer le thème sombre,
    au même contraste.
 
-**À savoir avant l'essai au soleil** (estimation du `contradicteur`, à confirmer par la
-génération) : au niveau 1,0, VertMarculus #374742 ne se verra tel quel que sur
-`primaryContainer` en clair ; `primary` sera nettement plus sombre en clair et très clair
-en sombre, pour tenir 7:1.
+**À savoir avant l'essai au soleil** (constat de la génération, mission 006 ; valeurs dans
+`terrain-style/src/test/resources/jetons/jetons.csv`, nuancier dans
+`terrain-style/generation/nuancier.svg`) : au niveau 1,0, VertMarculus #374742 ne se voit tel
+quel que sur `primaryContainer` en clair ; `primary` est nettement plus sombre en clair
+(#202F2B) et très clair en sombre (#E2F4ED), pour tenir 7:1. L'estimation du `contradicteur`
+est confirmée.
 
 ### Dans l'application (le développeur de Marculus, Groma ou Surculus)
 
@@ -70,7 +72,8 @@ object Contraste {
 - **Réussi** (ADR 0002) : un schéma MCU de plus, construit avec la palette de `reussi`
   passée à la place de celle d'`error` (`errorPalette` de `DynamicScheme`), dont on lit
   `error`, `onError`, `errorContainer`, `onErrorContainer` : mêmes courbes de contraste
-  que `error`. Mécanisme à vérifier en premier ; s'il n'est pas accessible, retour à Pascal.
+  que `error`. Mécanisme **vérifié** (mission 001) : le constructeur `DynamicScheme(errorPalette)` est public ;
+  `reussi` est généré ainsi (mission 007).
 - **Alerte** (ADR 0002) : jaune de sécurité d'ISO 3864-4, **`#E2AA00`** (Table 1, β 0,45,
   D65, converti en sRGB ; choix de Pascal du 2026-10-23, `docs/referentiels/couleurs-etat.md`)
   en `couleur` et `conteneur`, noir `#000000` en `surCouleur` et `surConteneur` (9,98:1),
@@ -133,6 +136,6 @@ les autres briques.
 
 ## Questions ouvertes
 
-- Teinte de départ de « réussi », et faut-il l'harmoniser vers VertMarculus au risque de la
-  rapprocher de `primary` (après mesure de l'`acquereur`, ADR 0002).
-- Valeur exacte du jaune d'alerte (après acquisition, ADR 0002).
+Aucune. Les deux questions d'origine sont tranchées par Pascal le 2026-10-23 (ADR 0002,
+notes « levé le » et « Amendé le ») : teinte de départ de « réussi » `#0F8558`, non harmonisé ;
+jaune d'alerte `#E2AA00`. Reste, hors spec, l'essai au soleil (critère 6).

@@ -77,6 +77,20 @@ compile en Kotlin 2.2).
 - Compatibilité Apache-2.0 → GPL-3.0 — https://www.gnu.org/licenses/license-list.html#apache2
 - Issue #1 du dépôt — https://github.com/pobsteta/terrain/issues/1
 
+## Notes datées (ajoutées, rien n'est effacé ci-dessus)
+
+- **Levé le 2026-10-23 : « À vérifier par l'`acquereur` avant la mission ».** Vérifié par la
+  mission 006 (journal) : les 43 sources Kotlin de MCU à `bd811e4` compilent en Kotlin 2.2.10 ;
+  parité Kotlin/Java de 0 écart sur 1 872 ARGB, mesurée avec la variante `FIDELITY` puis, après
+  l'ADR 0004, avec `CONTENT`.
+- **Écart E3 (option 2).** « Deux dépendances `compileOnly` » est inexact : huit fichiers Java
+  importent `androidx.annotation` ou `errorprone` (`docs/referentiels/mcu-compose.md`, E3). Cela
+  n'a pas changé la décision : l'option 1 (sources Kotlin) a été retenue.
+- **Écart E1 (version de spec).** La phrase « toute variante autre que CMF, EXPRESSIVE,
+  VIBRANT, TONAL_SPOT et NEUTRAL » est trop simple : `CMF` garde toujours la version demandée,
+  et `CONTENT` sur `Platform.WATCH` aussi (`mcu-compose.md`, E1). Le constat utile tient :
+  `FIDELITY`, comme `CONTENT` sur téléphone, retombe à `SPEC_2021`.
+
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?

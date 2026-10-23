@@ -1,6 +1,7 @@
 # terrain — brief
 
-> À remplir par Pascal ; critiqué par le `contradicteur` avec `/imperatrice:brief`.
+> Statut : validé par Pascal le 2026-10-23 (porte n° 1) ; critiqué par le `contradicteur`
+> avec `/imperatrice:brief`.
 >
 > Premier objet : le module `terrain-style`, demandé par Surculus dans l'issue
 > [#1](https://github.com/pobsteta/terrain/issues/1) (2026-10-23), qui reprend
@@ -39,8 +40,8 @@
      clair (défaut sur le terrain)** et en **thème sombre** (fourni pour l'aube, le
      crépuscule et le sous-bois).
   2. **Des valeurs générées une fois** par Material Color Utilities (Google, Apache-2.0)
-     depuis la couleur de départ `VertMarculus` #374742, **variante `FIDELITY`** (la chroma
-     de VertMarculus est gardée), au **niveau de contraste 1,0 (élevé), un seul niveau**,
+     depuis la couleur de départ `VertMarculus` #374742, **variante `CONTENT`** (ADR 0004, qui amende
+     `FIDELITY`, d'abord retenue ; la graine reste en `primaryContainer` en clair), au **niveau de contraste 1,0 (élevé), un seul niveau**,
      schéma **`SPEC_2021`**, puis **figées** dans le code, sans dépendance à l'exécution.
      Sont inscrits dans le module : le script de génération, le commit de Material Color
      Utilities, la version du schéma, la variante, le niveau de contraste et la couleur de
@@ -49,7 +50,7 @@
      en clair et en sombre, soumises au même test. **Erreur** est le rôle `error` de
      Material, non doublé ; **réussi** a ses quatre rôles (couleur, texte dessus,
      conteneur, texte sur conteneur) ; **alerte** suit la convention de sécurité : jaune
-     clair en fond, noir dessus (couleur de contraste d'ISO 3864-1), et son jaune n'est
+     de sécurité `#E2AA00` en fond (ISO 3864-4, arbitrage du 2026-10-23 sur les référentiels), noir dessus (couleur de contraste d'ISO 3864-1), et son jaune n'est
      jamais employé en texte.
   4. **Un test de contraste** (WCAG 2.2, luminance relative) sur **chaque couple** rôle
      « on » / rôle de fond, et sur `primary`, `secondary`, `tertiary`, `error` employés en
@@ -103,6 +104,11 @@
   de Surculus, question 3, 2026-10-23).
 
 ## Arbitrages de Pascal (2026-10-23, après la critique du contradicteur)
+
+> Ces arbitrages se lisent dans l'ordre : **une section postérieure remplace la section
+> antérieure** sur le même point (la variante `FIDELITY`, puis `CONTENT` ; le « jaune clair »,
+> puis `#E2AA00` ; le vert de `reussi`). Les sections plus haut dans ce document ont été mises
+> à jour ; ces sections-ci sont le registre daté et ne sont pas réécrites.
 
 - **Niveau de contraste** : un seul, 1,0 (élevé) ; ni 0 ni 0,5.
 - **Variante** : `FIDELITY`, VertMarculus doit se voir.
