@@ -46,8 +46,11 @@
      Utilities, la version du schéma, la variante, le niveau de contraste et la couleur de
      départ.
   3. **Des couleurs sémantiques communes** aux trois applications : réussi, alerte, erreur,
-     chacune avec ses rôles (couleur, texte dessus, conteneur, texte sur conteneur), en
-     clair et en sombre, soumises au même test.
+     en clair et en sombre, soumises au même test. **Erreur** est le rôle `error` de
+     Material, non doublé ; **réussi** a ses quatre rôles (couleur, texte dessus,
+     conteneur, texte sur conteneur) ; **alerte** suit la convention de sécurité : jaune
+     clair en fond, noir dessus (couleur de contraste d'ISO 3864-1), et son jaune n'est
+     jamais employé en texte.
   4. **Un test de contraste** (WCAG 2.2, luminance relative) sur **chaque couple** rôle
      « on » / rôle de fond, et sur `primary`, `secondary`, `tertiary`, `error` employés en
      texte sur `surface`, `surfaceContainer*` et `surfaceDim`. Seuil : **7:1** (WCAG 2.2,
@@ -85,9 +88,11 @@
 - JitPack construit sans les tests (`jitpack.yml`, `-x test`) ; la CI
   (`.github/workflows/ci.yml`) les joue à chaque push et chaque PR. Surculus rejoue quand
   même le test de contraste sur les jetons reçus.
-- **Si une valeur générée échoue au test** : ne pas la retoucher à la main. Rendre la
-  liste des couples en échec ; Pascal choisit l'issue (décision du 2026-10-23) : autre
-  niveau de contraste de Material Color Utilities, ou moins de couples testés.
+- **Si une valeur générée échoue au test** : ne pas la retoucher à la main. Le couple en
+  échec est listé, et le rôle concerné est documenté « interdit en texte » ; le seuil
+  reste 7:1 (décision de Pascal du 2026-10-23, qui remplace le repli de l'issue #1 :
+  « autre niveau de contraste » n'existe plus au-delà de 1,0, « moins de couples testés »
+  est écarté).
 - **Plafond de 7,0** : dans `SPEC_2021`, `primary`, `secondary`, `tertiary` et `error`
   visent exactement 7,0 même au niveau 1,0, mesuré contre la surface claire la plus
   sombre (`surfaceDim`) ; Material Color Utilities tolère un écart de 0,04. Après
@@ -108,3 +113,11 @@
   repli « moins de couples testés » ; garanties de cohérence (table rôle → ARGB avec test
   « tous les rôles mappés » dans chaque application, `dynamicColor` désactivé, adoption
   par les trois applications en critère d'acceptation).
+
+## Arbitrages de Pascal (2026-10-23, après la critique de la spec et des ADR)
+
+- **Erreur** : le rôle `error` de Material, non harmonisé, exposé une seule fois.
+- **Alerte** : jaune clair en fond et noir dessus (convention de sécurité), hors de Material
+  Color Utilities pour ce jaune ; jaune interdit en texte.
+- **Repli** : un rôle qui échoue à 7:1 est documenté « interdit en texte ».
+- **Corrections techniques** de la spec et des ADR 0001 et 0003 : toutes appliquées.

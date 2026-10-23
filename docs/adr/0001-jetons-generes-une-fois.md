@@ -1,61 +1,77 @@
-# ADR 0001 — jetons générés une fois par les sources Java de Material Color Utilities, figés dans le code
+# ADR 0001 — jetons générés une fois par les sources de Material Color Utilities, figés dans le code
 
 - **Date :** 2026-10-23
-- **Statut :** proposée
+- **Statut :** proposée (corrigée après la critique du `contradicteur` du 2026-10-23)
 - **Proposée par :** Claude (orchestrateur)
 - **Tranchée par :** Pascal
 
 ## La décision en une phrase
 
-Les jetons de `terrain-style` sont calculés une fois par un script JVM qui compile les
-sources Java de Material Color Utilities (MCU), recopiées dans
-`terrain-style/generation/mcu/` à un commit inscrit, en `SPEC_2021`, puis écrits en
-Kotlin et figés ; le module publié ne dépend pas de MCU.
+Les jetons de `terrain-style` sont calculés une fois par un script qui compile les sources
+**Kotlin** de Material Color Utilities (MCU), recopiées dans
+`terrain-style/generation/mcu/` à un commit inscrit, puis écrits en Kotlin et figés ; le
+module publié ne dépend pas de MCU, et la CI rejoue la génération.
 
 ## Contexte
 
 L'issue #1 exige des valeurs générées par MCU puis figées, avec le script et ses réglages
-inscrits, et pas de dépendance à l'exécution. Reste à choisir **comment exécuter MCU** et
-**quelle spec**. MCU ne publie pas d'artefact JVM : la table « Library availability » de
-son README renvoie Java à MDC-Android, un AAR Android.
+inscrits, et pas de dépendance à l'exécution. Reste à choisir **comment exécuter MCU**.
+MCU ne publie pas d'artefact JVM, mais son dépôt porte des sources Java (`java/`) et
+Kotlin (`kotlin/`), mêmes paquets.
 
 Options envisagées :
 
-1. **Sources Java recopiées** au commit inscrit, compilées par une tâche Gradle séparée
-   (`:terrain-style:generer`), hors du build publié.
-2. **Paquet npm** `@material/material-color-utilities` à une version épinglée, script Node.
-3. **AAR de Material Components Android** : exige Android, contraire à la règle du module.
-4. **Calcul HCT réécrit en Kotlin** dans le module : plus de dépendance du tout, mais on
-   réinvente et l'on perd la référence.
-5. **Valeurs exportées de Material Theme Builder** (outil web) : pas de script rejouable.
+1. **Sources Kotlin de MCU recopiées** au commit inscrit, compilées par une tâche Gradle à
+   part (`:terrain-style:generer`), hors du build publié. Pas d'import Android ni
+   errorprone.
+2. **Sources Java de MCU recopiées** : elles importent `androidx.annotation.NonNull` /
+   `Nullable` et `com.google.errorprone.annotations` ; il faut deux dépendances
+   `compileOnly` ou des annotations bouche-trou.
+3. **MaterialKolor** (`com.materialkolor:material-color-utilities`, portage Kotlin
+   Multiplatform tiers sur Maven Central) : artefact prêt, mais portage non officiel.
+4. **Paquet npm** `@material/material-color-utilities` à une version épinglée : une
+   seconde chaîne d'outils (Node).
+5. **AAR de Material Components Android** : exige Android, contraire à la règle du module.
+6. **Calcul HCT réécrit à la main** : on réinvente et l'on perd la référence.
+7. **Export de Material Theme Builder** : pas de script rejouable.
 
-Spec : `SpecVersion` compte `SPEC_2021`, `SPEC_2025` et `SPEC_2026` ;
-`DEFAULT_SPEC_VERSION` vaut encore `SPEC_2021`. L'issue #1 demande `SPEC_2021`.
+**Version de spec** : `DynamicScheme.maybeFallbackSpecVersion` ramène toute variante
+autre que CMF, EXPRESSIVE, VIBRANT, TONAL_SPOT et NEUTRAL à `SPEC_2021`. Avec `FIDELITY`
+(arbitrage de Pascal), `SPEC_2021` est donc **imposée**, pas choisie. Le script vérifie
+`scheme.specVersion == SPEC_2021`.
+
+À vérifier par l'`acquereur` avant la mission : parité des sources Kotlin et Java (générer
+les deux, comparer les ARGB), et version de Kotlin exigée par les sources Kotlin (le projet
+compile en Kotlin 2.2).
 
 ## Le crible FRANCE
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | Option 1 : même langage (JVM) que le projet, une seule chaîne d'outils | quelques milliers de lignes Java recopiées dans le dépôt | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | `dev` écrit le script et le test ; `relecteur` vérifie le rejeu à l'octet près | — | _à trancher_ |
-| **A**nticiper | Si MCU change ou disparaît ? | les sources au commit inscrit restent dans le dépôt ; le rejeu ne dépend pas du réseau | on ne suit pas les corrections de MCU sans nouvelle ADR | _à trancher_ |
-| **N**ovateur | Toutes les idées ? | cinq options, dont la réécriture et l'export manuel | — | — |
-| **C**oût | Dépense inutile ? | pas de Node ni d'Android à installer ; le build publié n'est pas alourdi | dépôt plus lourd de la taille des sources MCU | _à trancher_ |
-| **É**cologique | Réutilisation ? | réutilise MCU (Apache-2.0, compatible avec GPL-3.0) ; CSV de contrôle lisible par tous | mention de licence et `NOTICE` à tenir | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | Option 1 : même langage que le projet, aucune dépendance ajoutée | quelques milliers de lignes Kotlin recopiées | _à trancher_ |
+| **R**esponsable | Qui fait quoi ? | `dev` écrit le script et le test ; la CI rejoue la génération et échoue sur toute différence (`git diff --exit-code`) ; `relecteur` en plus | une étape de CI | _à trancher_ |
+| **A**nticiper | Si MCU change ou disparaît ? | les sources au commit inscrit restent dans le dépôt ; le rejeu ne dépend pas du réseau ; le commit est aussi en tête du code généré | suivre une correction de MCU = nouvelle ADR et régénération | _à trancher_ |
+| **N**ovateur | Toutes les idées ? | sept options, dont le portage tiers et la réécriture | — | — |
+| **C**oût | Dépense inutile ? | ni Node ni Android à installer ; le build publié n'est pas alourdi | dépôt plus lourd de la taille des sources MCU | _à trancher_ |
+| **É**cologique | Réutilisation ? | réutilise MCU (Apache-2.0, compatible avec GPL-3.0 dans ce sens) ; LICENSE de MCU copiée dans `generation/mcu/`, en-têtes gardés, fichiers modifiés marqués (Apache-2.0 §4 ; MCU n'a pas de NOTICE) ; tables CSV lisibles par tous | tenir ces mentions | _à trancher_ |
 
 ## Valeurs sacrifiées
 
-- **Suivre l'évolution de Material** (SPEC_2025, SPEC_2026) : on fige SPEC_2021 pour
-  avoir des valeurs stables et rejouables ; en changer est une nouvelle ADR.
+- **Accès à Material 3 Expressive** (SPEC_2025 et suivantes, qui n'offrent que
+  TONAL_SPOT, VIBRANT, EXPRESSIVE et NEUTRAL) : c'est le prix de `FIDELITY`, arbitré par
+  Pascal ; cette ADR le rend visible.
 - **Légèreté du dépôt** : les sources MCU y sont recopiées, pour qu'un successeur rejoue
   sans réseau.
 
 ## Sources
 
-- Material Color Utilities, README (« Library availability ») et `java/dynamiccolor/`
-  (`ColorSpec`, `DynamicScheme.DEFAULT_SPEC_VERSION`, `ColorSpec2021`) —
+- Material Color Utilities : README (« Library availability »), `kotlin/` et `java/`
+  (`dynamiccolor/DynamicScheme` : `maybeFallbackSpecVersion` ; `ColorSpec2021` ; imports
+  `androidx.annotation` et `errorprone` des sources Java) —
   https://github.com/material-foundation/material-color-utilities
-- Licence Apache-2.0 et compatibilité GPL-3.0 — https://www.gnu.org/licenses/license-list.html#apache2
+- MaterialKolor — https://central.sonatype.com/artifact/com.materialkolor/material-kolor
+- Licence Apache-2.0, §4 — https://www.apache.org/licenses/LICENSE-2.0
+- Compatibilité Apache-2.0 → GPL-3.0 — https://www.gnu.org/licenses/license-list.html#apache2
 - Issue #1 du dépôt — https://github.com/pobsteta/terrain/issues/1
 
 ## Question de contrôle

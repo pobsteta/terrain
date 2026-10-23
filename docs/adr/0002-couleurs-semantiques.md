@@ -1,59 +1,76 @@
 # ADR 0002 — couleurs sémantiques communes (réussi, alerte, erreur)
 
 - **Date :** 2026-10-23
-- **Statut :** proposée
+- **Statut :** proposée ; erreur, alerte et repli arbitrés par Pascal le 2026-10-23
 - **Proposée par :** Claude (orchestrateur), sur une proposition du `contradicteur`
 - **Tranchée par :** Pascal
 
 ## La décision en une phrase
 
-`terrain-style` fournit trois couleurs sémantiques, réussi, alerte et erreur, chacune en
-quatre rôles (couleur, texte dessus, conteneur, texte sur conteneur), générées par MCU
-depuis une teinte de référence publiée, harmonisée vers VertMarculus, au même contraste
-1,0 et soumises au même test de 7:1.
+**Erreur** est le rôle `error` de Material (palette par défaut de MCU, non harmonisée,
+exposé une seule fois) ; **réussi** est généré par MCU avec les mêmes courbes de contraste
+qu'`error` ; **alerte** suit la convention de sécurité, jaune clair en fond et noir dessus,
+figé hors de MCU, son jaune étant interdit en texte.
 
 ## Contexte
 
-Pascal a retenu le 2026-10-23 des couleurs sémantiques communes : ce sont elles que le
-forestier lit en passant d'une application à l'autre. Material 3 ne fournit qu'`error` ;
-MDC-Android appelle « custom colors » les autres couleurs, et recommande de les
-**harmoniser** vers la couleur de départ (`Blend.harmonize` de MCU).
+Pascal a retenu des couleurs sémantiques communes : ce sont elles que le forestier lit en
+passant d'une application à l'autre. Constats sourcés :
 
-Options envisagées :
+- Material 3 ne fournit qu'`error`. Les « custom colors » de MCU (`customColor`, en
+  TypeScript seulement) ont des **tons fixes** (40/100/90/10 en clair, 80/20/30/90 en
+  sombre), sans niveau de contraste ; MDC-Android demande de les ajouter à la main aux
+  surcouches de contraste moyen et élevé.
+- Le constructeur de `DynamicScheme` accepte une `errorPalette` (par défaut teinte 25,
+  chroma 84). Un schéma construit avec la palette de « réussi » donne des rôles `error*`
+  aux courbes de contraste d'`error` : c'est le mécanisme retenu pour réussi, **à vérifier
+  en premier** (visibilité publique du constructeur).
+- En `SPEC_2021` au niveau 1,0, les conteneurs ont la courbe `(1.0, 1.0, 3.0, 4.5)` contre
+  `surfaceDim` : ils sont poussés vers le sombre. Un jaune devient olive ou brun, et
+  `DislikeAnalyzer` classe « déplaisantes » les teintes 90°–111° sombres et saturées. Le
+  jaune d'alerte ne serait plus reconnaissable : d'où la convention de sécurité.
+- `Blend.harmonize` tourne la teinte de la moitié de l'écart, au plus 15° : vers une graine
+  verte, « réussi » se rapproche de `primary`.
 
-1. `erreur` = rôles `error` du schéma ; `reussi` et `alerte` = couleurs personnalisées
-   harmonisées, déclinées en tons comme `error`.
-2. Trois couleurs fixes choisies à la main, vérifiées par le test seulement.
-3. Teintes des couleurs de sécurité ISO 3864-4 (vert, jaune, rouge) sans harmonisation.
-4. Rien dans le module (statu quo de l'issue #1) : chaque application garde les siennes.
+Options envisagées : (1) erreur = `error`, réussi par `errorPalette`, alerte selon la
+convention de sécurité — **retenue** ; (2) les trois harmonisées et générées ; (3) trois
+couleurs fixes à la main ; (4) rien dans le module.
 
-La teinte de départ de `reussi` et `alerte` reste à acquérir (`acquereur`, spec, besoin 3).
+Restent à acquérir (`acquereur`) : la teinte de référence de « réussi » et la décision
+d'harmoniser ou non (mesure de l'écart HCT à `primary`) ; la valeur sRGB sourcée du jaune
+de sécurité et de sa couleur de contraste (ISO 3864-1 ; ISO 3864-4 pour la colorimétrie ;
+ISO 22324 et IEC 60073 à comparer).
 
 ## Le crible FRANCE
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | Option 1 : même chaîne que les autres rôles, même test | un réglage de plus par couleur | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | `acquereur` propose les teintes ; Pascal les choisit ; `dev` les génère | — | _à trancher_ |
-| **A**nticiper | Et si une couleur ne tient pas 7:1 ? | même règle : pas de retouche, Pascal choisit | « alerte » (jaune) tient mal en conteneur clair | _à trancher_ |
-| **N**ovateur | Toutes les idées ? | quatre options, dont le statu quo | — | — |
-| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus doit reprendre ses trois états communs | _à trancher_ |
-| **É**cologique | Réutilisation ? | convention MDC « custom colors », teintes de référence publiées | — | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | erreur ne coûte rien ; réussi réutilise la chaîne MCU ; alerte = deux valeurs figées | un schéma MCU de plus ; un mécanisme `errorPalette` à vérifier | _à trancher_ |
+| **R**esponsable | Qui fait quoi ? | `acquereur` source les teintes ; Pascal les choisit ; `dev` génère ; le test juge | — | _à trancher_ |
+| **A**nticiper | Et si un rôle ne tient pas 7:1 ? | il est listé et documenté « interdit en texte » (arbitrage de Pascal) ; si `errorPalette` n'est pas accessible, retour à Pascal | — | oui (Pascal, 2026-10-23) |
+| **N**ovateur | Toutes les idées ? | quatre options, dont le statu quo et la convention de sécurité | — | — |
+| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus reprend ses trois états communs | _à trancher_ |
+| **É**cologique | Réutilisation ? | `error` de Material, convention de sécurité publiée | — | _à trancher_ |
 
 ## Valeurs sacrifiées
 
-- **Autonomie de chaque application** sur ses états communs : Surculus, Marculus et Groma
-  prennent les trois couleurs du module.
-- **Fidélité stricte aux couleurs de sécurité** (si option 1) : l'harmonisation décale un
-  peu la teinte vers VertMarculus.
+- **Une seule chaîne de génération** : le jaune d'alerte sort de MCU, pour rester
+  reconnaissable (arbitrage de Pascal).
+- **Le jaune en texte** : `alerte.couleur` est interdit en texte.
+- **Autonomie de chaque application** sur ses états communs.
+- **Distinction réussi / `primary`**, si l'on harmonise « réussi » : à mesurer avant de
+  trancher.
 
 ## Sources
 
-- MDC-Android, `docs/theming/Color.md` (couleurs personnalisées, harmonisation) —
+- MCU : `typescript/utils/theme_utils.ts` (`customColor`), `java/dynamiccolor/DynamicScheme.java`
+  (`errorPalette`), `ColorSpec2021` (courbes des conteneurs), `java/dislike/DislikeAnalyzer.java`,
+  `java/blend/Blend.java` (`harmonize`) — https://github.com/material-foundation/material-color-utilities
+- MDC-Android, `docs/theming/Color.md` (couleurs personnalisées et contraste) —
   https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md
-- MCU, `java/blend/Blend.java` (`harmonize`) —
-  https://github.com/material-foundation/material-color-utilities
-- ISO 3864-4:2011, couleurs de sécurité (texte payant, à acquérir) — https://www.iso.org/standard/54434.html
+- ISO 3864-1 (couleurs de sécurité et de contraste) et ISO 3864-4 (colorimétrie), textes
+  payants, à acquérir — https://www.iso.org/standard/51000.html
+- ISO 22324:2022 (alertes codées par couleur) — https://www.iso.org/standard/80097.html
 - WCAG 2.2, 1.4.1 (ne pas coder par la seule couleur) — https://www.w3.org/TR/WCAG22/#use-of-color
 
 ## Question de contrôle
