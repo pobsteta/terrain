@@ -1,10 +1,12 @@
 package fr.nemeton.terrain.style.generation
 
 import dynamiccolor.ColorSpec.SpecVersion
+import dynamiccolor.DynamicScheme.Platform
+import dynamiccolor.Variant
 import fr.nemeton.terrain.style.Schema
 import fr.nemeton.terrain.style.StyleTerrain
 import hct.Hct
-import scheme.SchemeFidelity
+import scheme.SchemeContent
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,11 +19,13 @@ class GenererTest {
     private val module = File(System.getProperty("user.dir"))
 
     @Test
-    fun `les deux schemas sont en SPEC_2021, FIDELITY, contraste 1 et PHONE`() {
+    fun `les deux schemas sont en SPEC_2021, CONTENT, contraste 1 et PHONE`() {
+        assertEquals(Variant.CONTENT, Reglages.VARIANTE) // ADR 0004
+        assertEquals(Platform.PHONE, Reglages.PLATEFORME)
         for (sombre in listOf(false, true)) {
             val s = schemaMcu(sombre)
             assertEquals(SpecVersion.SPEC_2021, s.specVersion)
-            assertEquals(Reglages.VARIANTE, s.variant)
+            assertEquals(Variant.CONTENT, s.variant)
             assertEquals(1.0, s.contrastLevel)
             assertEquals(sombre, s.isDark)
             assertEquals(Reglages.PLATEFORME, s.platform)
@@ -29,10 +33,25 @@ class GenererTest {
     }
 
     @Test
-    fun `FIDELITY impose SPEC_2021 meme si une autre version est demandee`() {
+    fun `CONTENT sur PHONE impose SPEC_2021 meme si une autre version est demandee`() {
         for (v in SpecVersion.values()) {
-            val s = SchemeFidelity(Hct.fromInt(Reglages.SOURCE.toInt()), false, 1.0, v, Reglages.PLATEFORME)
+            val s = SchemeContent(Hct.fromInt(Reglages.SOURCE.toInt()), false, 1.0, v, Platform.PHONE)
             assertEquals(SpecVersion.SPEC_2021, s.specVersion, "demandée : $v")
+        }
+    }
+
+    @Test
+    fun `CONTENT sur WATCH garderait la version demandee, d ou le reglage PHONE`() {
+        val s = SchemeContent(Hct.fromInt(Reglages.SOURCE.toInt()), true, 1.0, SpecVersion.SPEC_2025, Platform.WATCH)
+        assertEquals(SpecVersion.SPEC_2025, s.specVersion)
+    }
+
+    @Test
+    fun `en sombre tertiary n est plus identique a error (ADR 0004)`() {
+        for (sombre in listOf(false, true)) {
+            val j = jetons(sombre)
+            assertTrue(j.getValue("tertiary") != j.getValue("error"), "sombre=$sombre")
+            assertTrue(j.getValue("tertiaryContainer") != j.getValue("errorContainer"), "sombre=$sombre")
         }
     }
 

@@ -6,7 +6,7 @@ import dynamiccolor.DynamicScheme.Platform
 import dynamiccolor.Variant
 import fr.nemeton.terrain.style.Contraste
 import hct.Hct
-import scheme.SchemeFidelity
+import scheme.SchemeContent
 import java.io.File
 import java.util.Locale
 import kotlin.math.floor
@@ -28,8 +28,9 @@ object Reglages {
     const val COMMIT_MCU = "bd811e4ca2ab94c4ce3cadc89c19b1820b9704b3"
     const val NOM_SOURCE = "VertMarculus"
     const val SOURCE = 0xFF374742L
-    val VARIANTE = Variant.FIDELITY
-    /** Imposée par FIDELITY (`DynamicScheme.maybeFallbackSpecVersion`), vérifiée à la construction. */
+    /** ADR 0004 (amende l'ADR 0001) : CONTENT, pour qu'en sombre tertiary ne soit pas identique à error. */
+    val VARIANTE = Variant.CONTENT
+    /** Imposée par CONTENT sur PHONE (`DynamicScheme.maybeFallbackSpecVersion`), vérifiée à la construction. */
     val SPEC = SpecVersion.SPEC_2021
     const val CONTRASTE = 1.0
     val PLATEFORME = Platform.PHONE
@@ -67,8 +68,8 @@ val ROLES: List<Pair<String, (DynamicScheme) -> Int>> = listOf(
 
 /** Le schéma MCU d'un thème ; refuse tout schéma qui ne serait pas en [Reglages.SPEC]. */
 fun schemaMcu(sombre: Boolean): DynamicScheme {
-    check(Reglages.VARIANTE == Variant.FIDELITY) { "le script construit SchemeFidelity" }
-    val s = SchemeFidelity(
+    check(Reglages.VARIANTE == Variant.CONTENT) { "le script construit SchemeContent" }
+    val s = SchemeContent(
         Hct.fromInt(Reglages.SOURCE.toInt()),
         sombre,
         Reglages.CONTRASTE,
@@ -155,7 +156,7 @@ fun sourceKotlin(clair: Map<String, Long>, sombre: Map<String, Long>): String = 
     appendLine("//")
     appendLine("// Material Color Utilities, sources Kotlin au commit ${Reglages.COMMIT_MCU}")
     appendLine("// Couleur de départ : ${hex(Reglages.SOURCE)} (${Reglages.NOM_SOURCE})")
-    appendLine("// Variante : ${Reglages.VARIANTE} ; spec : ${Reglages.SPEC} (imposée par FIDELITY, vérifiée)")
+    appendLine("// Variante : ${Reglages.VARIANTE} ; spec : ${Reglages.SPEC} (imposée par ${Reglages.VARIANTE} sur ${Reglages.PLATEFORME}, vérifiée)")
     appendLine("// Contraste : ${Reglages.CONTRASTE} ; plateforme : ${Reglages.PLATEFORME}")
     appendLine("package fr.nemeton.terrain.style")
     appendLine()

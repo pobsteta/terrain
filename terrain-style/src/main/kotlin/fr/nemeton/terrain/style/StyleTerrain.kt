@@ -3,13 +3,13 @@
 //
 // Material Color Utilities, sources Kotlin au commit bd811e4ca2ab94c4ce3cadc89c19b1820b9704b3
 // Couleur de départ : 0xFF374742 (VertMarculus)
-// Variante : FIDELITY ; spec : SPEC_2021 (imposée par FIDELITY, vérifiée)
+// Variante : CONTENT ; spec : SPEC_2021 (imposée par CONTENT sur PHONE, vérifiée)
 // Contraste : 1.0 ; plateforme : PHONE
 package fr.nemeton.terrain.style
 
 /**
  * Les schémas communs des applications de terrain, générés par Material Color Utilities
- * (VertMarculus 0xFF374742, FIDELITY, SPEC_2021, contraste 1.0).
+ * (VertMarculus 0xFF374742, CONTENT, SPEC_2021, contraste 1.0).
  *
  * Rôles interdits en texte (sous 7.0:1 sur l'un de leurs fonds) :
  *  - clair : aucun ;
@@ -26,9 +26,9 @@ object StyleTerrain {
         onSecondary = 0xFFFFFFFFL,
         secondaryContainer = 0xFF444B48L,
         onSecondaryContainer = 0xFFFFFFFFL,
-        tertiary = 0xFF3B2724L,
+        tertiary = 0xFF2B2B38L,
         onTertiary = 0xFFFFFFFFL,
-        tertiaryContainer = 0xFF553E3BL,
+        tertiaryContainer = 0xFF434250L,
         onTertiaryContainer = 0xFFFFFFFFL,
         background = 0xFFFBF9F7L,
         onBackground = 0xFF1B1C1BL,
@@ -61,8 +61,8 @@ object StyleTerrain {
         secondaryFixedDim = 0xFF2E3432L,
         onSecondaryFixed = 0xFFFFFFFFL,
         onSecondaryFixedVariant = 0xFFFFFFFFL,
-        tertiaryFixed = 0xFF5B4340L,
-        tertiaryFixedDim = 0xFF432D2BL,
+        tertiaryFixed = 0xFF494856L,
+        tertiaryFixedDim = 0xFF32313FL,
         onTertiaryFixed = 0xFFFFFFFFL,
         onTertiaryFixedVariant = 0xFFFFFFFFL,
         interditsEnTexte = setOf(),
@@ -78,10 +78,10 @@ object StyleTerrain {
         onSecondary = 0xFF000000L,
         secondaryContainer = 0xFFBEC4C0L,
         onSecondaryContainer = 0xFF070C0BL,
-        tertiary = 0xFFFFECE9L,
+        tertiary = 0xFFF1EEFFL,
         onTertiary = 0xFF000000L,
-        tertiaryContainer = 0xFFDCBBB7L,
-        onTertiaryContainer = 0xFF160706L,
+        tertiaryContainer = 0xFFC3C1D2L,
+        onTertiaryContainer = 0xFF0A0A16L,
         background = 0xFF131313L,
         onBackground = 0xFFE4E2E1L,
         surface = 0xFF131313L,
@@ -113,10 +113,10 @@ object StyleTerrain {
         secondaryFixedDim = 0xFFC2C8C4L,
         onSecondaryFixed = 0xFF000000L,
         onSecondaryFixedVariant = 0xFF0C1210L,
-        tertiaryFixed = 0xFFFDDBD6L,
-        tertiaryFixedDim = 0xFFE0BFBBL,
+        tertiaryFixed = 0xFFE4E0F2L,
+        tertiaryFixedDim = 0xFFC7C4D6L,
         onTertiaryFixed = 0xFF000000L,
-        onTertiaryFixedVariant = 0xFF1D0D0BL,
+        onTertiaryFixedVariant = 0xFF10101CL,
         interditsEnTexte = setOf(),
     )
 }

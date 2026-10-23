@@ -89,9 +89,9 @@ Jeu d'essai : `terrain-gpkg/src/test/resources/gpkg/essai.gpkg`, fabriqué par G
 
 `StyleTerrain.clair` et `StyleTerrain.sombre` sont deux `Schema`, un champ par rôle de
 `ColorScheme` de Compose Material 3 (48 rôles, en ARGB `0xFFRRGGBB` dans un `Long`), à recopier
-dans le thème de l'application. Ils sont générés une fois par Material Color Utilities (ADR 0001 :
-VertMarculus `#374742`, `FIDELITY`, `SPEC_2021`, contraste 1,0) puis figés ; le module publié
-ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
+dans le thème de l'application. Ils sont générés une fois par Material Color Utilities (ADR 0001 et
+0004 : VertMarculus `#374742`, variante `CONTENT`, `SPEC_2021`, contraste 1,0) puis figés ; le
+module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
 
 Rôles interdits en texte (sous 7:1 sur l'un de leurs fonds, liste `interditsEnTexte` de
 chaque schéma, calculée par le script) : aucun parmi les 48 rôles, en clair comme en sombre.

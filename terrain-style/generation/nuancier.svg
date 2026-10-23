@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="630" height="1244" viewBox="0 0 630 1244" font-family="sans-serif" font-size="12">
   <rect width="630" height="1244" fill="#FFFFFF"/>
   <rect x="10" y="10" width="610" height="24" fill="#374742"/>
-  <text x="16" y="26" fill="#FFFFFF">VertMarculus #374742 (couleur de départ) ; FIDELITY, SPEC_2021, contraste 1.0</text>
+  <text x="16" y="26" fill="#FFFFFF">VertMarculus #374742 (couleur de départ) ; CONTENT, SPEC_2021, contraste 1.0</text>
   <text x="10" y="52" fill="#000000" font-weight="bold">clair</text>
   <text x="320" y="52" fill="#000000" font-weight="bold">sombre</text>
   <rect x="10" y="82" width="300" height="24" fill="#202F2B"/>
@@ -22,12 +22,12 @@
   <text x="16" y="266" fill="#FFFFFF">secondaryContainer #444B48</text>
   <rect x="10" y="274" width="300" height="24" fill="#FFFFFF"/>
   <text x="16" y="290" fill="#000000">onSecondaryContainer #FFFFFF</text>
-  <rect x="10" y="298" width="300" height="24" fill="#3B2724"/>
-  <text x="16" y="314" fill="#FFFFFF">tertiary #3B2724</text>
+  <rect x="10" y="298" width="300" height="24" fill="#2B2B38"/>
+  <text x="16" y="314" fill="#FFFFFF">tertiary #2B2B38</text>
   <rect x="10" y="322" width="300" height="24" fill="#FFFFFF"/>
   <text x="16" y="338" fill="#000000">onTertiary #FFFFFF</text>
-  <rect x="10" y="346" width="300" height="24" fill="#553E3B"/>
-  <text x="16" y="362" fill="#FFFFFF">tertiaryContainer #553E3B</text>
+  <rect x="10" y="346" width="300" height="24" fill="#434250"/>
+  <text x="16" y="362" fill="#FFFFFF">tertiaryContainer #434250</text>
   <rect x="10" y="370" width="300" height="24" fill="#FFFFFF"/>
   <text x="16" y="386" fill="#000000">onTertiaryContainer #FFFFFF</text>
   <rect x="10" y="394" width="300" height="24" fill="#FBF9F7"/>
@@ -92,10 +92,10 @@
   <text x="16" y="1106" fill="#000000">onSecondaryFixed #FFFFFF</text>
   <rect x="10" y="1114" width="300" height="24" fill="#FFFFFF"/>
   <text x="16" y="1130" fill="#000000">onSecondaryFixedVariant #FFFFFF</text>
-  <rect x="10" y="1138" width="300" height="24" fill="#5B4340"/>
-  <text x="16" y="1154" fill="#FFFFFF">tertiaryFixed #5B4340</text>
-  <rect x="10" y="1162" width="300" height="24" fill="#432D2B"/>
-  <text x="16" y="1178" fill="#FFFFFF">tertiaryFixedDim #432D2B</text>
+  <rect x="10" y="1138" width="300" height="24" fill="#494856"/>
+  <text x="16" y="1154" fill="#FFFFFF">tertiaryFixed #494856</text>
+  <rect x="10" y="1162" width="300" height="24" fill="#32313F"/>
+  <text x="16" y="1178" fill="#FFFFFF">tertiaryFixedDim #32313F</text>
   <rect x="10" y="1186" width="300" height="24" fill="#FFFFFF"/>
   <text x="16" y="1202" fill="#000000">onTertiaryFixed #FFFFFF</text>
   <rect x="10" y="1210" width="300" height="24" fill="#FFFFFF"/>
@@ -118,14 +118,14 @@
   <text x="326" y="266" fill="#000000">secondaryContainer #BEC4C0</text>
   <rect x="320" y="274" width="300" height="24" fill="#070C0B"/>
   <text x="326" y="290" fill="#FFFFFF">onSecondaryContainer #070C0B</text>
-  <rect x="320" y="298" width="300" height="24" fill="#FFECE9"/>
-  <text x="326" y="314" fill="#000000">tertiary #FFECE9</text>
+  <rect x="320" y="298" width="300" height="24" fill="#F1EEFF"/>
+  <text x="326" y="314" fill="#000000">tertiary #F1EEFF</text>
   <rect x="320" y="322" width="300" height="24" fill="#000000"/>
   <text x="326" y="338" fill="#FFFFFF">onTertiary #000000</text>
-  <rect x="320" y="346" width="300" height="24" fill="#DCBBB7"/>
-  <text x="326" y="362" fill="#000000">tertiaryContainer #DCBBB7</text>
-  <rect x="320" y="370" width="300" height="24" fill="#160706"/>
-  <text x="326" y="386" fill="#FFFFFF">onTertiaryContainer #160706</text>
+  <rect x="320" y="346" width="300" height="24" fill="#C3C1D2"/>
+  <text x="326" y="362" fill="#000000">tertiaryContainer #C3C1D2</text>
+  <rect x="320" y="370" width="300" height="24" fill="#0A0A16"/>
+  <text x="326" y="386" fill="#FFFFFF">onTertiaryContainer #0A0A16</text>
   <rect x="320" y="394" width="300" height="24" fill="#131313"/>
   <text x="326" y="410" fill="#FFFFFF">background #131313</text>
   <rect x="320" y="418" width="300" height="24" fill="#E4E2E1"/>
@@ -188,12 +188,12 @@
   <text x="326" y="1106" fill="#FFFFFF">onSecondaryFixed #000000</text>
   <rect x="320" y="1114" width="300" height="24" fill="#0C1210"/>
   <text x="326" y="1130" fill="#FFFFFF">onSecondaryFixedVariant #0C1210</text>
-  <rect x="320" y="1138" width="300" height="24" fill="#FDDBD6"/>
-  <text x="326" y="1154" fill="#000000">tertiaryFixed #FDDBD6</text>
-  <rect x="320" y="1162" width="300" height="24" fill="#E0BFBB"/>
-  <text x="326" y="1178" fill="#000000">tertiaryFixedDim #E0BFBB</text>
+  <rect x="320" y="1138" width="300" height="24" fill="#E4E0F2"/>
+  <text x="326" y="1154" fill="#000000">tertiaryFixed #E4E0F2</text>
+  <rect x="320" y="1162" width="300" height="24" fill="#C7C4D6"/>
+  <text x="326" y="1178" fill="#000000">tertiaryFixedDim #C7C4D6</text>
   <rect x="320" y="1186" width="300" height="24" fill="#000000"/>
   <text x="326" y="1202" fill="#FFFFFF">onTertiaryFixed #000000</text>
-  <rect x="320" y="1210" width="300" height="24" fill="#1D0D0B"/>
-  <text x="326" y="1226" fill="#FFFFFF">onTertiaryFixedVariant #1D0D0B</text>
+  <rect x="320" y="1210" width="300" height="24" fill="#10101C"/>
+  <text x="326" y="1226" fill="#FFFFFF">onTertiaryFixedVariant #10101C</text>
 </svg>
