@@ -60,3 +60,4 @@
 2026-10-23 · Pascal · cycle 2 · lancé sur son ordre : missions 004 (dev) et 005 (testeur) ; avec la PR #5 ouverte, plafond de 3 atteint ; la PR de pilotage/cycle-1 attendra une place.
 2026-10-23 · Pascal · ADR 0001-0003 · acceptées (« oui j accepte »), « Prêts à payer ? » : inconnu. Missions 006 et 008 ont désormais leurs moyens ; 007 attend la PR #5, la mission 006 et le choix du vert.
 2026-10-23 · Pascal · cycle 1 · livraison retenue : table de référence WCAG pour les développeurs de Surculus (proposition de l orchestrateur, acceptée).
+2026-10-23 · Pascal · mission 002 · PR #5 fusionnée dans main (e8b651a), sur son ordre ; worktree et branche mission/002 supprimés.
