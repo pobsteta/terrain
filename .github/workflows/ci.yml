@@ -38,6 +38,12 @@ jobs:
       # ADR 0001 : le jar publié ne contient aucune classe de MCU.
       - name: Le jar de terrain-style ne dépend pas de MCU
         run: |
+          set -euo pipefail
           ./gradlew :terrain-style:jar
-          intrus=$(unzip -Z1 terrain-style/build/libs/terrain-style-dev.jar | grep -v -e '^META-INF/' -e '^fr/$' -e '^fr/nemeton/' || true)
+          jars=$(find terrain-style/build/libs -maxdepth 1 -name 'terrain-style-*.jar' ! -name '*-sources.jar' ! -name '*-javadoc.jar')
+          if [ "$(printf '%s' "$jars" | grep -c .)" -ne 1 ]; then echo "::error::attendu exactement un jar de terrain-style, trouvé : '$jars'"; exit 1; fi
+          test -f "$jars"
+          contenu=$(unzip -Z1 "$jars")
+          test -n "$contenu"
+          intrus=$(printf '%s\n' "$contenu" | grep -v -e '^META-INF/' -e '^fr/$' -e '^fr/nemeton/' || true)
           if [ -n "$intrus" ]; then echo "::error::classes hors de fr/nemeton dans le jar : $intrus"; exit 1; fi
