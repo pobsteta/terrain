@@ -39,7 +39,7 @@ couleurs fixes à la main ; (4) rien dans le module.
 **Valeurs choisies par Pascal le 2026-10-23** (sur `docs/referentiels/couleurs-etat.md`,
 mission 002) : alerte = **`#E2AA00`**, jaune de sécurité d'ISO 3864-4 (Table 1, β 0,45, D65,
 converti en sRGB ; un ambre plutôt qu'un « jaune clair »), texte noir `#000000` (9,98:1) ;
-le vert de départ de « réussi » attend la mesure HCT de la mission 007 ; ISO 3864-1 et
+le vert de départ de « réussi » est **`#0F8558`** (RAL 6032 d'après Wikipédia « List of RAL colours », seul candidat dans la région verte d'ISO 3864-4), **non harmonisé** vers VertMarculus (choix de Pascal du 2026-10-23 sur les mesures de la mission 007 ; repli `#00843D` si l'essai au soleil le confond avec `primary`) ; ISO 3864-1 et
 l'annexe E d'ISO 3864-4 ne sont pas achetées pour l'instant.
 
 Restent à acquérir (`acquereur`) : la teinte de référence de « réussi » et la décision

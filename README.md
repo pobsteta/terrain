@@ -42,8 +42,18 @@ dependencies {
     implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.5.0") // apporte terrain-gnss
     implementation("com.github.pobsteta.terrain:terrain-voix:v0.5.0")
     implementation("com.github.pobsteta.terrain:terrain-carte:v0.5.0")
+    implementation("com.github.pobsteta.terrain:terrain-style:vX.Y.Z") // première version : le premier tag posé après son ajout
 }
 ```
+
+### Publier une version
+
+Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
+échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
+sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
+comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
+depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
+de contrôle (`verification-metadata.xml`).
 
 Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
 `com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
@@ -75,6 +85,28 @@ ligne d'index est écrite à la main, puis ils sont recréés, dans la même tra
 Jeu d'essai : `terrain-gpkg/src/test/resources/gpkg/essai.gpkg`, fabriqué par GDAL
 (`fabriquer.sh`), avec la référence PROJ de chaque sommet en WGS 84 (`reference.csv`).
 
+### Couleurs : `terrain-style`
+
+`StyleTerrain.clair` et `StyleTerrain.sombre` sont deux `Schema`, un champ par rôle de
+`ColorScheme` de Compose Material 3 (48 rôles, en ARGB `0xFFRRGGBB` dans un `Long`), à recopier
+dans le thème de l'application. Ils sont générés une fois par Material Color Utilities (ADR 0001 et
+0004 : VertMarculus `#374742`, variante `CONTENT`, `SPEC_2021`, contraste 1,0) puis figés ; le
+module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
+
+Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surCouleur`,
+`conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
+
+- `reussi` : généré par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
+  palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; écart de teinte HCT à
+  `primary` : 17,7° en clair, 16,1° en sombre ;
+- `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
+  `couleur` et `conteneur`, noir `#000000` dessus (9,98:1), dans les deux thèmes.
+
+Rôles interdits en texte (sous 7:1 sur l'un de leurs fonds, liste `interditsEnTexte` de
+chaque schéma, calculée par le script) : `alerte.couleur`, par décision (ADR 0002), en clair
+comme en sombre ; aucun parmi les 48 rôles ni parmi les autres jetons d'état. Le jaune sert de
+fond, jamais de texte.
+
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
 Kotlin 2.2 et suivants.
 
@@ -83,6 +115,8 @@ Kotlin 2.2 et suivants.
 ```sh
 ./gradlew test                 # tests JVM
 ./gradlew publishToMavenLocal  # version « dev » dans ~/.m2, pour essayer dans une appli
+./gradlew :terrain-style:generer        # régénère les jetons de couleur (ADR 0001)
+./gradlew :terrain-style:testGeneration # tests du script de génération
 ```
 
 Une correction se fait ici, avec son test, puis chaque application monte de version.
