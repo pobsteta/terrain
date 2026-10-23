@@ -129,11 +129,13 @@ que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue l
 
 ### Changer le vert de départ de `reussi` (par exemple le repli `#00843D`)
 
-Cas prévu par l'ADR 0002 : l'essai au soleil confond `reussi` et `primary`. **Piège** : le repli
-`#00843D` (vert ANSI Z535.1) sort de la région verte d'ISO 3864-4, alors que `#0F8558` y est
-(`docs/referentiels/couleurs-etat.md`, ligne 113 ; ADR 0002, note datée). Changer de vert
-sort donc de la norme qui fonde le choix actuel : il faut d'abord **une ADR 0005**, tranchée
-par Pascal. Ce n'est pas une simple retouche.
+Cas prévu et **autorisé d'avance** par la décision de Pascal (mission 007) : repli `#00843D` si
+l'essai au soleil confond `reussi` et `primary`. Aucune nouvelle ADR n'est requise ; le passage
+au repli se consigne par une note datée dans l'ADR 0002 (étape 5). **Avertissement** : `#00843D`
+(vert ANSI Z535.1) sortirait de la région verte d'ISO 3864-4, alors que `#0F8558` y est ; calcul
+approché du relecteur, non rejoué par l'acquéreur (`docs/referentiels/couleurs-etat.md`,
+ligne 113). Le repli quitte donc la norme qui fonde le choix actuel : Pascal le sait en le
+décidant.
 
 1. Dans `terrain-style/generation/src/fr/nemeton/terrain/style/generation/Generer.kt` :
    `Reglages.REUSSI` (ligne 50, `0xFF0F8558L`) et `Reglages.SOURCE_REUSSI` (ligne 51, texte de

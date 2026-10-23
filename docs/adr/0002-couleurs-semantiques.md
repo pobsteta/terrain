@@ -102,8 +102,9 @@ ISO 22324 et IEC 60073 à comparer).
   `primary` est le vert de sécurité ANSI Z535.1 ; d'après le calcul du relecteur
   (`docs/referentiels/couleurs-etat.md`, ligne 113, approximatif, non rejoué par l'acquéreur),
   `#00843D` **sort de la région verte d'ISO 3864-4**, alors que `#0F8558` y est. Le repli
-  quitterait donc la norme qui fonde le choix : en changer demanderait une **ADR 0005**,
-  décidée par Pascal.
+  quitterait donc la norme qui fonde le choix. C'est un **avertissement**, non une condition :
+  le repli est autorisé d'avance par la décision de Pascal (mission 007) ; aucune ADR
+  supplémentaire n'est exigée, le passage au repli se consigne par une note datée ici.
 
 ## Question de contrôle
 
