@@ -22,11 +22,6 @@ _Modèle de carte :_
 
 ## Validé
 
-- [014-corrections-bilan-2](missions/014-corrections-bilan-2.md) · depuis le cycle 4
-  - Homme : `archiviste` (sonnet)
-  - Mission : corrections P1 à P3 du bilan n° 2 ; lancée au bilan n° 2
-  - Moyens : rapport de l'archiviste ; liste de contrôle jointe ; PR
-
 ## Planifié
 
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 3
@@ -37,6 +32,11 @@ _Modèle de carte :_
 
 ## Terminé
 
+- [014-corrections-bilan-2](missions/014-corrections-bilan-2.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 à P3 du bilan n° 2 ; lancée au bilan n° 2
+  - Moyens : rapport de l'archiviste ; liste de contrôle jointe ; PR
+  - Livré : PR #20 fusionnée (1 retouche sur décisions de Pascal)
 - [013-reussi-provisoire](missions/013-reussi-provisoire.md) · depuis le cycle 4
   - Homme : `archiviste` (sonnet)
   - Mission : marquer #0F8558 provisoire jusqu'à l'essai au soleil ; lancée au cycle 4

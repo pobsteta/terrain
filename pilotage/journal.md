@@ -142,3 +142,4 @@
 2026-10-23 · relecteur · mission 014 · prêt : diff limité à docs/ et README, rien de daté effacé, CI verte ; à trancher : passage de la spec à « Aucune » au gel non prévu, statut de couleurs-etat.md sans « provisoire », place de « Publier une version ».
 2026-10-23 · Pascal · mission 014 · décisions : au gel, la spec repasse à « Aucune » (étape 5 du README et note datée de l'ADR 0002, harnais élargi) ; statut de couleurs-etat.md précisé ; « Publier une version » sous « Développer ».
 2026-10-23 · archiviste · mission 014 · retouches appliquées (ADR 0002 en ajout seul, README réordonné : Utiliser, GeoPackage, terrain-style, Développer avec Changer le vert puis Publier) ; vérifiées par l'orchestrateur (diff, ajout seul, ordre des titres, CI verte) ; PR #20 sortie du brouillon.
+2026-10-23 · Claude (orchestrateur) · mission 014 · fusion de la PR #20 sur ordre de Pascal (CI verte) ; carte 014 passée en Terminé.
