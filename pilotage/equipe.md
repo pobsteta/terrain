@@ -37,6 +37,10 @@
 | [006](missions/006-generation-schemas.md) génération des schémas clair et sombre | `dev` | opus | **tenir** | oui / oui (ADR 0001 acceptée) / oui (mission 001 fusionnée) | 3 |
 | [007](missions/007-couleurs-semantiques.md) réussi et alerte | `dev` | sonnet | appuyer | oui / **non** (vert de réussi après mesure HCT) / **non** (002 à fusionner, 006) | 4 |
 | [008](missions/008-publication.md) CI sur tags + README | `dev` | sonnet | appuyer | oui / oui (ADR 0003 acceptée) / oui | 4 |
+| [009](missions/009-memoire-v0.6.0.md) mémoire de v0.6.0 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 1 |
+| [010](missions/010-valeur-provisoire.md) valeur provisoire avant mesure | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
+| [011](missions/011-liste-de-controle.md) liste de contrôle avant « prêt » | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
+| [012](missions/012-dependances.md) dépendances entre missions | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
-terrain, après la mission 007, et noté au carnet des écarts.
+terrain, après la mission 007, et noté au carnet des écarts ; échéance fixée au bilan n° 1 : 2026-10-30.
