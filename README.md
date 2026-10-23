@@ -37,12 +37,12 @@ dependencyResolutionManagement {
 
 // build.gradle.kts du module
 dependencies {
-    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.5.0")
-    implementation("com.github.pobsteta.terrain:terrain-journal:v0.5.0")
-    implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.5.0") // apporte terrain-gnss
-    implementation("com.github.pobsteta.terrain:terrain-voix:v0.5.0")
-    implementation("com.github.pobsteta.terrain:terrain-carte:v0.5.0")
-    implementation("com.github.pobsteta.terrain:terrain-style:vX.Y.Z") // première version : le premier tag posé après son ajout
+    implementation("com.github.pobsteta.terrain:terrain-gnss:v0.6.0")
+    implementation("com.github.pobsteta.terrain:terrain-journal:v0.6.0")
+    implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.6.0") // apporte terrain-gnss
+    implementation("com.github.pobsteta.terrain:terrain-voix:v0.6.0")
+    implementation("com.github.pobsteta.terrain:terrain-carte:v0.6.0")
+    implementation("com.github.pobsteta.terrain:terrain-style:v0.6.0")
 }
 ```
 
