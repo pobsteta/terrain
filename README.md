@@ -1,9 +1,9 @@
 # terrain
 
 Bibliothèques communes des applications de terrain de la plateforme Néméton — Marculus
-(martelage), Groma (placettes), Surculus (travaux et plantations) — qui partagent le même
-matériel : smartphone, récepteur GNSS en Bluetooth (ZED-F9P), corrections NTRIP Centipède,
-GeoPackage hors ligne.
+(martelage), Groma (placettes), [Surculus](https://github.com/pobsteta/surculus) (travaux et
+plantations) — qui partagent le même matériel : smartphone, récepteur GNSS en Bluetooth
+(ZED-F9P), corrections NTRIP Centipède, GeoPackage hors ligne.
 
 Licence : **GPL-3.0-or-later** (`LICENSE`).
 
@@ -46,20 +46,7 @@ dependencies {
 }
 ```
 
-### Publier une version
-
-Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
-échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
-sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
-comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
-depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
-de contrôle (`verification-metadata.xml`).
-
-Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
-`com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
-
-Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
-machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
+Exemple d'usage (`terrain-gnss`) :
 
 ```kotlin
 import fr.nemeton.terrain.gnss.NmeaParser
@@ -164,9 +151,30 @@ décidant.
    **Au gel** (après l'essai du 2026-10-30), que le vert soit changé **ou gardé**, retirer la
    mention « provisoire » de ce README (ligne `reussi` et début de cette section), de
    `docs/spec.md` (« Questions ouvertes ») et du code généré à la génération suivante, dans la
-   même PR que la note datée du gel.
+   même PR que la note datée du gel. **Au gel, la spec repasse de « Une : l'essai au soleil » à
+   « Aucune » question ouverte**, que le vert soit changé ou gardé : la note datée de l'ADR 0002
+   et la PR le disent aussi.
 6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
-   `vX.Y.Z` sur le commit de `main` (voir « Publier une version »).
+   `vX.Y.Z` sur le commit de `main` (voir « Publier une version », juste en dessous).
+
+### Publier une version
+
+Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
+échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
+sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
+comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
+depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
+de contrôle (`verification-metadata.xml`).
+
+La prochaine version, v0.6.1, peut changer le vert de départ de `reussi` (valeur provisoire
+jusqu'à l'essai au soleil du 2026-10-30) : voir « Changer le vert de départ de `reussi` »
+(juste au-dessus).
+
+Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
+`com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
+
+Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
+machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
 
 ### Refaire la table de référence des contrastes
 
