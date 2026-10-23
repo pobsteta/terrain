@@ -38,7 +38,7 @@ en sombre, pour tenir 7:1.
 
 | Donnée | Forme | Où |
 |---|---|---|
-| Couleur | ARGB 32 bits en `Long` (`0xFFRRGGBB`), alpha toujours `FF`, sans extension de signe | code |
+| Couleur | ARGB 32 bits en `Long` (`0xFFRRGGBB`), alpha toujours `FF`, sans extension de signe ; toute autre valeur est refusée par `IllegalArgumentException` (Pascal, 2026-10-23) | code |
 | Schéma | un objet par thème (`clair`, `sombre`), un champ par rôle, au nom du rôle | `fr.nemeton.terrain.style` |
 | Rôles couverts | **les propriétés de `ColorScheme` de Compose Material 3** (Fixed compris) : `primary` … `onTertiaryFixedVariant`, `background`, `surface*`, `inverse*`, `outline*`, `scrim`, `surfaceTint`, `error*`. Sont exclus : couleurs clés (`*PaletteKeyColor`), `*Dim` de SPEC_2025+, rôles propres à Android (`controlActivated`…) | code |
 | Couleur sémantique | `reussi` et `alerte`, chacune en quatre rôles : `couleur`, `surCouleur`, `conteneur`, `surConteneur` ; l'erreur est `error*` du schéma, sans doublon | code |
