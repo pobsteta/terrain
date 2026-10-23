@@ -115,6 +115,11 @@ ISO 22324 et IEC 60073 à comparer).
   même PR que la note datée du gel. Le code généré (`StyleTerrain.kt`) n'est pas encore
   marqué ; il le sera à la prochaine génération.
 
+- **Spec au gel, ajoutée le 2026-10-23 (mission 014).** Au gel de `#0F8558` (garder ou repli),
+  `docs/spec.md` (« Questions ouvertes ») repasse de « Une : l'essai au soleil » à « Aucune »,
+  dans la même PR que la note datée du gel ; la marche à suivre du README (étape 5) le dit aussi.
+  Complète la note « Valeur provisoire » ci-dessus, sans la modifier.
+
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?
