@@ -80,6 +80,31 @@ ISO 22324 et IEC 60073 à comparer).
   https://webstore.ansi.org/preview-pages/ISO/preview_ISO+22324-2022.pdf
 - WCAG 2.2, 1.4.1 (ne pas coder par la seule couleur) — https://www.w3.org/TR/WCAG22/#use-of-color
 
+## Notes datées (ajoutées, rien n'est effacé ci-dessus)
+
+- **Amendé le 2026-10-23 : alerte = `#E2AA00`.** Les mots « jaune clair en fond » de la
+  décision en une phrase et du contexte sont remplacés par le jaune de sécurité `#E2AA00`
+  d'ISO 3864-4 (Table 1, β 0,45, D65, converti en sRGB), noir `#000000` dessus (9,98:1), sur
+  choix de Pascal (paragraphe « Valeurs choisies par Pascal » ci-dessus ; brief, arbitrages
+  sur les référentiels du cycle 1). La décision de fond (convention de sécurité, figé hors
+  MCU, interdit en texte) ne change pas.
+- **Levé le 2026-10-23 : mécanisme `errorPalette`.** Le « à vérifier en premier » (contexte,
+  crible F) est levé : le constructeur `DynamicScheme(errorPalette)` est public (mission 001,
+  `docs/referentiels/mcu-compose.md`) et `reussi` est généré ainsi (mission 007).
+- **Levé le 2026-10-23 : valeurs sourcées.** Le « Restent à acquérir » est levé : valeurs
+  sourcées par la mission 002 (`docs/referentiels/couleurs-etat.md`) ; harmonisation tranchée
+  par Pascal sur la mesure HCT de la mission 007 : `reussi` non harmonisé, écart de teinte à
+  `primary` de 17,7° en clair et 16,1° en sombre. La réserve « Distinction réussi / `primary` »
+  des valeurs sacrifiées est donc mesurée ; reste à la vérifier à l'essai au soleil, où
+  `reussi`, `primary` et `error` ont presque la même luminance (rapport 1,005, journal,
+  mission 007) et où seule la teinte les sépare.
+- **Piège du repli `#00843D`.** Le repli prévu si l'essai au soleil confond `reussi` et
+  `primary` est le vert de sécurité ANSI Z535.1 ; d'après le calcul du relecteur
+  (`docs/referentiels/couleurs-etat.md`, ligne 113, approximatif, non rejoué par l'acquéreur),
+  `#00843D` **sort de la région verte d'ISO 3864-4**, alors que `#0F8558` y est. Le repli
+  quitterait donc la norme qui fonde le choix : en changer demanderait une **ADR 0005**,
+  décidée par Pascal.
+
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?

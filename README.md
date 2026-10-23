@@ -97,8 +97,8 @@ Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surC
 `conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
 
 - `reussi` : généré par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
-  palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; écart de teinte HCT à
-  `primary` : 17,7° en clair, 16,1° en sombre ;
+  palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; l'écart de teinte
+  HCT à `primary`, mesuré à chaque génération, est inscrit en tête de `StyleTerrain.kt` ;
 - `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
   `couleur` et `conteneur`, noir `#000000` dessus (9,98:1), dans les deux thèmes.
 
@@ -120,6 +120,50 @@ Kotlin 2.2 et suivants.
 ```
 
 Une correction se fait ici, avec son test, puis chaque application monte de version.
+
+**Deux commandes, pas une.** `.claude/test-command` (et donc le travail des agents) ne lance
+que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue les trois
+(`test`, `generer` suivi d'un contrôle d'absence de différence, `testGeneration` : voir
+`.github/workflows/ci.yml`). Avant toute PR qui touche `terrain-style`, lancer à la main
+`./gradlew test` **et** `./gradlew :terrain-style:testGeneration`.
+
+### Changer le vert de départ de `reussi` (par exemple le repli `#00843D`)
+
+Cas prévu par l'ADR 0002 : l'essai au soleil confond `reussi` et `primary`. **Piège** : le repli
+`#00843D` (vert ANSI Z535.1) sort de la région verte d'ISO 3864-4, alors que `#0F8558` y est
+(`docs/referentiels/couleurs-etat.md`, ligne 113 ; ADR 0002, note datée). Changer de vert
+sort donc de la norme qui fonde le choix actuel : il faut d'abord **une ADR 0005**, tranchée
+par Pascal. Ce n'est pas une simple retouche.
+
+1. Dans `terrain-style/generation/src/fr/nemeton/terrain/style/generation/Generer.kt` :
+   `Reglages.REUSSI` (ligne 50, `0xFF0F8558L`) et `Reglages.SOURCE_REUSSI` (ligne 51, texte de
+   la source, repris en tête de `StyleTerrain.kt`) ; relire aussi le commentaire au-dessus
+   (lignes 44-49), qui cite RAL 6032.
+2. Dans `terrain-style/generation/test/fr/nemeton/terrain/style/generation/GenererTest.kt`,
+   le test « reussi a pour palette celle de 0F8558… » (lignes 124-125) affirme
+   `assertEquals(0xFF0F8558L, Reglages.REUSSI)`. **Cette assertion échouera exprès** : elle
+   garde la valeur décidée. À mettre à jour avec la nouvelle valeur, en PR et sur décision de
+   Pascal, jamais pour « faire passer » un test (ce fichier n'est pas à modifier à la légère).
+3. `./gradlew :terrain-style:generer` : réécrit `StyleTerrain.kt`, `jetons.csv` et
+   `nuancier.svg` (ne pas les modifier à la main : la CI régénère et échoue sur toute
+   différence).
+4. `./gradlew test` puis `./gradlew :terrain-style:testGeneration`. Si un couple tombe sous
+   7:1, le test le liste et le rôle passe « interdit en texte » ; on ne retouche pas la valeur à
+   la main. Mettre alors à jour le paragraphe « Rôles interdits en texte » de ce README.
+5. Mentions de `#0F8558` à mettre à jour hors du code généré : ce README (section
+   `terrain-style`, ligne `reussi`) et, par une note datée qui **ajoute** sans effacer, l'ADR
+   0002. `docs/brief.md` (arbitrages datés) garde la valeur décidée à sa date : on n'y touche pas.
+6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
+   `vX.Y.Z` sur le commit de `main` (voir « Publier une version »).
+
+### Refaire la table de référence des contrastes
+
+Seulement si l'on ajoute ou change des couples de
+`terrain-style/src/test/resources/contraste/reference.csv` (changer le vert de `reussi` ne le
+demande pas). Prérequis : **Node ≥ 18** et **Python 3**. La marche à suivre (installation de
+`color2k` et `culori` à versions épinglées, commande) est dans l'en-tête de
+`terrain-style/src/test/resources/contraste/fabriquer.py`. Les deux outils tiers calculent ;
+le code de `terrain-style` n'intervient pas.
 
 ## Origine
 
