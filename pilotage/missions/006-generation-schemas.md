@@ -56,3 +56,17 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 La CI régénère et ne trouve aucune différence ; Pascal reconnaît (ou non) VertMarculus dans le nuancier.
+
+## Précisions de l'orchestrateur (2026-10-23, décisions de Pascal)
+
+- **Branche** : partir de `mission/005-tests-jetons` (rebasée sur `main` après la mission
+  004) ; la PR 006 fusionne avec 005 et 007, ensemble, vertes.
+- **Périmètre de l'API** : 006 fournit `StyleTerrain`, `Schema` (48 rôles et
+  `interditsEnTexte`) et des valeurs provisoires lisibles pour `reussi` et `alerte` ne sont
+  **pas** à inventer : `Semantique` et ses valeurs arrivent avec 007. Si les tests de 005 ne
+  peuvent pas compiler sans elles, le dire au plan.
+- **`Schema` refuse** toute valeur hors `0xFF000000..0xFFFFFFFF` par
+  `IllegalArgumentException`.
+- **README** : chaque rôle déclaré « interdit en texte » y est écrit entre accents graves.
+- **Marges lisibles** : ajouter `testLogging { showStandardStreams = true }` (ou équivalent)
+  au `build.gradle.kts` du module, pour que les lignes `MARGE` sortent dans la console.
