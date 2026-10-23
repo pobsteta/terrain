@@ -13,7 +13,7 @@
 1. Il ouvre Marculus pour marteler, puis Surculus pour noter un travail, puis Groma pour
    une placette, souvent en plein soleil, téléphone tenu à bout de bras.
 2. Dans les trois, il retrouve les mêmes surfaces, le même vert, et les mêmes couleurs
-   pour « réussi », « alerte » (jaune clair, texte noir) et « erreur ».
+   pour « réussi », « alerte » (jaune de sécurité ISO, texte noir) et « erreur ».
 3. Le texte, les boutons et les états se lisent avec le contraste le plus élevé que
    Material sait produire, en thème clair par défaut.
 4. À l'aube, au crépuscule ou en sous-bois, l'application peut proposer le thème sombre,
@@ -71,9 +71,11 @@ object Contraste {
   passée à la place de celle d'`error` (`errorPalette` de `DynamicScheme`), dont on lit
   `error`, `onError`, `errorContainer`, `onErrorContainer` : mêmes courbes de contraste
   que `error`. Mécanisme à vérifier en premier ; s'il n'est pas accessible, retour à Pascal.
-- **Alerte** (ADR 0002) : jaune clair de la convention de sécurité en `couleur` et
-  `conteneur`, noir en `surCouleur` et `surConteneur`, dans les deux thèmes ; valeurs
-  figées, source inscrite ; `alerte.couleur` est interdit en texte.
+- **Alerte** (ADR 0002) : jaune de sécurité d'ISO 3864-4, **`#E2AA00`** (Table 1, β 0,45,
+  D65, converti en sRGB ; choix de Pascal du 2026-10-23, `docs/referentiels/couleurs-etat.md`)
+  en `couleur` et `conteneur`, noir `#000000` en `surCouleur` et `surConteneur` (9,98:1),
+  dans les deux thèmes ; valeurs figées, source inscrite ; `alerte.couleur` est interdit
+  en texte.
 - **Erreur** : rôles `error*` du schéma, palette par défaut de MCU, non harmonisée.
 - **Contraste** : luminance relative de WCAG 2.2 (sRGB, seuil de linéarisation 0,04045),
   rapport (L1 + 0,05) / (L2 + 0,05).
