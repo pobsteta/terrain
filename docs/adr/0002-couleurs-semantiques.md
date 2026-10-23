@@ -105,11 +105,14 @@ ISO 22324 et IEC 60073 à comparer).
   quitterait donc la norme qui fonde le choix. C'est un **avertissement**, non une condition :
   le repli est autorisé d'avance par la décision de Pascal (mission 007) ; aucune ADR
   supplémentaire n'est exigée, le passage au repli se consigne par une note datée ici.
-- **Valeur provisoire, ajouté le 2026-10-23 (mission 013).** Le vert de départ de `reussi`,
+- **Valeur provisoire, ajoutée le 2026-10-23 (mission 013).** Le vert de départ de `reussi`,
   `#0F8558`, est **provisoire jusqu'à l'essai au soleil du 2026-10-30**, mesure qui revient à
   Pascal (décision du 2026-10-23, relecture de la mission 010). Il peut changer dans une version
   suivante (v0.6.1). Gel : une note datée ici, après l'essai, garde `#0F8558` ou passe au repli
-  `#00843D` (voir le piège ci-dessus). Le code généré (`StyleTerrain.kt`) n'est pas encore
+  `#00843D` (voir le piège ci-dessus). **Levée de la réserve :** au gel, quelle que soit la
+  décision (garder `#0F8558` ou repli), on retire la mention « provisoire » du README (ligne
+  `reussi` et marche à suivre du repli) et de `docs/spec.md` (« Questions ouvertes »), dans la
+  même PR que la note datée du gel. Le code généré (`StyleTerrain.kt`) n'est pas encore
   marqué ; il le sera à la prochaine génération.
 
 ## Question de contrôle

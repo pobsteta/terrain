@@ -161,6 +161,10 @@ décidant.
 5. Mentions de `#0F8558` à mettre à jour hors du code généré : ce README (section
    `terrain-style`, ligne `reussi`) et, par une note datée qui **ajoute** sans effacer, l'ADR
    0002. `docs/brief.md` (arbitrages datés) garde la valeur décidée à sa date : on n'y touche pas.
+   **Au gel** (après l'essai du 2026-10-30), que le vert soit changé **ou gardé**, retirer la
+   mention « provisoire » de ce README (ligne `reussi` et début de cette section), de
+   `docs/spec.md` (« Questions ouvertes ») et du code généré à la génération suivante, dans la
+   même PR que la note datée du gel.
 6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
    `vX.Y.Z` sur le commit de `main` (voir « Publier une version »).
 
