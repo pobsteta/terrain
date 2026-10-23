@@ -51,12 +51,12 @@ compile en Kotlin 2.2).
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | Option 1 : même langage que le projet, aucune dépendance ajoutée | quelques milliers de lignes Kotlin recopiées | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | `dev` écrit le script et le test ; la CI rejoue la génération et échoue sur toute différence (`git diff --exit-code`) ; `relecteur` en plus | une étape de CI | _à trancher_ |
-| **A**nticiper | Si MCU change ou disparaît ? | les sources au commit inscrit restent dans le dépôt ; le rejeu ne dépend pas du réseau ; le commit est aussi en tête du code généré | suivre une correction de MCU = nouvelle ADR et régénération | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | Option 1 : même langage que le projet, aucune dépendance ajoutée | quelques milliers de lignes Kotlin recopiées | inconnu |
+| **R**esponsable | Qui fait quoi ? | `dev` écrit le script et le test ; la CI rejoue la génération et échoue sur toute différence (`git diff --exit-code`) ; `relecteur` en plus | une étape de CI | inconnu |
+| **A**nticiper | Si MCU change ou disparaît ? | les sources au commit inscrit restent dans le dépôt ; le rejeu ne dépend pas du réseau ; le commit est aussi en tête du code généré | suivre une correction de MCU = nouvelle ADR et régénération | inconnu |
 | **N**ovateur | Toutes les idées ? | sept options, dont le portage tiers et la réécriture | — | — |
-| **C**oût | Dépense inutile ? | ni Node ni Android à installer ; le build publié n'est pas alourdi | dépôt plus lourd de la taille des sources MCU | _à trancher_ |
-| **É**cologique | Réutilisation ? | réutilise MCU (Apache-2.0, compatible avec GPL-3.0 dans ce sens) ; LICENSE de MCU copiée dans `generation/mcu/`, en-têtes gardés, fichiers modifiés marqués (Apache-2.0 §4 ; MCU n'a pas de NOTICE) ; tables CSV lisibles par tous | tenir ces mentions | _à trancher_ |
+| **C**oût | Dépense inutile ? | ni Node ni Android à installer ; le build publié n'est pas alourdi | dépôt plus lourd de la taille des sources MCU | inconnu |
+| **É**cologique | Réutilisation ? | réutilise MCU (Apache-2.0, compatible avec GPL-3.0 dans ce sens) ; LICENSE de MCU copiée dans `generation/mcu/`, en-têtes gardés, fichiers modifiés marqués (Apache-2.0 §4 ; MCU n'a pas de NOTICE) ; tables CSV lisibles par tous | tenir ces mentions | inconnu |
 
 ## Valeurs sacrifiées
 

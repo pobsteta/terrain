@@ -51,12 +51,12 @@ ISO 22324 et IEC 60073 à comparer).
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | erreur ne coûte rien ; réussi réutilise la chaîne MCU ; alerte = deux valeurs figées | un schéma MCU de plus ; un mécanisme `errorPalette` à vérifier | _à trancher_ |
-| **R**esponsable | Qui fait quoi ? | `acquereur` source les teintes ; Pascal les choisit ; `dev` génère ; le test juge | — | _à trancher_ |
+| **F**rugale | La plus simple qui tienne ? | erreur ne coûte rien ; réussi réutilise la chaîne MCU ; alerte = deux valeurs figées | un schéma MCU de plus ; un mécanisme `errorPalette` à vérifier | inconnu |
+| **R**esponsable | Qui fait quoi ? | `acquereur` source les teintes ; Pascal les choisit ; `dev` génère ; le test juge | — | inconnu |
 | **A**nticiper | Et si un rôle ne tient pas 7:1 ? | il est listé et documenté « interdit en texte » (arbitrage de Pascal) ; si `errorPalette` n'est pas accessible, retour à Pascal | — | oui (Pascal, 2026-10-23) |
 | **N**ovateur | Toutes les idées ? | quatre options, dont le statu quo et la convention de sécurité | — | — |
-| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus reprend ses trois états communs | _à trancher_ |
-| **É**cologique | Réutilisation ? | `error` de Material, convention de sécurité publiée | — | _à trancher_ |
+| **C**oût | Dépense inutile ? | évite trois palettes d'état divergentes | Surculus reprend ses trois états communs | inconnu |
+| **É**cologique | Réutilisation ? | `error` de Material, convention de sécurité publiée | — | inconnu |
 
 ## Valeurs sacrifiées
 
