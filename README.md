@@ -96,7 +96,9 @@ module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuanc
 Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surCouleur`,
 `conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
 
-- `reussi` : généré par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
+- `reussi` : **valeur provisoire jusqu'à l'essai au soleil du 2026-10-30** (mesure de Pascal ; elle
+  peut changer en v0.6.1, voir « Changer le vert de départ de `reussi` »). Généré par MCU avec la
+  palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
   palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; l'écart de teinte
   HCT à `primary`, mesuré à chaque génération, est inscrit en tête de `StyleTerrain.kt` ;
 - `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
@@ -128,6 +130,10 @@ que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue l
 `./gradlew test` **et** `./gradlew :terrain-style:testGeneration`.
 
 ### Changer le vert de départ de `reussi` (par exemple le repli `#00843D`)
+
+**`#0F8558` est provisoire jusqu'à l'essai au soleil du 2026-10-30** (mesure de Pascal) ; après
+l'essai, une note datée de l'ADR 0002 le gèle (garder `#0F8558` ou passer au repli). Les mentions
+de `#0F8558` ci-dessous suivent cette réserve.
 
 Cas prévu et **autorisé d'avance** par la décision de Pascal (mission 007) : repli `#00843D` si
 l'essai au soleil confond `reussi` et `primary`. Aucune nouvelle ADR n'est requise ; le passage
