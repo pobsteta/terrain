@@ -22,10 +22,33 @@ _Modèle de carte :_
 
 ## Validé
 
+- [010-valeur-provisoire](missions/010-valeur-provisoire.md) · depuis le cycle 3
+  - Homme : `archiviste` (sonnet)
+  - Mission : ligne « valeur provisoire » au gabarit de fiche du plugin (cause A) ; prochain `/boucle`
+  - Moyens : dépôt du plugin ; PR
+- [011-liste-de-controle](missions/011-liste-de-controle.md) · depuis le cycle 3
+  - Homme : `archiviste` (sonnet)
+  - Mission : liste de contrôle avant « prêt » (cause B) ; prochain `/boucle`
+  - Moyens : 7 renvois du journal ; PR sur le plugin
+- [012-dependances](missions/012-dependances.md) · depuis le cycle 3
+  - Homme : `archiviste` (sonnet)
+  - Mission : rubrique « dépend de / rouge attendu jusqu'à » (cause C) ; prochain `/boucle`
+  - Moyens : dépôt du plugin ; PR
+
 ## Planifié
+
+- Essai au soleil (critère 6 de la spec) · depuis le cycle 3
+  - Homme : Pascal, hors agents
+  - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
+  - Moyens : même écran, plein soleil, fiche en thème clair ; noté au carnet des écarts ; repli `#00843D` (v0.6.1) si réussi se confond avec `primary`
 
 ## Terminé
 
+- [009-memoire-v0.6.0](missions/009-memoire-v0.6.0.md) · depuis le cycle 3
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 et P2 du bilan n° 1 ; lancée au bilan du 2026-10-23
+  - Moyens : rapport de l'archiviste ; PR
+  - Livré : PR #16 fusionnée (1 aller-retour de relecture)
 - [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 3
   - Homme : `testeur` (sonnet)
   - Mission : tests des couples à 7:1 ; cycle 2
