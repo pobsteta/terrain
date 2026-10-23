@@ -5,15 +5,19 @@
 // Couleur de départ : 0xFF374742 (VertMarculus)
 // Variante : CONTENT ; spec : SPEC_2021 (imposée par CONTENT sur PHONE, vérifiée)
 // Contraste : 1.0 ; plateforme : PHONE
+// Réussi : 0xFF0F8558, RAL 6032 (Wikipédia « List of RAL colours »), non harmonisé, en palette d'erreur (ADR 0002)
+// Écart de teinte HCT de reussi.couleur à primary : clair 17.7°, sombre 16.1°
+// Alerte : 0xFFE2AA00 et 0xFF000000, ISO 3864-4:2011, Table 1 (β 0,45, D65, converti en sRGB), noir de contraste, figée hors MCU (ADR 0002)
 package fr.nemeton.terrain.style
 
 /**
  * Les schémas communs des applications de terrain, générés par Material Color Utilities
  * (VertMarculus 0xFF374742, CONTENT, SPEC_2021, contraste 1.0).
  *
- * Rôles interdits en texte (sous 7.0:1 sur l'un de leurs fonds) :
- *  - clair : aucun ;
- *  - sombre : aucun.
+ * Rôles interdits en texte (sous 7.0:1 sur l'un de leurs fonds, et `alerte.couleur`
+ * par décision, ADR 0002) :
+ *  - clair : `alerte.couleur` ;
+ *  - sombre : `alerte.couleur`.
  */
 object StyleTerrain {
     val clair: Schema = Schema(
@@ -65,7 +69,9 @@ object StyleTerrain {
         tertiaryFixedDim = 0xFF32313FL,
         onTertiaryFixed = 0xFFFFFFFFL,
         onTertiaryFixedVariant = 0xFFFFFFFFL,
-        interditsEnTexte = setOf(),
+        reussi = Semantique(0xFF00341FL, 0xFFFFFFFFL, 0xFF005436L, 0xFFFFFFFFL),
+        alerte = Semantique(0xFFE2AA00L, 0xFF000000L, 0xFFE2AA00L, 0xFF000000L),
+        interditsEnTexte = setOf("alerte.couleur"),
     )
 
     val sombre: Schema = Schema(
@@ -117,6 +123,8 @@ object StyleTerrain {
         tertiaryFixedDim = 0xFFC7C4D6L,
         onTertiaryFixed = 0xFF000000L,
         onTertiaryFixedVariant = 0xFF10101CL,
-        interditsEnTexte = setOf(),
+        reussi = Semantique(0xFFBBFFD7L, 0xFF000000L, 0xFF71D6A2L, 0xFF000E06L),
+        alerte = Semantique(0xFFE2AA00L, 0xFF000000L, 0xFFE2AA00L, 0xFF000000L),
+        interditsEnTexte = setOf("alerte.couleur"),
     )
 }

@@ -3,9 +3,11 @@ package fr.nemeton.terrain.style.generation
 import dynamiccolor.ColorSpec.SpecVersion
 import dynamiccolor.DynamicScheme.Platform
 import dynamiccolor.Variant
+import fr.nemeton.terrain.style.Contraste
 import fr.nemeton.terrain.style.Schema
 import fr.nemeton.terrain.style.StyleTerrain
 import hct.Hct
+import palettes.TonalPalette
 import scheme.SchemeContent
 import java.io.File
 import kotlin.test.Test
@@ -13,7 +15,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-/** Tests du script de génération (mission 006). Lancés par `./gradlew :terrain-style:testGeneration`. */
+/** Tests du script de génération (missions 006 et 007). Lancés par `./gradlew :terrain-style:testGeneration`. */
 class GenererTest {
 
     private val module = File(System.getProperty("user.dir"))
@@ -99,19 +101,118 @@ class GenererTest {
     fun `la table des jetons relue est StyleTerrain`() {
         val lignes = File(module, "src/test/resources/jetons/jetons.csv").readLines()
         assertEquals("theme,role,argb", lignes.first())
-        assertEquals(1 + 2 * 48, lignes.size)
+        assertEquals(1 + 2 * (48 + 8), lignes.size)
         val schemas = mapOf("clair" to StyleTerrain.clair, "sombre" to StyleTerrain.sombre)
+        fun lire(o: Any, champ: String) = o.javaClass.getMethod("get" + champ.replaceFirstChar { it.uppercase() }).invoke(o)
         for (l in lignes.drop(1)) {
             val (theme, role, argb) = l.split(',')
-            val getter = Schema::class.java.getMethod("get" + role.replaceFirstChar { it.uppercase() })
-            assertEquals(java.lang.Long.parseLong(argb.removePrefix("0x"), 16), getter.invoke(schemas.getValue(theme)), "$theme,$role")
+            // « reussi.couleur » : champ `couleur` de la `Semantique` `reussi`
+            val valeur = role.split('.').fold(schemas.getValue(theme) as Any) { o, champ -> lire(o, champ) }
+            assertEquals(java.lang.Long.parseLong(argb.removePrefix("0x"), 16), valeur, "$theme,$role")
         }
     }
 
     @Test
     fun `les interdits en texte de StyleTerrain sont ceux que calcule le script`() {
-        assertEquals(interditsEnTexte(jetons(false)), StyleTerrain.clair.interditsEnTexte)
-        assertEquals(interditsEnTexte(jetons(true)), StyleTerrain.sombre.interditsEnTexte)
+        assertEquals(interditsEnTexte(tousLesJetons(false)), StyleTerrain.clair.interditsEnTexte)
+        assertEquals(interditsEnTexte(tousLesJetons(true)), StyleTerrain.sombre.interditsEnTexte)
+    }
+
+    // ---- Couleurs d'état (mission 007, ADR 0002) ----
+
+    @Test
+    fun `reussi a pour palette celle de 0F8558 telle quelle, sans harmonisation`() {
+        assertEquals(0xFF0F8558L, Reglages.REUSSI)
+        val vert = Hct.fromInt(Reglages.REUSSI.toInt())
+        for (sombre in listOf(false, true)) {
+            val p = schemaReussi(sombre).errorPalette
+            assertEquals(vert.hue, p.hue, "sombre=$sombre")
+            assertEquals(vert.chroma, p.chroma, "sombre=$sombre")
+        }
+    }
+
+    @Test
+    fun `le schema de reussi ne change que les roles error du schema du theme`() {
+        val erreur = setOf("error", "onError", "errorContainer", "onErrorContainer")
+        for (sombre in listOf(false, true)) {
+            val base = jetons(sombre)
+            val r = schemaReussi(sombre)
+            val j = ROLES.associate { (n, f) -> n to versLong(f(r)) }
+            assertEquals(base.filterKeys { it !in erreur }, j.filterKeys { it !in erreur }, "sombre=$sombre")
+            assertTrue(j.getValue("error") != base.getValue("error"), "sombre=$sombre")
+            assertTrue(j.getValue("errorContainer") != base.getValue("errorContainer"), "sombre=$sombre")
+        }
+    }
+
+    @Test
+    fun `le constructeur avec la palette d erreur par defaut redonne le schema du theme`() {
+        // Le mécanisme lui-même : seule la palette passée change le résultat.
+        for (sombre in listOf(false, true)) {
+            val b = schemaMcu(sombre)
+            val s = dynamiccolor.DynamicScheme(
+                b.sourceColorHctList, b.variant, b.isDark, b.contrastLevel, b.platform, b.specVersion,
+                b.primaryPalette, b.secondaryPalette, b.tertiaryPalette, b.neutralPalette, b.neutralVariantPalette,
+                TonalPalette.fromHueAndChroma(25.0, 84.0), // palette d'erreur de ColorSpec2021.getErrorPalette
+            )
+            assertEquals(jetons(sombre), ROLES.associate { (n, f) -> n to versLong(f(s)) }, "sombre=$sombre")
+        }
+    }
+
+    @Test
+    fun `reussi vaut les roles error du schema de reussi`() {
+        for (sombre in listOf(false, true)) {
+            val r = schemaReussi(sombre)
+            val e = semantiques(sombre)
+            assertEquals(versLong(r.error), e.getValue("reussi.couleur"))
+            assertEquals(versLong(r.onError), e.getValue("reussi.surCouleur"))
+            assertEquals(versLong(r.errorContainer), e.getValue("reussi.conteneur"))
+            assertEquals(versLong(r.onErrorContainer), e.getValue("reussi.surConteneur"))
+        }
+    }
+
+    @Test
+    fun `alerte est figee en E2AA00 et noir dans les deux themes`() {
+        for (s in listOf(StyleTerrain.clair, StyleTerrain.sombre)) {
+            assertEquals(0xFFE2AA00L, s.alerte.couleur)
+            assertEquals(0xFFE2AA00L, s.alerte.conteneur)
+            assertEquals(0xFF000000L, s.alerte.surCouleur)
+            assertEquals(0xFF000000L, s.alerte.surConteneur)
+        }
+        // 9,98:1 (ADR 0002), tronqué
+        assertEquals(9.983, tronque3(Contraste.rapport(Reglages.SUR_ALERTE, Reglages.ALERTE)))
+    }
+
+    @Test
+    fun `les couples des couleurs d etat sont 12 et tiennent 7 pour 1, seul alerte couleur est interdit`() {
+        val c = couplesSemantiques()
+        assertEquals(12, c.size)
+        assertEquals(c.size, c.toSet().size)
+        assertTrue(("alerte.surCouleur" to "alerte.couleur") in c)
+        for (sombre in listOf(false, true)) {
+            val j = tousLesJetons(sombre)
+            for ((t, f) in c) assertTrue(tronque3(Contraste.rapport(j.getValue(t), j.getValue(f))) >= Reglages.SEUIL_TEXTE, "$t / $f sombre=$sombre")
+            assertEquals(setOf("alerte.couleur"), interditsEnTexte(j), "sombre=$sombre")
+        }
+    }
+
+    @Test
+    fun `l ecart de teinte HCT de reussi a primary est affiche en tete de StyleTerrain`() {
+        val clair = degres(ecartReussiPrimary(false))
+        val sombre = degres(ecartReussiPrimary(true))
+        println("ECART reussi.couleur / primary (teinte HCT) : clair $clair°, sombre $sombre°")
+        val entete = fichiers().getValue("src/main/kotlin/fr/nemeton/terrain/style/StyleTerrain.kt")
+        assertTrue(entete.contains("clair $clair°, sombre $sombre°"), "écart absent de l'en-tête")
+        for (sombreTheme in listOf(false, true)) assertTrue(ecartReussiPrimary(sombreTheme) in 0.0..180.0)
+    }
+
+    @Test
+    fun `le nuancier montre erreur, reussi et alerte cote a cote dans les deux themes`() {
+        val svg = nuancier(tousLesJetons(false), tousLesJetons(true))
+        // un bandeau d'état par thème ; error et errorContainer ont aussi leur bandeau de rôle
+        fun n(nom: String) = Regex(">${Regex.escape(nom)} #").findAll(svg).count()
+        for (nom in listOf("reussi.couleur", "alerte.couleur", "reussi.conteneur", "alerte.conteneur")) assertEquals(2, n(nom), nom)
+        for (nom in listOf("error", "errorContainer")) assertEquals(4, n(nom), nom)
+        assertTrue(svg.contains(">alerte.couleur #E2AA00 (interdit en texte)<"))
     }
 
     @Test

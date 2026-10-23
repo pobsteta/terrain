@@ -93,8 +93,19 @@ dans le thème de l'application. Ils sont générés une fois par Material Color
 0004 : VertMarculus `#374742`, variante `CONTENT`, `SPEC_2021`, contraste 1,0) puis figés ; le
 module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
 
+Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surCouleur`,
+`conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
+
+- `reussi` : généré par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
+  palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; écart de teinte HCT à
+  `primary` : 17,7° en clair, 16,1° en sombre ;
+- `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
+  `couleur` et `conteneur`, noir `#000000` dessus (9,98:1), dans les deux thèmes.
+
 Rôles interdits en texte (sous 7:1 sur l'un de leurs fonds, liste `interditsEnTexte` de
-chaque schéma, calculée par le script) : aucun parmi les 48 rôles, en clair comme en sombre.
+chaque schéma, calculée par le script) : `alerte.couleur`, par décision (ADR 0002), en clair
+comme en sombre ; aucun parmi les 48 rôles ni parmi les autres jetons d'état. Le jaune sert de
+fond, jamais de texte.
 
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
 Kotlin 2.2 et suivants.

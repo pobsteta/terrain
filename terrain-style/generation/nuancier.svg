@@ -1,199 +1,223 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="630" height="1244" viewBox="0 0 630 1244" font-family="sans-serif" font-size="12">
-  <rect width="630" height="1244" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="630" height="1398" viewBox="0 0 630 1398" font-family="sans-serif" font-size="12">
+  <rect width="630" height="1398" fill="#FFFFFF"/>
   <rect x="10" y="10" width="610" height="24" fill="#374742"/>
   <text x="16" y="26" fill="#FFFFFF">VertMarculus #374742 (couleur de départ) ; CONTENT, SPEC_2021, contraste 1.0</text>
   <text x="10" y="52" fill="#000000" font-weight="bold">clair</text>
   <text x="320" y="52" fill="#000000" font-weight="bold">sombre</text>
-  <rect x="10" y="82" width="300" height="24" fill="#202F2B"/>
-  <text x="16" y="98" fill="#FFFFFF">primary #202F2B</text>
-  <rect x="10" y="106" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="122" fill="#000000">onPrimary #FFFFFF</text>
-  <rect x="10" y="130" width="300" height="24" fill="#374742"/>
-  <text x="16" y="146" fill="#FFFFFF">primaryContainer #374742</text>
-  <rect x="10" y="154" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="170" fill="#000000">onPrimaryContainer #FFFFFF</text>
-  <rect x="10" y="178" width="300" height="24" fill="#B9CAC4"/>
-  <text x="16" y="194" fill="#000000">inversePrimary #B9CAC4</text>
-  <rect x="10" y="202" width="300" height="24" fill="#272D2B"/>
-  <text x="16" y="218" fill="#FFFFFF">secondary #272D2B</text>
-  <rect x="10" y="226" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="242" fill="#000000">onSecondary #FFFFFF</text>
-  <rect x="10" y="250" width="300" height="24" fill="#444B48"/>
-  <text x="16" y="266" fill="#FFFFFF">secondaryContainer #444B48</text>
-  <rect x="10" y="274" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="290" fill="#000000">onSecondaryContainer #FFFFFF</text>
-  <rect x="10" y="298" width="300" height="24" fill="#2B2B38"/>
-  <text x="16" y="314" fill="#FFFFFF">tertiary #2B2B38</text>
-  <rect x="10" y="322" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="338" fill="#000000">onTertiary #FFFFFF</text>
-  <rect x="10" y="346" width="300" height="24" fill="#434250"/>
-  <text x="16" y="362" fill="#FFFFFF">tertiaryContainer #434250</text>
-  <rect x="10" y="370" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="386" fill="#000000">onTertiaryContainer #FFFFFF</text>
-  <rect x="10" y="394" width="300" height="24" fill="#FBF9F7"/>
-  <text x="16" y="410" fill="#000000">background #FBF9F7</text>
-  <rect x="10" y="418" width="300" height="24" fill="#1B1C1B"/>
-  <text x="16" y="434" fill="#FFFFFF">onBackground #1B1C1B</text>
-  <rect x="10" y="442" width="300" height="24" fill="#FBF9F7"/>
-  <text x="16" y="458" fill="#000000">surface #FBF9F7</text>
-  <rect x="10" y="466" width="300" height="24" fill="#000000"/>
-  <text x="16" y="482" fill="#FFFFFF">onSurface #000000</text>
-  <rect x="10" y="490" width="300" height="24" fill="#DEE4E0"/>
-  <text x="16" y="506" fill="#000000">surfaceVariant #DEE4E0</text>
-  <rect x="10" y="514" width="300" height="24" fill="#000000"/>
-  <text x="16" y="530" fill="#FFFFFF">onSurfaceVariant #000000</text>
-  <rect x="10" y="538" width="300" height="24" fill="#51625C"/>
-  <text x="16" y="554" fill="#FFFFFF">surfaceTint #51625C</text>
-  <rect x="10" y="562" width="300" height="24" fill="#303030"/>
-  <text x="16" y="578" fill="#FFFFFF">inverseSurface #303030</text>
-  <rect x="10" y="586" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="602" fill="#000000">inverseOnSurface #FFFFFF</text>
-  <rect x="10" y="610" width="300" height="24" fill="#600004"/>
-  <text x="16" y="626" fill="#FFFFFF">error #600004</text>
-  <rect x="10" y="634" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="650" fill="#000000">onError #FFFFFF</text>
-  <rect x="10" y="658" width="300" height="24" fill="#98000A"/>
-  <text x="16" y="674" fill="#FFFFFF">errorContainer #98000A</text>
-  <rect x="10" y="682" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="698" fill="#000000">onErrorContainer #FFFFFF</text>
-  <rect x="10" y="706" width="300" height="24" fill="#282D2B"/>
-  <text x="16" y="722" fill="#FFFFFF">outline #282D2B</text>
-  <rect x="10" y="730" width="300" height="24" fill="#454A48"/>
-  <text x="16" y="746" fill="#FFFFFF">outlineVariant #454A48</text>
-  <rect x="10" y="754" width="300" height="24" fill="#000000"/>
-  <text x="16" y="770" fill="#FFFFFF">scrim #000000</text>
-  <rect x="10" y="778" width="300" height="24" fill="#FBF9F7"/>
-  <text x="16" y="794" fill="#000000">surfaceBright #FBF9F7</text>
-  <rect x="10" y="802" width="300" height="24" fill="#BAB8B7"/>
-  <text x="16" y="818" fill="#000000">surfaceDim #BAB8B7</text>
-  <rect x="10" y="826" width="300" height="24" fill="#E4E2E1"/>
-  <text x="16" y="842" fill="#000000">surfaceContainer #E4E2E1</text>
-  <rect x="10" y="850" width="300" height="24" fill="#D6D4D3"/>
-  <text x="16" y="866" fill="#000000">surfaceContainerHigh #D6D4D3</text>
-  <rect x="10" y="874" width="300" height="24" fill="#C8C6C5"/>
-  <text x="16" y="890" fill="#000000">surfaceContainerHighest #C8C6C5</text>
-  <rect x="10" y="898" width="300" height="24" fill="#F2F0EF"/>
-  <text x="16" y="914" fill="#000000">surfaceContainerLow #F2F0EF</text>
-  <rect x="10" y="922" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="938" fill="#000000">surfaceContainerLowest #FFFFFF</text>
-  <rect x="10" y="946" width="300" height="24" fill="#3C4C47"/>
-  <text x="16" y="962" fill="#FFFFFF">primaryFixed #3C4C47</text>
-  <rect x="10" y="970" width="300" height="24" fill="#263631"/>
-  <text x="16" y="986" fill="#FFFFFF">primaryFixedDim #263631</text>
-  <rect x="10" y="994" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1010" fill="#000000">onPrimaryFixed #FFFFFF</text>
-  <rect x="10" y="1018" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1034" fill="#000000">onPrimaryFixedVariant #FFFFFF</text>
-  <rect x="10" y="1042" width="300" height="24" fill="#444B48"/>
-  <text x="16" y="1058" fill="#FFFFFF">secondaryFixed #444B48</text>
-  <rect x="10" y="1066" width="300" height="24" fill="#2E3432"/>
-  <text x="16" y="1082" fill="#FFFFFF">secondaryFixedDim #2E3432</text>
-  <rect x="10" y="1090" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1106" fill="#000000">onSecondaryFixed #FFFFFF</text>
-  <rect x="10" y="1114" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1130" fill="#000000">onSecondaryFixedVariant #FFFFFF</text>
-  <rect x="10" y="1138" width="300" height="24" fill="#494856"/>
-  <text x="16" y="1154" fill="#FFFFFF">tertiaryFixed #494856</text>
-  <rect x="10" y="1162" width="300" height="24" fill="#32313F"/>
-  <text x="16" y="1178" fill="#FFFFFF">tertiaryFixedDim #32313F</text>
-  <rect x="10" y="1186" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1202" fill="#000000">onTertiaryFixed #FFFFFF</text>
-  <rect x="10" y="1210" width="300" height="24" fill="#FFFFFF"/>
-  <text x="16" y="1226" fill="#000000">onTertiaryFixedVariant #FFFFFF</text>
-  <rect x="320" y="82" width="300" height="24" fill="#E2F4ED"/>
-  <text x="326" y="98" fill="#000000">primary #E2F4ED</text>
-  <rect x="320" y="106" width="300" height="24" fill="#000000"/>
-  <text x="326" y="122" fill="#FFFFFF">onPrimary #000000</text>
-  <rect x="320" y="130" width="300" height="24" fill="#B5C7C0"/>
-  <text x="326" y="146" fill="#000000">primaryContainer #B5C7C0</text>
-  <rect x="320" y="154" width="300" height="24" fill="#010E0A"/>
-  <text x="326" y="170" fill="#FFFFFF">onPrimaryContainer #010E0A</text>
-  <rect x="320" y="178" width="300" height="24" fill="#3B4B46"/>
-  <text x="326" y="194" fill="#FFFFFF">inversePrimary #3B4B46</text>
-  <rect x="320" y="202" width="300" height="24" fill="#EBF1EE"/>
-  <text x="326" y="218" fill="#000000">secondary #EBF1EE</text>
-  <rect x="320" y="226" width="300" height="24" fill="#000000"/>
-  <text x="326" y="242" fill="#FFFFFF">onSecondary #000000</text>
-  <rect x="320" y="250" width="300" height="24" fill="#BEC4C0"/>
-  <text x="326" y="266" fill="#000000">secondaryContainer #BEC4C0</text>
-  <rect x="320" y="274" width="300" height="24" fill="#070C0B"/>
-  <text x="326" y="290" fill="#FFFFFF">onSecondaryContainer #070C0B</text>
-  <rect x="320" y="298" width="300" height="24" fill="#F1EEFF"/>
-  <text x="326" y="314" fill="#000000">tertiary #F1EEFF</text>
-  <rect x="320" y="322" width="300" height="24" fill="#000000"/>
-  <text x="326" y="338" fill="#FFFFFF">onTertiary #000000</text>
-  <rect x="320" y="346" width="300" height="24" fill="#C3C1D2"/>
-  <text x="326" y="362" fill="#000000">tertiaryContainer #C3C1D2</text>
-  <rect x="320" y="370" width="300" height="24" fill="#0A0A16"/>
-  <text x="326" y="386" fill="#FFFFFF">onTertiaryContainer #0A0A16</text>
-  <rect x="320" y="394" width="300" height="24" fill="#131313"/>
-  <text x="326" y="410" fill="#FFFFFF">background #131313</text>
-  <rect x="320" y="418" width="300" height="24" fill="#E4E2E1"/>
-  <text x="326" y="434" fill="#000000">onBackground #E4E2E1</text>
-  <rect x="320" y="442" width="300" height="24" fill="#131313"/>
-  <text x="326" y="458" fill="#FFFFFF">surface #131313</text>
-  <rect x="320" y="466" width="300" height="24" fill="#FFFFFF"/>
-  <text x="326" y="482" fill="#000000">onSurface #FFFFFF</text>
-  <rect x="320" y="490" width="300" height="24" fill="#424846"/>
-  <text x="326" y="506" fill="#FFFFFF">surfaceVariant #424846</text>
-  <rect x="320" y="514" width="300" height="24" fill="#FFFFFF"/>
-  <text x="326" y="530" fill="#000000">onSurfaceVariant #FFFFFF</text>
-  <rect x="320" y="538" width="300" height="24" fill="#B9CAC4"/>
-  <text x="326" y="554" fill="#000000">surfaceTint #B9CAC4</text>
-  <rect x="320" y="562" width="300" height="24" fill="#E4E2E1"/>
-  <text x="326" y="578" fill="#000000">inverseSurface #E4E2E1</text>
-  <rect x="320" y="586" width="300" height="24" fill="#000000"/>
-  <text x="326" y="602" fill="#FFFFFF">inverseOnSurface #000000</text>
-  <rect x="320" y="610" width="300" height="24" fill="#FFECE9"/>
-  <text x="326" y="626" fill="#000000">error #FFECE9</text>
-  <rect x="320" y="634" width="300" height="24" fill="#000000"/>
-  <text x="326" y="650" fill="#FFFFFF">onError #000000</text>
-  <rect x="320" y="658" width="300" height="24" fill="#FFAEA4"/>
-  <text x="326" y="674" fill="#000000">errorContainer #FFAEA4</text>
-  <rect x="320" y="682" width="300" height="24" fill="#220001"/>
-  <text x="326" y="698" fill="#FFFFFF">onErrorContainer #220001</text>
-  <rect x="320" y="706" width="300" height="24" fill="#ECF1EE"/>
-  <text x="326" y="722" fill="#000000">outline #ECF1EE</text>
-  <rect x="320" y="730" width="300" height="24" fill="#BEC4C1"/>
-  <text x="326" y="746" fill="#000000">outlineVariant #BEC4C1</text>
-  <rect x="320" y="754" width="300" height="24" fill="#000000"/>
-  <text x="326" y="770" fill="#FFFFFF">scrim #000000</text>
-  <rect x="320" y="778" width="300" height="24" fill="#50504F"/>
-  <text x="326" y="794" fill="#FFFFFF">surfaceBright #50504F</text>
-  <rect x="320" y="802" width="300" height="24" fill="#131313"/>
-  <text x="326" y="818" fill="#FFFFFF">surfaceDim #131313</text>
-  <rect x="320" y="826" width="300" height="24" fill="#303030"/>
-  <text x="326" y="842" fill="#FFFFFF">surfaceContainer #303030</text>
-  <rect x="320" y="850" width="300" height="24" fill="#3B3B3B"/>
-  <text x="326" y="866" fill="#FFFFFF">surfaceContainerHigh #3B3B3B</text>
-  <rect x="320" y="874" width="300" height="24" fill="#474746"/>
-  <text x="326" y="890" fill="#FFFFFF">surfaceContainerHighest #474746</text>
-  <rect x="320" y="898" width="300" height="24" fill="#1F201F"/>
-  <text x="326" y="914" fill="#FFFFFF">surfaceContainerLow #1F201F</text>
-  <rect x="320" y="922" width="300" height="24" fill="#000000"/>
-  <text x="326" y="938" fill="#FFFFFF">surfaceContainerLowest #000000</text>
-  <rect x="320" y="946" width="300" height="24" fill="#D4E7DF"/>
-  <text x="326" y="962" fill="#000000">primaryFixed #D4E7DF</text>
-  <rect x="320" y="970" width="300" height="24" fill="#B9CAC4"/>
-  <text x="326" y="986" fill="#000000">primaryFixedDim #B9CAC4</text>
-  <rect x="320" y="994" width="300" height="24" fill="#000000"/>
-  <text x="326" y="1010" fill="#FFFFFF">onPrimaryFixed #000000</text>
-  <rect x="320" y="1018" width="300" height="24" fill="#051410"/>
-  <text x="326" y="1034" fill="#FFFFFF">onPrimaryFixedVariant #051410</text>
-  <rect x="320" y="1042" width="300" height="24" fill="#DEE4E0"/>
-  <text x="326" y="1058" fill="#000000">secondaryFixed #DEE4E0</text>
-  <rect x="320" y="1066" width="300" height="24" fill="#C2C8C4"/>
-  <text x="326" y="1082" fill="#000000">secondaryFixedDim #C2C8C4</text>
-  <rect x="320" y="1090" width="300" height="24" fill="#000000"/>
-  <text x="326" y="1106" fill="#FFFFFF">onSecondaryFixed #000000</text>
-  <rect x="320" y="1114" width="300" height="24" fill="#0C1210"/>
-  <text x="326" y="1130" fill="#FFFFFF">onSecondaryFixedVariant #0C1210</text>
-  <rect x="320" y="1138" width="300" height="24" fill="#E4E0F2"/>
-  <text x="326" y="1154" fill="#000000">tertiaryFixed #E4E0F2</text>
-  <rect x="320" y="1162" width="300" height="24" fill="#C7C4D6"/>
-  <text x="326" y="1178" fill="#000000">tertiaryFixedDim #C7C4D6</text>
-  <rect x="320" y="1186" width="300" height="24" fill="#000000"/>
-  <text x="326" y="1202" fill="#FFFFFF">onTertiaryFixed #000000</text>
-  <rect x="320" y="1210" width="300" height="24" fill="#10101C"/>
-  <text x="326" y="1226" fill="#FFFFFF">onTertiaryFixedVariant #10101C</text>
+  <rect x="10" y="82" width="300" height="24" fill="#600004"/>
+  <text x="16" y="98" fill="#FFFFFF">error #600004</text>
+  <rect x="10" y="106" width="300" height="24" fill="#00341F"/>
+  <text x="16" y="122" fill="#FFFFFF">reussi.couleur #00341F</text>
+  <rect x="10" y="130" width="300" height="24" fill="#E2AA00"/>
+  <text x="16" y="146" fill="#000000">alerte.couleur #E2AA00 (interdit en texte)</text>
+  <rect x="10" y="154" width="300" height="24" fill="#98000A"/>
+  <text x="16" y="170" fill="#FFFFFF">errorContainer #98000A</text>
+  <rect x="10" y="178" width="300" height="24" fill="#005436"/>
+  <text x="16" y="194" fill="#FFFFFF">reussi.conteneur #005436</text>
+  <rect x="10" y="202" width="300" height="24" fill="#E2AA00"/>
+  <text x="16" y="218" fill="#000000">alerte.conteneur #E2AA00</text>
+  <rect x="10" y="236" width="300" height="24" fill="#202F2B"/>
+  <text x="16" y="252" fill="#FFFFFF">primary #202F2B</text>
+  <rect x="10" y="260" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="276" fill="#000000">onPrimary #FFFFFF</text>
+  <rect x="10" y="284" width="300" height="24" fill="#374742"/>
+  <text x="16" y="300" fill="#FFFFFF">primaryContainer #374742</text>
+  <rect x="10" y="308" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="324" fill="#000000">onPrimaryContainer #FFFFFF</text>
+  <rect x="10" y="332" width="300" height="24" fill="#B9CAC4"/>
+  <text x="16" y="348" fill="#000000">inversePrimary #B9CAC4</text>
+  <rect x="10" y="356" width="300" height="24" fill="#272D2B"/>
+  <text x="16" y="372" fill="#FFFFFF">secondary #272D2B</text>
+  <rect x="10" y="380" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="396" fill="#000000">onSecondary #FFFFFF</text>
+  <rect x="10" y="404" width="300" height="24" fill="#444B48"/>
+  <text x="16" y="420" fill="#FFFFFF">secondaryContainer #444B48</text>
+  <rect x="10" y="428" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="444" fill="#000000">onSecondaryContainer #FFFFFF</text>
+  <rect x="10" y="452" width="300" height="24" fill="#2B2B38"/>
+  <text x="16" y="468" fill="#FFFFFF">tertiary #2B2B38</text>
+  <rect x="10" y="476" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="492" fill="#000000">onTertiary #FFFFFF</text>
+  <rect x="10" y="500" width="300" height="24" fill="#434250"/>
+  <text x="16" y="516" fill="#FFFFFF">tertiaryContainer #434250</text>
+  <rect x="10" y="524" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="540" fill="#000000">onTertiaryContainer #FFFFFF</text>
+  <rect x="10" y="548" width="300" height="24" fill="#FBF9F7"/>
+  <text x="16" y="564" fill="#000000">background #FBF9F7</text>
+  <rect x="10" y="572" width="300" height="24" fill="#1B1C1B"/>
+  <text x="16" y="588" fill="#FFFFFF">onBackground #1B1C1B</text>
+  <rect x="10" y="596" width="300" height="24" fill="#FBF9F7"/>
+  <text x="16" y="612" fill="#000000">surface #FBF9F7</text>
+  <rect x="10" y="620" width="300" height="24" fill="#000000"/>
+  <text x="16" y="636" fill="#FFFFFF">onSurface #000000</text>
+  <rect x="10" y="644" width="300" height="24" fill="#DEE4E0"/>
+  <text x="16" y="660" fill="#000000">surfaceVariant #DEE4E0</text>
+  <rect x="10" y="668" width="300" height="24" fill="#000000"/>
+  <text x="16" y="684" fill="#FFFFFF">onSurfaceVariant #000000</text>
+  <rect x="10" y="692" width="300" height="24" fill="#51625C"/>
+  <text x="16" y="708" fill="#FFFFFF">surfaceTint #51625C</text>
+  <rect x="10" y="716" width="300" height="24" fill="#303030"/>
+  <text x="16" y="732" fill="#FFFFFF">inverseSurface #303030</text>
+  <rect x="10" y="740" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="756" fill="#000000">inverseOnSurface #FFFFFF</text>
+  <rect x="10" y="764" width="300" height="24" fill="#600004"/>
+  <text x="16" y="780" fill="#FFFFFF">error #600004</text>
+  <rect x="10" y="788" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="804" fill="#000000">onError #FFFFFF</text>
+  <rect x="10" y="812" width="300" height="24" fill="#98000A"/>
+  <text x="16" y="828" fill="#FFFFFF">errorContainer #98000A</text>
+  <rect x="10" y="836" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="852" fill="#000000">onErrorContainer #FFFFFF</text>
+  <rect x="10" y="860" width="300" height="24" fill="#282D2B"/>
+  <text x="16" y="876" fill="#FFFFFF">outline #282D2B</text>
+  <rect x="10" y="884" width="300" height="24" fill="#454A48"/>
+  <text x="16" y="900" fill="#FFFFFF">outlineVariant #454A48</text>
+  <rect x="10" y="908" width="300" height="24" fill="#000000"/>
+  <text x="16" y="924" fill="#FFFFFF">scrim #000000</text>
+  <rect x="10" y="932" width="300" height="24" fill="#FBF9F7"/>
+  <text x="16" y="948" fill="#000000">surfaceBright #FBF9F7</text>
+  <rect x="10" y="956" width="300" height="24" fill="#BAB8B7"/>
+  <text x="16" y="972" fill="#000000">surfaceDim #BAB8B7</text>
+  <rect x="10" y="980" width="300" height="24" fill="#E4E2E1"/>
+  <text x="16" y="996" fill="#000000">surfaceContainer #E4E2E1</text>
+  <rect x="10" y="1004" width="300" height="24" fill="#D6D4D3"/>
+  <text x="16" y="1020" fill="#000000">surfaceContainerHigh #D6D4D3</text>
+  <rect x="10" y="1028" width="300" height="24" fill="#C8C6C5"/>
+  <text x="16" y="1044" fill="#000000">surfaceContainerHighest #C8C6C5</text>
+  <rect x="10" y="1052" width="300" height="24" fill="#F2F0EF"/>
+  <text x="16" y="1068" fill="#000000">surfaceContainerLow #F2F0EF</text>
+  <rect x="10" y="1076" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1092" fill="#000000">surfaceContainerLowest #FFFFFF</text>
+  <rect x="10" y="1100" width="300" height="24" fill="#3C4C47"/>
+  <text x="16" y="1116" fill="#FFFFFF">primaryFixed #3C4C47</text>
+  <rect x="10" y="1124" width="300" height="24" fill="#263631"/>
+  <text x="16" y="1140" fill="#FFFFFF">primaryFixedDim #263631</text>
+  <rect x="10" y="1148" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1164" fill="#000000">onPrimaryFixed #FFFFFF</text>
+  <rect x="10" y="1172" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1188" fill="#000000">onPrimaryFixedVariant #FFFFFF</text>
+  <rect x="10" y="1196" width="300" height="24" fill="#444B48"/>
+  <text x="16" y="1212" fill="#FFFFFF">secondaryFixed #444B48</text>
+  <rect x="10" y="1220" width="300" height="24" fill="#2E3432"/>
+  <text x="16" y="1236" fill="#FFFFFF">secondaryFixedDim #2E3432</text>
+  <rect x="10" y="1244" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1260" fill="#000000">onSecondaryFixed #FFFFFF</text>
+  <rect x="10" y="1268" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1284" fill="#000000">onSecondaryFixedVariant #FFFFFF</text>
+  <rect x="10" y="1292" width="300" height="24" fill="#494856"/>
+  <text x="16" y="1308" fill="#FFFFFF">tertiaryFixed #494856</text>
+  <rect x="10" y="1316" width="300" height="24" fill="#32313F"/>
+  <text x="16" y="1332" fill="#FFFFFF">tertiaryFixedDim #32313F</text>
+  <rect x="10" y="1340" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1356" fill="#000000">onTertiaryFixed #FFFFFF</text>
+  <rect x="10" y="1364" width="300" height="24" fill="#FFFFFF"/>
+  <text x="16" y="1380" fill="#000000">onTertiaryFixedVariant #FFFFFF</text>
+  <rect x="320" y="82" width="300" height="24" fill="#FFECE9"/>
+  <text x="326" y="98" fill="#000000">error #FFECE9</text>
+  <rect x="320" y="106" width="300" height="24" fill="#BBFFD7"/>
+  <text x="326" y="122" fill="#000000">reussi.couleur #BBFFD7</text>
+  <rect x="320" y="130" width="300" height="24" fill="#E2AA00"/>
+  <text x="326" y="146" fill="#000000">alerte.couleur #E2AA00 (interdit en texte)</text>
+  <rect x="320" y="154" width="300" height="24" fill="#FFAEA4"/>
+  <text x="326" y="170" fill="#220001">errorContainer #FFAEA4</text>
+  <rect x="320" y="178" width="300" height="24" fill="#71D6A2"/>
+  <text x="326" y="194" fill="#000E06">reussi.conteneur #71D6A2</text>
+  <rect x="320" y="202" width="300" height="24" fill="#E2AA00"/>
+  <text x="326" y="218" fill="#000000">alerte.conteneur #E2AA00</text>
+  <rect x="320" y="236" width="300" height="24" fill="#E2F4ED"/>
+  <text x="326" y="252" fill="#000000">primary #E2F4ED</text>
+  <rect x="320" y="260" width="300" height="24" fill="#000000"/>
+  <text x="326" y="276" fill="#FFFFFF">onPrimary #000000</text>
+  <rect x="320" y="284" width="300" height="24" fill="#B5C7C0"/>
+  <text x="326" y="300" fill="#000000">primaryContainer #B5C7C0</text>
+  <rect x="320" y="308" width="300" height="24" fill="#010E0A"/>
+  <text x="326" y="324" fill="#FFFFFF">onPrimaryContainer #010E0A</text>
+  <rect x="320" y="332" width="300" height="24" fill="#3B4B46"/>
+  <text x="326" y="348" fill="#FFFFFF">inversePrimary #3B4B46</text>
+  <rect x="320" y="356" width="300" height="24" fill="#EBF1EE"/>
+  <text x="326" y="372" fill="#000000">secondary #EBF1EE</text>
+  <rect x="320" y="380" width="300" height="24" fill="#000000"/>
+  <text x="326" y="396" fill="#FFFFFF">onSecondary #000000</text>
+  <rect x="320" y="404" width="300" height="24" fill="#BEC4C0"/>
+  <text x="326" y="420" fill="#000000">secondaryContainer #BEC4C0</text>
+  <rect x="320" y="428" width="300" height="24" fill="#070C0B"/>
+  <text x="326" y="444" fill="#FFFFFF">onSecondaryContainer #070C0B</text>
+  <rect x="320" y="452" width="300" height="24" fill="#F1EEFF"/>
+  <text x="326" y="468" fill="#000000">tertiary #F1EEFF</text>
+  <rect x="320" y="476" width="300" height="24" fill="#000000"/>
+  <text x="326" y="492" fill="#FFFFFF">onTertiary #000000</text>
+  <rect x="320" y="500" width="300" height="24" fill="#C3C1D2"/>
+  <text x="326" y="516" fill="#000000">tertiaryContainer #C3C1D2</text>
+  <rect x="320" y="524" width="300" height="24" fill="#0A0A16"/>
+  <text x="326" y="540" fill="#FFFFFF">onTertiaryContainer #0A0A16</text>
+  <rect x="320" y="548" width="300" height="24" fill="#131313"/>
+  <text x="326" y="564" fill="#FFFFFF">background #131313</text>
+  <rect x="320" y="572" width="300" height="24" fill="#E4E2E1"/>
+  <text x="326" y="588" fill="#000000">onBackground #E4E2E1</text>
+  <rect x="320" y="596" width="300" height="24" fill="#131313"/>
+  <text x="326" y="612" fill="#FFFFFF">surface #131313</text>
+  <rect x="320" y="620" width="300" height="24" fill="#FFFFFF"/>
+  <text x="326" y="636" fill="#000000">onSurface #FFFFFF</text>
+  <rect x="320" y="644" width="300" height="24" fill="#424846"/>
+  <text x="326" y="660" fill="#FFFFFF">surfaceVariant #424846</text>
+  <rect x="320" y="668" width="300" height="24" fill="#FFFFFF"/>
+  <text x="326" y="684" fill="#000000">onSurfaceVariant #FFFFFF</text>
+  <rect x="320" y="692" width="300" height="24" fill="#B9CAC4"/>
+  <text x="326" y="708" fill="#000000">surfaceTint #B9CAC4</text>
+  <rect x="320" y="716" width="300" height="24" fill="#E4E2E1"/>
+  <text x="326" y="732" fill="#000000">inverseSurface #E4E2E1</text>
+  <rect x="320" y="740" width="300" height="24" fill="#000000"/>
+  <text x="326" y="756" fill="#FFFFFF">inverseOnSurface #000000</text>
+  <rect x="320" y="764" width="300" height="24" fill="#FFECE9"/>
+  <text x="326" y="780" fill="#000000">error #FFECE9</text>
+  <rect x="320" y="788" width="300" height="24" fill="#000000"/>
+  <text x="326" y="804" fill="#FFFFFF">onError #000000</text>
+  <rect x="320" y="812" width="300" height="24" fill="#FFAEA4"/>
+  <text x="326" y="828" fill="#000000">errorContainer #FFAEA4</text>
+  <rect x="320" y="836" width="300" height="24" fill="#220001"/>
+  <text x="326" y="852" fill="#FFFFFF">onErrorContainer #220001</text>
+  <rect x="320" y="860" width="300" height="24" fill="#ECF1EE"/>
+  <text x="326" y="876" fill="#000000">outline #ECF1EE</text>
+  <rect x="320" y="884" width="300" height="24" fill="#BEC4C1"/>
+  <text x="326" y="900" fill="#000000">outlineVariant #BEC4C1</text>
+  <rect x="320" y="908" width="300" height="24" fill="#000000"/>
+  <text x="326" y="924" fill="#FFFFFF">scrim #000000</text>
+  <rect x="320" y="932" width="300" height="24" fill="#50504F"/>
+  <text x="326" y="948" fill="#FFFFFF">surfaceBright #50504F</text>
+  <rect x="320" y="956" width="300" height="24" fill="#131313"/>
+  <text x="326" y="972" fill="#FFFFFF">surfaceDim #131313</text>
+  <rect x="320" y="980" width="300" height="24" fill="#303030"/>
+  <text x="326" y="996" fill="#FFFFFF">surfaceContainer #303030</text>
+  <rect x="320" y="1004" width="300" height="24" fill="#3B3B3B"/>
+  <text x="326" y="1020" fill="#FFFFFF">surfaceContainerHigh #3B3B3B</text>
+  <rect x="320" y="1028" width="300" height="24" fill="#474746"/>
+  <text x="326" y="1044" fill="#FFFFFF">surfaceContainerHighest #474746</text>
+  <rect x="320" y="1052" width="300" height="24" fill="#1F201F"/>
+  <text x="326" y="1068" fill="#FFFFFF">surfaceContainerLow #1F201F</text>
+  <rect x="320" y="1076" width="300" height="24" fill="#000000"/>
+  <text x="326" y="1092" fill="#FFFFFF">surfaceContainerLowest #000000</text>
+  <rect x="320" y="1100" width="300" height="24" fill="#D4E7DF"/>
+  <text x="326" y="1116" fill="#000000">primaryFixed #D4E7DF</text>
+  <rect x="320" y="1124" width="300" height="24" fill="#B9CAC4"/>
+  <text x="326" y="1140" fill="#000000">primaryFixedDim #B9CAC4</text>
+  <rect x="320" y="1148" width="300" height="24" fill="#000000"/>
+  <text x="326" y="1164" fill="#FFFFFF">onPrimaryFixed #000000</text>
+  <rect x="320" y="1172" width="300" height="24" fill="#051410"/>
+  <text x="326" y="1188" fill="#FFFFFF">onPrimaryFixedVariant #051410</text>
+  <rect x="320" y="1196" width="300" height="24" fill="#DEE4E0"/>
+  <text x="326" y="1212" fill="#000000">secondaryFixed #DEE4E0</text>
+  <rect x="320" y="1220" width="300" height="24" fill="#C2C8C4"/>
+  <text x="326" y="1236" fill="#000000">secondaryFixedDim #C2C8C4</text>
+  <rect x="320" y="1244" width="300" height="24" fill="#000000"/>
+  <text x="326" y="1260" fill="#FFFFFF">onSecondaryFixed #000000</text>
+  <rect x="320" y="1268" width="300" height="24" fill="#0C1210"/>
+  <text x="326" y="1284" fill="#FFFFFF">onSecondaryFixedVariant #0C1210</text>
+  <rect x="320" y="1292" width="300" height="24" fill="#E4E0F2"/>
+  <text x="326" y="1308" fill="#000000">tertiaryFixed #E4E0F2</text>
+  <rect x="320" y="1316" width="300" height="24" fill="#C7C4D6"/>
+  <text x="326" y="1332" fill="#000000">tertiaryFixedDim #C7C4D6</text>
+  <rect x="320" y="1340" width="300" height="24" fill="#000000"/>
+  <text x="326" y="1356" fill="#FFFFFF">onTertiaryFixed #000000</text>
+  <rect x="320" y="1364" width="300" height="24" fill="#10101C"/>
+  <text x="326" y="1380" fill="#FFFFFF">onTertiaryFixedVariant #10101C</text>
 </svg>
