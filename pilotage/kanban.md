@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 1 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 2 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,17 +22,9 @@ _Modèle de carte :_
 
 ## Validé
 
-- [004-module-contraste](missions/004-module-contraste.md) · depuis le cycle 0
-  - Homme : `dev` (sonnet)
-  - Mission : module `terrain-style` et `Contraste` ; cycle 2, après 003
-  - Moyens : modèle `terrain-carte` ; PR
-- [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 0
-  - Homme : `testeur` (sonnet)
-  - Mission : tests des couples à 7:1 ; cycle 2
-  - Moyens : API de la spec ; PR
 - [006-generation-schemas](missions/006-generation-schemas.md) · depuis le cycle 0
   - Homme : `dev` (opus), tenu
-  - Mission : génération des schémas ; cycle 3, après ADR 0001 et mission 001
+  - Mission : génération des schémas ; cycle 3 (ADR 0001 acceptée, 001 fusionnée), depuis la branche 005
   - Moyens : sources MCU ; plan d'abord ; PR
 - [007-couleurs-semantiques](missions/007-couleurs-semantiques.md) · depuis le cycle 0
   - Homme : `dev` (sonnet)
@@ -40,18 +32,27 @@ _Modèle de carte :_
   - Moyens : PR
 - [008-publication](missions/008-publication.md) · depuis le cycle 0
   - Homme : `dev` (sonnet)
-  - Mission : CI sur tags et README ; cycle 4, après ADR 0003
+  - Mission : CI sur tags et README ; cycle 3 (ADR 0003 acceptée)
   - Moyens : PR ; le tag est posé par Pascal
 
 
 ## Planifié
 
-- [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 1
-  - Homme : `acquereur` (opus)
-  - Mission : conventions des couleurs d'état, valeurs sRGB sourcées ; cycle 1
-  - Moyens : pages ISO/IEC, MDC ; PR `docs/referentiels/couleurs-etat.md`
+- [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 2
+  - Homme : `testeur` (sonnet)
+  - Mission : tests des couples à 7:1 ; cycle 2
+  - Moyens : API de la spec ; PR #8 en brouillon, fusion groupée avec 006 et 007
 
 ## Terminé
+
+- [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 2
+  - Homme : `acquereur` (opus)
+  - Mission : conventions des couleurs d'état, valeurs sRGB sourcées ; cycle 1
+  - Moyens : pages ISO/IEC, MDC ; PR #5 fusionnée
+- [004-module-contraste](missions/004-module-contraste.md) · depuis le cycle 2
+  - Homme : `dev` (sonnet)
+  - Mission : module `terrain-style` et `Contraste` ; cycle 2, après 003
+  - Moyens : modèle `terrain-carte` ; PR #7 fusionnée
 
 - [001-faits-mcu-compose](missions/001-faits-mcu-compose.md) · depuis le cycle 1
   - Homme : `acquereur` (opus)
@@ -82,3 +83,4 @@ l'inscrit avec ce qu'elle nous apprend._
 - bilan du AAAA-MM-JJ · mauvaise nouvelle : … · pour qui · ce qu'elle nous apprend
 ```
 - cycle 1 · table de référence WCAG `terrain-style/src/test/resources/contraste/reference.csv` (200 couples, deux outils tiers, rejouable à l'octet) · pour les développeurs de Surculus · première livraison : de quoi tester leur propre palette d'état dès maintenant
+- cycle 2 · module `terrain-style` et `Contraste.rapport` (WCAG 2.2), publiable par JitPack au premier tag · pour les développeurs de Marculus, Groma et Surculus · une fonction à appeler au lieu d'une table à rejouer
