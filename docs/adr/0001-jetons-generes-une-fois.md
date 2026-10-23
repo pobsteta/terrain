@@ -40,6 +40,9 @@ autre que CMF, EXPRESSIVE, VIBRANT, TONAL_SPOT et NEUTRAL à `SPEC_2021`. Avec `
 (arbitrage de Pascal), `SPEC_2021` est donc **imposée**, pas choisie. Le script vérifie
 `scheme.specVersion == SPEC_2021`.
 
+**Commit MCU retenu** (Pascal, 2026-10-23) : `bd811e4ca2ab94c4ce3cadc89c19b1820b9704b3`
+(2026-10-19), plutôt que `dd62982` ; constats dans `docs/referentiels/mcu-compose.md`.
+
 À vérifier par l'`acquereur` avant la mission : parité des sources Kotlin et Java (générer
 les deux, comparer les ARGB), et version de Kotlin exigée par les sources Kotlin (le projet
 compile en Kotlin 2.2).
