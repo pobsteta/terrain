@@ -7,8 +7,11 @@ package fr.nemeton.terrain.style
  * Toute valeur hors de [`0xFF000000`, `0xFFFFFFFF`] est refusée par
  * [IllegalArgumentException]. Les valeurs de [StyleTerrain] sont générées, jamais retouchées.
  *
+ * [reussi] et [alerte] sont les deux couleurs d'état communes (ADR 0002) ; l'erreur est `error*`.
+ *
  * [interditsEnTexte] nomme les rôles qui ne tiennent pas 7:1 en texte sur l'un de leurs fonds
- * (critère 2 de la spec) : ils ne servent qu'en fond ou en décor.
+ * (critère 2 de la spec), plus `alerte.couleur` par décision (ADR 0002) : ils ne servent qu'en
+ * fond ou en décor. Une couleur d'état s'y nomme `reussi.couleur`, `alerte.conteneur`…
  */
 class Schema(
     val primary: Long,
@@ -59,6 +62,8 @@ class Schema(
     val tertiaryFixedDim: Long,
     val onTertiaryFixed: Long,
     val onTertiaryFixedVariant: Long,
+    val reussi: Semantique,
+    val alerte: Semantique,
     val interditsEnTexte: Set<String>,
 ) {
     init {

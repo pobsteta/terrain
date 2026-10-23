@@ -6,7 +6,9 @@ import dynamiccolor.DynamicScheme.Platform
 import dynamiccolor.Variant
 import fr.nemeton.terrain.style.Contraste
 import hct.Hct
+import palettes.TonalPalette
 import scheme.SchemeContent
+import utils.MathUtils
 import java.io.File
 import java.util.Locale
 import kotlin.math.floor
@@ -21,8 +23,11 @@ import kotlin.math.floor
  *  - `src/test/resources/jetons/jetons.csv` (`theme,role,argb`) ;
  *  - `generation/nuancier.svg` (les deux schémas à côté de la couleur de départ).
  *
+ * Les couleurs d'état (ADR 0002) : `reussi` est généré par MCU (palette de [Reglages.REUSSI] à la
+ * place de la palette d'erreur), `alerte` est figée ([Reglages.ALERTE], [Reglages.SUR_ALERTE]).
+ *
  * Aucune valeur n'est retouchée : un rôle qui ne tient pas 7:1 en texte sur l'un de ses fonds
- * est mis dans `interditsEnTexte`.
+ * est mis dans `interditsEnTexte`, avec `alerte.couleur` par décision.
  */
 object Reglages {
     const val COMMIT_MCU = "bd811e4ca2ab94c4ce3cadc89c19b1820b9704b3"
@@ -35,6 +40,21 @@ object Reglages {
     const val CONTRASTE = 1.0
     val PLATEFORME = Platform.PHONE
     const val SEUIL_TEXTE = 7.0
+
+    /**
+     * Vert de départ de `reussi` : RAL 6032 d'après Wikipédia « List of RAL colours »
+     * (docs/referentiels/couleurs-etat.md, R2), seul candidat dans la région verte d'ISO 3864-4 ;
+     * choix de Pascal du 2026-10-23 (ADR 0002). **Non harmonisé** vers [SOURCE] : sa palette est
+     * celle de la couleur telle quelle.
+     */
+    const val REUSSI = 0xFF0F8558L
+    const val SOURCE_REUSSI = "RAL 6032 (Wikipédia « List of RAL colours »), non harmonisé"
+
+    /** Jaune de sécurité, en `couleur` et `conteneur` d'`alerte`, figé hors MCU (ADR 0002). */
+    const val ALERTE = 0xFFE2AA00L
+    /** Noir de contraste du jaune, en `surCouleur` et `surConteneur` d'`alerte` (ADR 0002). */
+    const val SUR_ALERTE = 0xFF000000L
+    const val SOURCE_ALERTE = "ISO 3864-4:2011, Table 1 (β 0,45, D65, converti en sRGB), noir de contraste"
 }
 
 /** Les 48 rôles de `ColorScheme` (Compose Material 3 1.4.0), dans l'ordre du constructeur. */
@@ -91,6 +111,53 @@ fun jetons(sombre: Boolean): Map<String, Long> {
     return ROLES.associateTo(LinkedHashMap()) { (nom, f) -> nom to versLong(f(s)) }
 }
 
+/** Les deux couleurs d'état, dans l'ordre des champs de `Schema`. */
+val SEMANTIQUES = listOf("reussi", "alerte")
+
+/** Les huit jetons d'état (`reussi.couleur`…), dans l'ordre des champs de `Semantique`. */
+val NOMS_SEMANTIQUES = SEMANTIQUES.flatMap { x -> listOf("couleur", "surCouleur", "conteneur", "surConteneur").map { "$x.$it" } }
+
+/** Interdits en texte par décision, sans qu'un couple échoue (ADR 0002). */
+val INTERDITS_PAR_DECISION = setOf("alerte.couleur")
+
+/**
+ * Le schéma de `reussi` (ADR 0002) : celui du thème, palette d'erreur remplacée par celle de
+ * [Reglages.REUSSI]. Ses rôles `error*` ont donc les tons et les courbes de contraste d'`error`.
+ */
+fun schemaReussi(sombre: Boolean): DynamicScheme {
+    val b = schemaMcu(sombre)
+    val s = DynamicScheme(
+        b.sourceColorHctList, b.variant, b.isDark, b.contrastLevel, b.platform, b.specVersion,
+        b.primaryPalette, b.secondaryPalette, b.tertiaryPalette, b.neutralPalette, b.neutralVariantPalette,
+        TonalPalette.fromInt(Reglages.REUSSI.toInt()),
+    )
+    check(s.specVersion == Reglages.SPEC) { "specVersion ${s.specVersion} au lieu de ${Reglages.SPEC}" }
+    return s
+}
+
+/** Les huit jetons d'état d'un thème : `reussi` lu dans [schemaReussi], `alerte` figée. */
+fun semantiques(sombre: Boolean): Map<String, Long> {
+    val r = schemaReussi(sombre)
+    return linkedMapOf(
+        "reussi.couleur" to versLong(r.error), "reussi.surCouleur" to versLong(r.onError),
+        "reussi.conteneur" to versLong(r.errorContainer), "reussi.surConteneur" to versLong(r.onErrorContainer),
+        "alerte.couleur" to Reglages.ALERTE, "alerte.surCouleur" to Reglages.SUR_ALERTE,
+        "alerte.conteneur" to Reglages.ALERTE, "alerte.surConteneur" to Reglages.SUR_ALERTE,
+    )
+}
+
+/** Les 48 rôles puis les huit jetons d'état. */
+fun tousLesJetons(sombre: Boolean): Map<String, Long> = LinkedHashMap(jetons(sombre)).apply { putAll(semantiques(sombre)) }
+
+/** Écart de teinte HCT, en degrés (0 à 180), de `reussi.couleur` à `primary` (fiche 007). */
+fun ecartReussiPrimary(sombre: Boolean): Double {
+    val j = tousLesJetons(sombre)
+    return MathUtils.differenceDegrees(
+        Hct.fromInt(j.getValue("reussi.couleur").toInt()).hue,
+        Hct.fromInt(j.getValue("primary").toInt()).hue,
+    )
+}
+
 private val SURFACES = listOf(
     "surface", "surfaceDim", "surfaceBright", "surfaceContainer", "surfaceContainerHigh",
     "surfaceContainerHighest", "surfaceContainerLow", "surfaceContainerLowest",
@@ -117,29 +184,43 @@ fun couples(): List<Pair<String, String>> {
     return l.toList()
 }
 
+/** Couples du critère 2 propres aux couleurs d'état : `reussi.couleur` en texte, et chaque « sur ». */
+fun couplesSemantiques(): List<Pair<String, String>> =
+    SURFACES.map { "reussi.couleur" to it } +
+        SEMANTIQUES.flatMap { x -> listOf("$x.surCouleur" to "$x.couleur", "$x.surConteneur" to "$x.conteneur") }
+
 /**
  * Rapport tronqué à 3 décimales, jamais arrondi (spec). La tolérance de 1e-9 absorbe le bruit
  * flottant d'un rapport exact, comme dans les tests de la mission 005.
  */
 fun tronque3(r: Double): Double = floor(r * 1000.0 + 1e-9) / 1000.0
 
-/** Rôles qui servent de texte dans un couple sous [Reglages.SEUIL_TEXTE], dans l'ordre de [ROLES]. */
+/**
+ * Rôles qui servent de texte dans un couple sous [Reglages.SEUIL_TEXTE], dans l'ordre de [ROLES]
+ * puis de [NOMS_SEMANTIQUES]. Si [j] porte les jetons d'état, leurs couples sont contrôlés et
+ * [INTERDITS_PAR_DECISION] s'ajoute.
+ */
 fun interditsEnTexte(j: Map<String, Long>): Set<String> {
-    val echecs = couples()
+    val etats = j.keys.containsAll(NOMS_SEMANTIQUES)
+    val echecs = (couples() + if (etats) couplesSemantiques() else emptyList())
         .filter { (t, f) -> tronque3(Contraste.rapport(j.getValue(t), j.getValue(f))) < Reglages.SEUIL_TEXTE }
         .map { it.first }
         .toSet()
-    return ROLES.map { it.first }.filterTo(LinkedHashSet()) { it in echecs }
+    val ordre = ROLES.map { it.first } + if (etats) NOMS_SEMANTIQUES else emptyList()
+    return ordre.filterTo(LinkedHashSet()) { it in echecs || (etats && it in INTERDITS_PAR_DECISION) }
 }
 
 fun hex(v: Long): String = "0x" + java.lang.Long.toHexString(v).uppercase(Locale.ROOT).padStart(8, '0')
 
 private fun fmt(d: Double) = String.format(Locale.ROOT, "%.3f", d)
 
+/** Un écart de teinte, à 0,1° près. */
+fun degres(d: Double): String = String.format(Locale.ROOT, "%.1f", d)
+
 /** Les fichiers produits, chemin relatif au module -> contenu. */
 fun fichiers(): Map<String, String> {
-    val clair = jetons(sombre = false)
-    val sombre = jetons(sombre = true)
+    val clair = tousLesJetons(sombre = false)
+    val sombre = tousLesJetons(sombre = true)
     return linkedMapOf(
         "src/main/kotlin/fr/nemeton/terrain/style/StyleTerrain.kt" to sourceKotlin(clair, sombre),
         "src/test/resources/jetons/jetons.csv" to tableCsv(clair, sombre),
@@ -158,13 +239,17 @@ fun sourceKotlin(clair: Map<String, Long>, sombre: Map<String, Long>): String = 
     appendLine("// Couleur de départ : ${hex(Reglages.SOURCE)} (${Reglages.NOM_SOURCE})")
     appendLine("// Variante : ${Reglages.VARIANTE} ; spec : ${Reglages.SPEC} (imposée par ${Reglages.VARIANTE} sur ${Reglages.PLATEFORME}, vérifiée)")
     appendLine("// Contraste : ${Reglages.CONTRASTE} ; plateforme : ${Reglages.PLATEFORME}")
+    appendLine("// Réussi : ${hex(Reglages.REUSSI)}, ${Reglages.SOURCE_REUSSI}, en palette d'erreur (ADR 0002)")
+    appendLine("// Écart de teinte HCT de reussi.couleur à primary : clair ${degres(ecartReussiPrimary(false))}°, sombre ${degres(ecartReussiPrimary(true))}°")
+    appendLine("// Alerte : ${hex(Reglages.ALERTE)} et ${hex(Reglages.SUR_ALERTE)}, ${Reglages.SOURCE_ALERTE}, figée hors MCU (ADR 0002)")
     appendLine("package fr.nemeton.terrain.style")
     appendLine()
     appendLine("/**")
     appendLine(" * Les schémas communs des applications de terrain, générés par Material Color Utilities")
     appendLine(" * (${Reglages.NOM_SOURCE} ${hex(Reglages.SOURCE)}, ${Reglages.VARIANTE}, ${Reglages.SPEC}, contraste ${Reglages.CONTRASTE}).")
     appendLine(" *")
-    appendLine(" * Rôles interdits en texte (sous ${Reglages.SEUIL_TEXTE}:1 sur l'un de leurs fonds) :")
+    appendLine(" * Rôles interdits en texte (sous ${Reglages.SEUIL_TEXTE}:1 sur l'un de leurs fonds, et `alerte.couleur`")
+    appendLine(" * par décision, ADR 0002) :")
     appendLine(" *  - clair : ${liste(ic)} ;")
     appendLine(" *  - sombre : ${liste(iso)}.")
     appendLine(" */")
@@ -180,7 +265,11 @@ fun sourceKotlin(clair: Map<String, Long>, sombre: Map<String, Long>): String = 
 }
 
 private fun StringBuilder.schema(j: Map<String, Long>, interdits: Set<String>) {
-    for ((nom, v) in j) appendLine("        $nom = ${hex(v)}L,")
+    for ((nom, _) in ROLES) appendLine("        $nom = ${hex(j.getValue(nom))}L,")
+    for (x in SEMANTIQUES) {
+        val v = listOf("couleur", "surCouleur", "conteneur", "surConteneur").joinToString(", ") { "${hex(j.getValue("$x.$it"))}L" }
+        appendLine("        $x = Semantique($v),")
+    }
     appendLine("        interditsEnTexte = setOf(${interdits.joinToString(", ") { "\"$it\"" }}),")
 }
 
@@ -189,14 +278,24 @@ fun tableCsv(clair: Map<String, Long>, sombre: Map<String, Long>): String = buil
     for ((theme, j) in listOf("clair" to clair, "sombre" to sombre)) for ((nom, v) in j) appendLine("$theme,$nom,${hex(v)}")
 }
 
-/** Nuancier SVG : un bandeau par rôle, clair à gauche, sombre à droite, la couleur de départ en tête. */
+/** Fond et texte des bandeaux d'état, erreur, réussi et alerte côte à côte. */
+private val ETATS = listOf(
+    "error" to "onError", "reussi.couleur" to "reussi.surCouleur", "alerte.couleur" to "alerte.surCouleur",
+    "errorContainer" to "onErrorContainer", "reussi.conteneur" to "reussi.surConteneur", "alerte.conteneur" to "alerte.surConteneur",
+)
+
+/**
+ * Nuancier SVG : la couleur de départ en tête, puis, clair à gauche et sombre à droite, les
+ * bandeaux d'état (erreur, réussi, alerte, écrits dans leur couleur « sur ») et un bandeau par rôle.
+ */
 fun nuancier(clair: Map<String, Long>, sombre: Map<String, Long>): String = buildString {
     val larg = 300
     val haut = 24
     val marge = 10
     val entete = 3 * haut
+    val etats = ETATS.size * haut + marge
     val l = 2 * larg + 3 * marge
-    val h = entete + ROLES.size * haut + 2 * marge
+    val h = entete + etats + ROLES.size * haut + 2 * marge
     fun rgb(v: Long) = "#" + java.lang.Long.toHexString(v and 0xFFFFFFL).uppercase(Locale.ROOT).padStart(6, '0')
     // Texte noir ou blanc, celui qui contraste le plus avec le bandeau.
     fun encre(v: Long) = if (Contraste.rapport(v, 0xFF000000L) >= Contraste.rapport(v, 0xFFFFFFFFL)) "#000000" else "#FFFFFF"
@@ -211,9 +310,16 @@ fun nuancier(clair: Map<String, Long>, sombre: Map<String, Long>): String = buil
     for ((i, pair) in listOf(clair to interditsEnTexte(clair), sombre to interditsEnTexte(sombre)).withIndex()) {
         val (j, interdits) = pair
         val x = marge + i * (larg + marge)
+        for ((k, etat) in ETATS.withIndex()) {
+            val (fond, texte) = etat
+            val y = marge + entete + k * haut
+            val note = if (fond in interdits) " (interdit en texte)" else ""
+            appendLine("""  <rect x="$x" y="$y" width="$larg" height="$haut" fill="${rgb(j.getValue(fond))}"/>""")
+            appendLine("""  <text x="${x + 6}" y="${y + 16}" fill="${rgb(j.getValue(texte))}">$fond ${rgb(j.getValue(fond))}$note</text>""")
+        }
         for ((k, nom) in ROLES.map { it.first }.withIndex()) {
             val v = j.getValue(nom)
-            val y = marge + entete + k * haut
+            val y = marge + entete + etats + k * haut
             val note = if (nom in interdits) " (interdit en texte)" else ""
             appendLine("""  <rect x="$x" y="$y" width="$larg" height="$haut" fill="${rgb(v)}"/>""")
             appendLine("""  <text x="${x + 6}" y="${y + 16}" fill="${encre(v)}">$nom ${rgb(v)}$note</text>""")
@@ -231,11 +337,12 @@ fun main(args: Array<String>) {
         f.writeText(contenu, Charsets.UTF_8)
         println("écrit $chemin")
     }
-    for ((theme, j) in listOf("clair" to jetons(false), "sombre" to jetons(true))) {
-        for ((t, f) in couples()) {
+    for ((theme, j) in listOf("clair" to tousLesJetons(false), "sombre" to tousLesJetons(true))) {
+        for ((t, f) in couples() + couplesSemantiques()) {
             val r = tronque3(Contraste.rapport(j.getValue(t), j.getValue(f)))
             if (r < Reglages.SEUIL_TEXTE) println("ECHEC $theme $t sur $f ${hex(j.getValue(t))}/${hex(j.getValue(f))} rapport=${fmt(r)}")
         }
         println("interdits en texte ($theme) : ${interditsEnTexte(j)}")
+        println("ECART $theme reussi.couleur / primary : ${degres(ecartReussiPrimary(theme == "sombre"))}° (teinte HCT)")
     }
 }

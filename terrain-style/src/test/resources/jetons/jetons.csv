@@ -47,6 +47,14 @@ clair,tertiaryFixed,0xFF494856
 clair,tertiaryFixedDim,0xFF32313F
 clair,onTertiaryFixed,0xFFFFFFFF
 clair,onTertiaryFixedVariant,0xFFFFFFFF
+clair,reussi.couleur,0xFF00341F
+clair,reussi.surCouleur,0xFFFFFFFF
+clair,reussi.conteneur,0xFF005436
+clair,reussi.surConteneur,0xFFFFFFFF
+clair,alerte.couleur,0xFFE2AA00
+clair,alerte.surCouleur,0xFF000000
+clair,alerte.conteneur,0xFFE2AA00
+clair,alerte.surConteneur,0xFF000000
 sombre,primary,0xFFE2F4ED
 sombre,onPrimary,0xFF000000
 sombre,primaryContainer,0xFFB5C7C0
@@ -95,3 +103,11 @@ sombre,tertiaryFixed,0xFFE4E0F2
 sombre,tertiaryFixedDim,0xFFC7C4D6
 sombre,onTertiaryFixed,0xFF000000
 sombre,onTertiaryFixedVariant,0xFF10101C
+sombre,reussi.couleur,0xFFBBFFD7
+sombre,reussi.surCouleur,0xFF000000
+sombre,reussi.conteneur,0xFF71D6A2
+sombre,reussi.surConteneur,0xFF000E06
+sombre,alerte.couleur,0xFFE2AA00
+sombre,alerte.surCouleur,0xFF000000
+sombre,alerte.conteneur,0xFFE2AA00
+sombre,alerte.surConteneur,0xFF000000
