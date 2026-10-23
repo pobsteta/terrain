@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 2 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 3 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,28 +22,30 @@ _Modèle de carte :_
 
 ## Validé
 
-- [006-generation-schemas](missions/006-generation-schemas.md) · depuis le cycle 0
-  - Homme : `dev` (opus), tenu
-  - Mission : génération des schémas ; cycle 3 (ADR 0001 acceptée, 001 fusionnée), depuis la branche 005
-  - Moyens : sources MCU ; plan d'abord ; PR
-- [007-couleurs-semantiques](missions/007-couleurs-semantiques.md) · depuis le cycle 0
-  - Homme : `dev` (sonnet)
-  - Mission : réussi et alerte ; cycle 4, après ADR 0002, 002, 006 et le choix de Pascal
-  - Moyens : PR
-- [008-publication](missions/008-publication.md) · depuis le cycle 0
-  - Homme : `dev` (sonnet)
-  - Mission : CI sur tags et README ; cycle 3 (ADR 0003 acceptée)
-  - Moyens : PR ; le tag est posé par Pascal
-
-
 ## Planifié
 
-- [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 2
+## Terminé
+
+- [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 3
   - Homme : `testeur` (sonnet)
   - Mission : tests des couples à 7:1 ; cycle 2
   - Moyens : API de la spec ; PR #8 en brouillon, fusion groupée avec 006 et 007
-
-## Terminé
+  - Livré : PR #8 fusionnée (tag v0.6.0)
+- [006-generation-schemas](missions/006-generation-schemas.md) · depuis le cycle 3
+  - Homme : `dev` (opus), tenu
+  - Mission : génération des schémas ; cycle 3 (ADR 0001 acceptée, 001 fusionnée), depuis la branche 005
+  - Moyens : sources MCU ; plan d'abord ; PR
+  - Livré : PR #11 fusionnée (tag v0.6.0)
+- [007-couleurs-semantiques](missions/007-couleurs-semantiques.md) · depuis le cycle 3
+  - Homme : `dev` (sonnet)
+  - Mission : réussi et alerte ; cycle 4, après ADR 0002, 002, 006 et le choix de Pascal
+  - Moyens : PR
+  - Livré : PR #12 fusionnée (tag v0.6.0)
+- [008-publication](missions/008-publication.md) · depuis le cycle 3
+  - Homme : `dev` (sonnet)
+  - Mission : CI sur tags et README ; cycle 3 (ADR 0003 acceptée)
+  - Moyens : PR ; le tag est posé par Pascal
+  - Livré : PR #9 fusionnée (tag v0.6.0)
 
 - [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 2
   - Homme : `acquereur` (opus)
@@ -84,3 +86,4 @@ l'inscrit avec ce qu'elle nous apprend._
 ```
 - cycle 1 · table de référence WCAG `terrain-style/src/test/resources/contraste/reference.csv` (200 couples, deux outils tiers, rejouable à l'octet) · pour les développeurs de Surculus · première livraison : de quoi tester leur propre palette d'état dès maintenant
 - cycle 2 · module `terrain-style` et `Contraste.rapport` (WCAG 2.2), publiable par JitPack au premier tag · pour les développeurs de Marculus, Groma et Surculus · une fonction à appeler au lieu d'une table à rejouer
+- cycle 3 · `terrain-style` complet, tag v0.6.0 : 48 rôles Material 3 + réussi et alerte, clair et sombre, tous à 7:1 (variante CONTENT, ADR 0004) · pour les développeurs de Marculus, Groma et Surculus · une palette entière à épingler par JitPack, au lieu d'une seule fonction de contraste (proposée par l'orchestrateur ; Pascal a ordonné fusion et tag)
