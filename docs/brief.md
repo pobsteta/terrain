@@ -130,3 +130,13 @@
 - **Normes** : ISO 3864-1 et l'annexe E d'ISO 3864-4 ne sont pas achetées pour l'instant.
 - **Référentiel MCU** : Kotlin 1.8 et JDK 14, cités de mémoire, restent marqués « non
   sourcés » ; la mission 006 les confirmera.
+
+## Arbitrages de Pascal (2026-10-23, sur les mesures de la mission 007)
+
+- **Tertiary** : variante `CONTENT` de MCU au lieu de `FIDELITY` (ADR 0004), parce qu'en
+  thème sombre `tertiary` était identique à `error` (`#FFECE9`).
+- **Réussi** : `#0F8558`, non harmonisé ; repli `#00843D` si l'essai au soleil le confond
+  avec `primary`.
+- **Bord de la pastille d'alerte** sur surface claire (1,06 à 2,10:1) : noté au carnet des
+  écarts, à vérifier pendant l'essai au soleil.
+

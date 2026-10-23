@@ -7,7 +7,7 @@
 
 **En une phrase (quoi, et pourquoi) :** Écrire, sans lire le code de génération, les tests d'acceptation des jetons (couples à 7:1 du critère 2, plage ARGB, rôles « interdit en texte », marge affichée), pour que les valeurs générées soient jugées par la spec.
 
-**Redite par l'agent :** _à compléter par l'agent avant d'agir — s'il n'y arrive pas, il s'arrête._
+**Redite par l'agent :** Écrire, depuis la spec seule et sans lire le code de génération, les tests qui jugeront les jetons (couples à 7:1 par thème avec leur marge, plage ARGB, rôles interdits en texte documentés), pour que la mission 006 soit jugée par la spec et non par elle-même.
 
 ## Les trois questions (règle de staffing)
 
@@ -56,3 +56,24 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 Les tests compilent contre l'API, échouent tant que la mission 006 n'est pas faite, puis jugent ses valeurs.
+
+## Décisions de Pascal et remarques du relecteur — aller-retour 1/3 (2026-10-23)
+
+À reprendre dans `JetonsTest.kt`, branche `mission/005-tests-jetons` :
+
+1. **Test README exact** : aujourd'hui `texte.contains(n)` compte `primary` documenté dès
+   que le README cite `primaryContainer`. Chercher le nom exact entre accents graves
+   (`` `primary` ``, `` `alerte.couleur` ``). Le test reste dans 005 : **les missions 006 et
+   007 écriront chacune leur ligne au README** (décision de Pascal).
+2. **Anti-complaisance : gardé, limité** (décision de Pascal) aux rôles qui ont au moins un
+   couple de texte ; `alerte.couleur` reste exclu. Le dire dans le commentaire du test.
+3. **`Schema` refuse aussi ses 48 valeurs hors plage** par `IllegalArgumentException`
+   (décision de Pascal) : ajouter un test qui construit un `Schema` avec une valeur fautive.
+4. **Commentaire de troncature** : expliquer la tolérance de 1e-9 avant l'arrondi par le bas
+   (bruit flottant, cohérent avec `ContrasteTest`), puisque la spec dit « jamais arrondi ».
+5. Convention de nom validée : `primary` (nom du champ), `reussi.couleur` / `alerte.couleur`
+   ; c'est le rôle qui sert de texte qui passe « interdit en texte ».
+6. Remplir « Redite par l'agent » en tête de fiche.
+
+**Fusion** (décision de Pascal) : la PR 005 reste en brouillon ; la mission 006 part de cette
+branche, la 007 de la 006 ; les trois fusionnent ensemble, vertes.
