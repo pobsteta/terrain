@@ -43,7 +43,7 @@ en sombre, pour tenir 7:1.
 | Rôles couverts | **les propriétés de `ColorScheme` de Compose Material 3** (Fixed compris) : `primary` … `onTertiaryFixedVariant`, `background`, `surface*`, `inverse*`, `outline*`, `scrim`, `surfaceTint`, `error*`. Sont exclus : couleurs clés (`*PaletteKeyColor`), `*Dim` de SPEC_2025+, rôles propres à Android (`controlActivated`…) | code |
 | Couleur sémantique | `reussi` et `alerte`, chacune en quatre rôles : `couleur`, `surCouleur`, `conteneur`, `surConteneur` ; l'erreur est `error*` du schéma, sans doublon | code |
 | Rôle interdit en texte | liste par thème (dont `alerte.couleur`), dans le code (KDoc) et dans le README | code, `README.md` |
-| Réglages de génération | couleur de départ #374742, variante `FIDELITY`, `SPEC_2021` (imposée par `FIDELITY`), contraste 1,0, plateforme `PHONE`, commit MCU, teinte de `reussi`, valeurs d'`alerte` et leur source | en tête du code généré et `terrain-style/generation/` |
+| Réglages de génération | couleur de départ #374742, variante `CONTENT` (ADR 0004, au lieu de `FIDELITY`), `SPEC_2021` (imposée par la variante), contraste 1,0, plateforme `PHONE`, commit MCU, teinte de `reussi`, valeurs d'`alerte` et leur source | en tête du code généré et `terrain-style/generation/` |
 | Table des jetons | CSV `theme,role,argb` produit par le script (format ouvert, pour le successeur) | `terrain-style/src/test/resources/` |
 | Table de référence des rapports | CSV `argb_a,argb_b,rapport,outil,version` calculé par **deux outils tiers** nommés, pas par le code testé | `terrain-style/src/test/resources/` |
 
