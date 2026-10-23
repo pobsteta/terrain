@@ -3,7 +3,7 @@
 > Statut : validé par Pascal le 2026-10-23 (porte n° 1) ; critiqué par le `contradicteur`
 > avec `/imperatrice:brief`.
 >
-> Premier objet : le module `terrain-style`, demandé par Surculus dans l'issue
+> Premier objet : le module `terrain-style`, demandé par [Surculus](https://github.com/pobsteta/surculus) dans l'issue
 > [#1](https://github.com/pobsteta/terrain/issues/1) (2026-10-23), qui reprend
 > `surculus/pilotage/briefs/vers-terrain/2026-10-23-terrain-style.md` (commit `573972a`)
 > et va avec l'ADR 0008 de Surculus. Les rubriques ci-dessous en reprennent le contenu,

@@ -136,8 +136,8 @@ les autres briques.
 
 ## Questions ouvertes
 
-Aucune. Les deux questions d'origine sont tranchées par Pascal le 2026-10-23 (ADR 0002,
+Une : l'essai au soleil (critère 6), le 2026-10-30. Les deux questions d'origine sont tranchées par Pascal le 2026-10-23 (ADR 0002,
 notes « levé le » et « Amendé le ») : teinte de départ de « réussi » `#0F8558`, non harmonisé,
 **provisoire jusqu'à l'essai au soleil du 2026-10-30** (ADR 0002, note du 2026-10-23
 « provisoire ») ;
-jaune d'alerte `#E2AA00`. Reste, hors spec, l'essai au soleil (critère 6).
+jaune d'alerte `#E2AA00`. La seule question ouverte reste l'essai au soleil (critère 6).

@@ -5,6 +5,7 @@
 - **Date de consultation :** 2026-10-23
 - **Décisions éclairées :** ADR 0001 (comment exécuter MCU) et ADR 0002 (réussi par `errorPalette`, comportement des `*Dim`).
   Ce fichier rend des constats ; il ne tranche rien.
+- **Statut au 2026-10-23 :** constats, matière des ADR 0001 et 0002 (décidés) ; ce fichier ne tranche rien.
 - **Mission redite (aller-retour 1/3) :** établir, sources primaires à l'appui, les faits MCU et
   Compose Material 3 dont dépendent les ADR 0001 et 0002, afin que Pascal tranche et que le `dev`
   sache quoi compiler ; décisions éclairées nommées ci-dessus, aucune tranchée ici.

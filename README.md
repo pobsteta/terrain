@@ -1,7 +1,7 @@
 # terrain
 
 Bibliothèques communes des applications de terrain de la plateforme Néméton — Marculus
-(martelage), Groma (placettes), Surculus (travaux et plantations) — qui partagent le même
+(martelage), Groma (placettes), [Surculus](https://github.com/pobsteta/surculus) (travaux et plantations) — qui partagent le même
 matériel : smartphone, récepteur GNSS en Bluetooth (ZED-F9P), corrections NTRIP Centipède,
 GeoPackage hors ligne.
 
@@ -46,20 +46,7 @@ dependencies {
 }
 ```
 
-### Publier une version
-
-Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
-échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
-sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
-comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
-depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
-de contrôle (`verification-metadata.xml`).
-
-Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
-`com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
-
-Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
-machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
+Exemple d'usage (`terrain-gnss`) :
 
 ```kotlin
 import fr.nemeton.terrain.gnss.NmeaParser
@@ -69,6 +56,25 @@ val gga = NmeaParser.parseGga(phrase) ?: return   // null si somme de contrôle 
 val fix = NmeaParser.fixDepuis(gga)
 if (fix.qualite == QualiteFix.RTK_FIXE) { /* position centimétrique */ }
 ```
+
+### Publier une version
+
+Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
+échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
+sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
+comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
+depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
+de contrôle (`verification-metadata.xml`).
+
+La prochaine version, v0.6.1, peut changer le vert de départ de `reussi` (valeur provisoire
+jusqu'à l'essai au soleil du 2026-10-30) : voir « Changer le vert de départ de `reussi` »
+(section « Développer »).
+
+Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
+`com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
+
+Les versions v0.1.0 et v0.1.1 n'existent pas sur JitPack : Maven Central refusait (HTTP 429) les
+machines de JitPack, d'où le miroir Google en tête de `settings.gradle.kts`.
 
 ### GeoPackage sur Android
 

@@ -5,6 +5,7 @@
 - **Décision éclairée :** le choix par Pascal de la teinte de « réussi » et du jaune d'« alerte »
   (et de son noir), pour l'ADR 0002 (`docs/adr/0002-couleurs-semantiques.md`).
 - **Statut :** matière à choisir. **Aucune valeur n'est choisie ici.**
+- **Statut au 2026-10-23 :** valeurs choisies, voir ADR 0002 (`docs/adr/0002-couleurs-semantiques.md`) ; ce fichier reste matière.
 - **Limite de l'outil :** cette mission n'a eu aucun moyen d'exécuter du code. Toute conversion
   faite ci-dessous est **à la main** (méthode donnée) et marquée « à rejouer ». Aucun calcul
   HCT ni de contraste n'a été fait (hors mission, mission 007).
