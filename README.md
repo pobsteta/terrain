@@ -42,8 +42,18 @@ dependencies {
     implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.5.0") // apporte terrain-gnss
     implementation("com.github.pobsteta.terrain:terrain-voix:v0.5.0")
     implementation("com.github.pobsteta.terrain:terrain-carte:v0.5.0")
+    implementation("com.github.pobsteta.terrain:terrain-style:vX.Y.Z") // première version : le premier tag posé après son ajout
 }
 ```
+
+### Publier une version
+
+Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
+échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
+sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
+comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
+depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
+de contrôle (`verification-metadata.xml`).
 
 Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
 `com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.
