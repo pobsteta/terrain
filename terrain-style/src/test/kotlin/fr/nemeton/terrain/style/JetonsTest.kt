@@ -119,6 +119,12 @@ class JetonsTest {
 
     // ---- Tronquer, jamais arrondir ----
 
+    /**
+     * Tronque à 3 décimales par le bas, jamais d'arrondi (la spec : 4,499:1 ne tient pas 4,5:1).
+     * La tolérance de 1e-9 avant `floor` ne sert pas à arrondir : elle absorbe le bruit flottant
+     * (un rapport exact de 7,000 calculé en 6,999999999999), comme dans `ContrasteTest`. Elle est
+     * bien plus petite que la troncature visée (1e-3), donc 6,9999999 reste 6,999.
+     */
     private fun tronque3(r: Double): Double = floor(r * 1000.0 + 1e-9) / 1000.0
 
     private fun fmt(d: Double) = String.format(Locale.ROOT, "%.3f", d)
@@ -193,11 +199,16 @@ class JetonsTest {
     fun `un role interdit en texte ne l est pas par complaisance, il echoue au moins un couple ou est alerte couleur`() {
         // Inférence de la règle « une valeur qui échoue n'est pas retouchée : le rôle passe interdit » :
         // lister tous les rôles pour faire passer le test le viderait de son sens.
+        // Limité (décision de Pascal) aux rôles qui ont au moins un couple de texte : un rôle sans
+        // couple de texte n'est pas contrôlé ici ; `alerte.couleur` reste exclu (interdit par décision
+        // de sécurité, ADR 0002, et non parce qu'un couple échoue).
         for ((theme, s) in themes) {
             val v = jetons(s)
             for (n in s.interditsEnTexte) {
                 if (n == "alerte.couleur") continue
-                val echoue = couples().filter { it.texte == n }.any { c ->
+                val sesCouples = couples().filter { it.texte == n }
+                if (sesCouples.isEmpty()) continue
+                val echoue = sesCouples.any { c ->
                     tronque3(Contraste.rapport(v.getValue(n), v.getValue(c.fond))) < 7.0
                 }
                 assertTrue(echoue, "$theme : '$n' est interdit en texte mais tient 7:1 sur tous ses couples")
@@ -211,7 +222,8 @@ class JetonsTest {
             ?: error("README.md introuvable depuis ${File(".").absolutePath}")
         val texte = readme.readText()
         for ((theme, s) in themes) for (n in s.interditsEnTexte) {
-            assertTrue(texte.contains(n), "$theme : le rôle interdit en texte '$n' n'est pas documenté dans README.md")
+            // nom exact entre accents graves : `primary` ne doit pas être couvert par `primaryContainer`
+            assertTrue(texte.contains("`$n`"), "$theme : le rôle interdit en texte '$n' n'est pas documenté dans README.md (attendu : `$n`)")
         }
     }
 
@@ -265,5 +277,81 @@ class JetonsTest {
         val s = Semantique(0xFF000000L, 0xFFFFFFFFL, 0xFF000000L, 0xFFFFFFFFL)
         assertEquals(0xFF000000L, s.couleur)
         assertEquals(0xFFFFFFFFL, s.surCouleur)
+    }
+
+    /** Construit un Schema valide, sauf le rôle `cible` qui reçoit `valeur`. */
+    private fun schemaAvec(cible: String, valeur: Long): Schema {
+        val ok = 0xFF123456L
+        fun v(nom: String) = if (nom == cible) valeur else ok
+        val sem = Semantique(ok, ok, ok, ok)
+        return Schema(
+            primary = v("primary"),
+            onPrimary = v("onPrimary"),
+            primaryContainer = v("primaryContainer"),
+            onPrimaryContainer = v("onPrimaryContainer"),
+            inversePrimary = v("inversePrimary"),
+            secondary = v("secondary"),
+            onSecondary = v("onSecondary"),
+            secondaryContainer = v("secondaryContainer"),
+            onSecondaryContainer = v("onSecondaryContainer"),
+            tertiary = v("tertiary"),
+            onTertiary = v("onTertiary"),
+            tertiaryContainer = v("tertiaryContainer"),
+            onTertiaryContainer = v("onTertiaryContainer"),
+            background = v("background"),
+            onBackground = v("onBackground"),
+            surface = v("surface"),
+            onSurface = v("onSurface"),
+            surfaceVariant = v("surfaceVariant"),
+            onSurfaceVariant = v("onSurfaceVariant"),
+            surfaceTint = v("surfaceTint"),
+            inverseSurface = v("inverseSurface"),
+            inverseOnSurface = v("inverseOnSurface"),
+            error = v("error"),
+            onError = v("onError"),
+            errorContainer = v("errorContainer"),
+            onErrorContainer = v("onErrorContainer"),
+            outline = v("outline"),
+            outlineVariant = v("outlineVariant"),
+            scrim = v("scrim"),
+            surfaceBright = v("surfaceBright"),
+            surfaceDim = v("surfaceDim"),
+            surfaceContainer = v("surfaceContainer"),
+            surfaceContainerHigh = v("surfaceContainerHigh"),
+            surfaceContainerHighest = v("surfaceContainerHighest"),
+            surfaceContainerLow = v("surfaceContainerLow"),
+            surfaceContainerLowest = v("surfaceContainerLowest"),
+            primaryFixed = v("primaryFixed"),
+            primaryFixedDim = v("primaryFixedDim"),
+            onPrimaryFixed = v("onPrimaryFixed"),
+            onPrimaryFixedVariant = v("onPrimaryFixedVariant"),
+            secondaryFixed = v("secondaryFixed"),
+            secondaryFixedDim = v("secondaryFixedDim"),
+            onSecondaryFixed = v("onSecondaryFixed"),
+            onSecondaryFixedVariant = v("onSecondaryFixedVariant"),
+            tertiaryFixed = v("tertiaryFixed"),
+            tertiaryFixedDim = v("tertiaryFixedDim"),
+            onTertiaryFixed = v("onTertiaryFixed"),
+            onTertiaryFixedVariant = v("onTertiaryFixedVariant"),
+            reussi = sem,
+            alerte = sem,
+            interditsEnTexte = emptySet(),
+        )
+    }
+
+    @Test
+    fun `Schema accepte une valeur valide pour chacun de ses 48 roles`() {
+        for (nom in roles.keys) {
+            val s = schemaAvec(nom, 0xFF654321L)
+            assertEquals(0xFF654321L, roles.getValue(nom)(s), nom)
+        }
+    }
+
+    @Test
+    fun `Schema refuse toute valeur hors plage ARGB, sur chacun de ses 48 roles, par IllegalArgumentException`() {
+        val mauvaises = listOf(0x00123456L, 0x80123456L, 0x123456L, 0L, -1L, 0x1_FF123456L, Long.MAX_VALUE, Long.MIN_VALUE)
+        for (nom in roles.keys) for (m in mauvaises) {
+            assertFailsWith<IllegalArgumentException>("$nom = ${java.lang.Long.toHexString(m)}") { schemaAvec(nom, m) }
+        }
     }
 }
