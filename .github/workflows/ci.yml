@@ -28,3 +28,16 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew test
+      # ADR 0001 : la génération des jetons se rejoue à l'octet près.
+      - name: Rejeu de la génération des jetons
+        run: |
+          ./gradlew :terrain-style:generer
+          git diff --exit-code
+          test -z "$(git status --porcelain)" || { git status --porcelain; echo "::error::fichiers non suivis après la génération"; exit 1; }
+      - run: ./gradlew :terrain-style:testGeneration
+      # ADR 0001 : le jar publié ne contient aucune classe de MCU.
+      - name: Le jar de terrain-style ne dépend pas de MCU
+        run: |
+          ./gradlew :terrain-style:jar
+          intrus=$(unzip -Z1 terrain-style/build/libs/terrain-style-dev.jar | grep -v -e '^META-INF/' -e '^fr/$' -e '^fr/nemeton/' || true)
+          if [ -n "$intrus" ]; then echo "::error::classes hors de fr/nemeton dans le jar : $intrus"; exit 1; fi

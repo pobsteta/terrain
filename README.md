@@ -85,6 +85,17 @@ ligne d'index est écrite à la main, puis ils sont recréés, dans la même tra
 Jeu d'essai : `terrain-gpkg/src/test/resources/gpkg/essai.gpkg`, fabriqué par GDAL
 (`fabriquer.sh`), avec la référence PROJ de chaque sommet en WGS 84 (`reference.csv`).
 
+### Couleurs : `terrain-style`
+
+`StyleTerrain.clair` et `StyleTerrain.sombre` sont deux `Schema`, un champ par rôle de
+`ColorScheme` de Compose Material 3 (48 rôles, en ARGB `0xFFRRGGBB` dans un `Long`), à recopier
+dans le thème de l'application. Ils sont générés une fois par Material Color Utilities (ADR 0001 :
+VertMarculus `#374742`, `FIDELITY`, `SPEC_2021`, contraste 1,0) puis figés ; le module publié
+ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
+
+Rôles interdits en texte (sous 7:1 sur l'un de leurs fonds, liste `interditsEnTexte` de
+chaque schéma, calculée par le script) : aucun parmi les 48 rôles, en clair comme en sombre.
+
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
 Kotlin 2.2 et suivants.
 
@@ -93,6 +104,8 @@ Kotlin 2.2 et suivants.
 ```sh
 ./gradlew test                 # tests JVM
 ./gradlew publishToMavenLocal  # version « dev » dans ~/.m2, pour essayer dans une appli
+./gradlew :terrain-style:generer        # régénère les jetons de couleur (ADR 0001)
+./gradlew :terrain-style:testGeneration # tests du script de génération
 ```
 
 Une correction se fait ici, avec son test, puis chaque application monte de version.
