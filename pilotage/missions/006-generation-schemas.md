@@ -70,3 +70,19 @@ La CI régénère et ne trouve aucune différence ; Pascal reconnaît (ou non) V
 - **README** : chaque rôle déclaré « interdit en texte » y est écrit entre accents graves.
 - **Marges lisibles** : ajouter `testLogging { showStandardStreams = true }` (ou équivalent)
   au `build.gradle.kts` du module, pour que les lignes `MARGE` sortent dans la console.
+
+## Décision de Pascal — aller-retour 1/3 (2026-10-23)
+
+Sur les mesures de la mission 007, Pascal a retenu la **variante `CONTENT`** au lieu de
+`FIDELITY` (ADR 0004), pour qu'en sombre `tertiary` ne soit plus identique à `error`.
+À faire dans cette branche :
+
+1. Passer le réglage de variante de `Generer.kt` à `CONTENT` (seul réglage qui change) ;
+   garder la vérification `scheme.specVersion == SPEC_2021`.
+2. Régénérer `StyleTerrain.kt`, `jetons.csv`, `nuancier.svg` ; adapter `GenererTest`
+   (variante attendue, repli de version pour `CONTENT` sur `PHONE`).
+3. Vérifier et rendre : seuls les rôles `tertiary*` (et leurs `on*` concernés) changent ;
+   `primaryContainer` clair reste `#374742` ; `interditsEnTexte` (vide ou non) ; les
+   nouvelles marges les plus serrées ; la parité Java/Kotlin rejouée en `CONTENT`.
+4. README : réglages à jour.
+Commite, ne pousse pas, rends le SHA.
