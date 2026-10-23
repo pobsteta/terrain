@@ -7,7 +7,7 @@
 
 **En une phrase (quoi, et pourquoi) :** Écrire, sans lire le code qui l'implémente, les tests d'acceptation de `Contraste` et leur table de référence calculée par deux outils tiers, pour que la fonction de contraste ne soit pas son propre juge.
 
-**Redite par l'agent :** _à compléter par l'agent avant d'agir — s'il n'y arrive pas, il s'arrête._
+**Redite par l'agent :** Écrire les tests d'acceptation de `Contraste` (sans lire son code) et leur table de référence calculée par deux outils tiers appliquant la formule WCAG à la lettre, pour que la fonction de contraste ne soit pas son propre juge.
 
 ## Les trois questions (règle de staffing)
 
@@ -56,3 +56,25 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 Les tests échouent (rouge) tant que la mission 004 n'est pas faite, puis passent.
+
+## Décisions de Pascal et remarques du relecteur — aller-retour 1/3 (2026-10-23)
+
+Relecteur : prêt (PR #3). Pascal a tranché, à reprendre sur la branche
+`mission/003-tests-contraste` :
+
+1. **Alpha ≠ `FF` : refusé.** Le test reste ; la spec le dit désormais (`docs/spec.md`,
+   Données).
+2. **Type d'exception : `IllegalArgumentException`.** Remplacer chaque `assertFails` par
+   `assertFailsWith<IllegalArgumentException>` (convention de `terrain-gpkg` et
+   `terrain-voix`).
+3. **Outils tiers : remplacer `wcag-contrast-ratio` 0.9 (non entretenu depuis 2015) et
+   `coloraide` 4.0 (luminance par matrice XYZ, écart jusqu'à 1,03e-3, pas ~1e-4) par
+   deux outils qui appliquent la formule WCAG 2.x à la lettre (coefficients 0,2126 /
+   0,7152 / 0,0722), entretenus, de deux auteurs distincts, versions épinglées et
+   sourcées.** Régénérer la table ; les 21 couples écartés doivent pouvoir revenir. Si
+   les deux outils divergent encore sur une ligne, l'écarter et le dire, sans arbitrer.
+4. Renommer le test « 4,478 ne tient pas 4,5 et 4,542 le tient (pas d'arrondi…) » :
+   il vérifie un seuil sur le rapport brut, pas une troncature.
+5. En tête de `reference.csv` ou du script : rappeler « séparateur virgule, point
+   décimal » pour l'import dans un tableur réglé en français.
+6. Remplir « Redite par l'agent » en tête de fiche.
