@@ -24,15 +24,6 @@ _Modèle de carte :_
 
 ## Planifié
 
-- [013-reussi-provisoire](missions/013-reussi-provisoire.md) · depuis le cycle 4
-  - Homme : `archiviste` (sonnet)
-  - Mission : marquer #0F8558 provisoire jusqu'à l'essai au soleil ; lancée au cycle 4
-  - Moyens : README, ADR 0002, spec ; PR
-- [012-dependances](missions/012-dependances.md) · depuis le cycle 4
-  - Homme : `archiviste` (sonnet)
-  - Mission : rubrique « dépend de / rouge attendu jusqu'à » (cause C) ; lancée au cycle 4, après la fusion de la 010
-  - Moyens : dépôt du plugin ; PR
-
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 3
   - Homme : Pascal, hors agents
   - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
@@ -40,6 +31,16 @@ _Modèle de carte :_
 
 ## Terminé
 
+- [013-reussi-provisoire](missions/013-reussi-provisoire.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : marquer #0F8558 provisoire jusqu'à l'essai au soleil ; lancée au cycle 4
+  - Moyens : README, ADR 0002, spec ; PR
+  - Livré : PR #17 fusionnée
+- [012-dependances](missions/012-dependances.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : rubrique « dépend de / rouge attendu jusqu'à » (cause C) ; lancée au cycle 4, après la fusion de la 010
+  - Moyens : dépôt du plugin ; PR
+  - Livré : PR pobsteta/methode-imperatrice#22 fusionnée (plugin v0.6.0, 2 allers-retours)
 - [011-liste-de-controle](missions/011-liste-de-controle.md) · depuis le cycle 4
   - Homme : `archiviste` (sonnet)
   - Mission : liste de contrôle avant « prêt » (cause B) ; lancée au cycle 4
