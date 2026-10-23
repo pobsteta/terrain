@@ -1,6 +1,6 @@
 # terrain — spec du module `terrain-style`
 
-- **Statut :** proposée (à valider par Pascal, porte n° 1)
+- **Statut :** validée par Pascal le 2026-10-23 (porte n° 1)
 - **Tirée de :** `docs/brief.md` (arbitrages de Pascal du 2026-10-23), issue
   [#1](https://github.com/pobsteta/terrain/issues/1)
 - **Décisions structurantes :** ADR 0001 à 0003 (`docs/adr/`), proposées
