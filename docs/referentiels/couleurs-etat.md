@@ -65,7 +65,7 @@ la région, ce qui n'est pas une mesure mais une conséquence de β max.
 | J1 | ISO 3864-4 Table 1 (primaire) | normalisation des matériaux de panneaux | région (x,y) + β 0,45 à 0,70 | aucune (pas d'hex) | forte, lue |
 | J2 | Conversion à la main de J1 : moyenne des 4 sommets (x 0,4775 ; y 0,4708) | acquéreur, pour comparer | β 0,45 : lin. R 0,763 G 0,404 B −0,014 (B écrêté à 0) -> `#E2AA00` ; β 0,70 : R 1,19 G 0,63 B < 0 (hors gamut, écrêté) -> `#FFD000`. **L'écrêtage déplace la couleur** : `#FFD000` vaut ≈ β 0,66 et chromaticité ≈ (0,457 ; 0,475) (calcul du relecteur), encore dans la région ; ce n'est pas le β 0,70 visé | xyY -> XYZ -> sRGB linéaire (matrice IEC 61966-2-1, blanc D65, **sans adaptation** : D65 des deux côtés), encodage sRGB, écrêtage [0;1] | moyenne, **à rejouer par un outil**, pas un point normatif |
 | J3 | RAL 1003 « Signal Yellow », rattaché à ISO 3864-4 (Wikipédia ISO 3864) | RAL, éditeur de collection | `#F3AD1E` (tableau « safety colours ») **et** `#F9A900` (tableau 3864-2, Wikipédia « ISO 3864 ») ; `#F9A800` (Wikipédia « List of RAL colours », relu 2026-10-23) | non précisée | secondaire, **trois valeurs entre elles** |
-| J3b | Nuancier officiel RAL (ral-farben.de), **source la plus primaire** pour RAL 1003 | RAL gGmbH | `#E6B019` | non précisée | primaire pour RAL, **valeur rapportée par le relecteur (aller-retour 1) ; non relue par l'acquéreur** (page ral-farben.de non retrouvée, 404 sur l'URL tentée) |
+| J3b | Nuancier officiel RAL (ral-farben.de), RAL 1003 : https://www.ral-farben.de/en/colour/ral-classic/ral-1003/9086 | RAL gGmbH | `#E6B019` | **non précisée** : couleur d'affichage des pastilles du site, pas une mesure | éditeur de la collection (source la plus primaire pour RAL), mais valeur d'écran de méthode inconnue ; relue 2026-10-23 (relecteur, réponse 200) |
 | J4 | ANSI Z535.1 « safety yellow » (LinkML valuesets) | ANSI, États-Unis (Munsell, illuminant C) | `#F6D04D`, PMS 116 C | non précisée, approximation tierce | secondaire, autre norme |
 
 **Écart relevé :**
@@ -89,14 +89,15 @@ la région, ce qui n'est pas une mesure mais une conséquence de β max.
 |---|---|---|---|---|
 | R1 | ISO 3864-4 Table 1, région verte | région très large (x 0,026 à 0,285 ; y 0,364 à 0,776), β 0,11 à 0,25 | non calculée (région trop large pour une teinte unique) | forte, lue ; **ne fixe pas une teinte** |
 | R2 | RAL 6032 « Signal Green » rattaché à ISO 3864-4 (Wikipédia « ISO 3864 ») | vert « condition sûre » | `#31865C` (tableau 1) ; `#0F8558` (Wikipédia « List of RAL colours », relu 2026-10-23). `#237F52` **retiré** : aucune source retrouvée | secondaire, deux valeurs |
-| R2b | Nuancier officiel RAL (ral-farben.de), RAL 6032 | source la plus primaire | `#417E57` | **rapportée par le relecteur, non relue par l'acquéreur** |
+| R2b | Nuancier officiel RAL (ral-farben.de), RAL 6032 : https://www.ral-farben.de/en/colour/ral-classic/ral-6032/9218 | source la plus primaire pour RAL | `#417E57` | couleur d'affichage des pastilles du site, **méthode non précisée** par RAL, pas une mesure ; relue 2026-10-23 (relecteur, réponse 200) |
 | R3 | ANSI Z535.1 « safety green » (LinkML) | vert « sécurité, premiers secours » | `#00843D`, PMS 355 C | secondaire |
 | R4 | ISO 22324:2022 (alertes codées par couleur), via résumés : « Green is associated with a safe status … no action is required » ; jaune = « caution … prepare » ; rouge = danger | **sens** seulement, ne donne pas de teinte (hors champ : « the method for displaying colour codes ») | aucune | secondaire (l'aperçu ANSI webstore a répondu 403, non lu) |
 | R5 | IEC 60073 | vert = condition normale/sûre, jaune = anormale (de mémoire, **non confirmé par un texte lu** ; seule la fiche de métadonnées a été trouvée) | aucune | non vérifiée |
 | R6 | MDC-Android `docs/theming/Color.md` (lu) | ne traite **ni réussi, ni vert, ni jaune** ; seulement `error` ; harmonisation `harmonizeWithPrimary` (error harmonisé par défaut) ; pas de hex ni de ton HCT | aucune | forte, mais **ne répond pas** |
 
-**Concordance :** R2 et R3 (HSL ≈ 148° à 151°, vert franc, légèrement bleuté) concordent entre eux
-(`#31865C` ≈ 150°, `#00843D` ≈ 148°) ; `#0F8558` (≈ 157°) et `#417E57` (≈ 142°) sont voisins (calcul à la main). `#237F52` est retiré (sans source). Teintes HSL, **pas HCT** : à ne pas
+**Concordance :** les quatre valeurs R2, R2b et R3 s'étalent sur **142° à 157°** en HSL
+(`#417E57` ≈ 142°, `#00843D` ≈ 148°, `#31865C` ≈ 150°, `#0F8558` ≈ 157° ; calcul à la main) : des verts
+francs, légèrement bleutés, voisins mais pas identiques (15° d'étendue). `#237F52` est retiré (sans source). Teintes HSL, **pas HCT** : à ne pas
 confondre. Ces valeurs sont des verts moyens ; la teinte de départ HCT reste à mesurer
 (mission 007).
 
@@ -122,14 +123,14 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 4. IEC 60073 : texte non lu.
 5. Blocs « blanc » et « noir » de la Table 1 : partiellement masqués par le filigrane.
 6. Aucune conversion exécutée par un outil de l'acquéreur ; J2 est à la main. Elle a été **rejouée une fois par le relecteur** (conforme : `#E2AA00`, `#FFD000`) ; un second rejeu par deux outils indépendants reste utile. À β 0,45, B < 0 est aussi écrêté.
-9. Nuancier officiel RAL (`#E6B019`, `#417E57`) : valeurs rapportées par le relecteur, page ral-farben.de non relue.
-7. Teintes HCT, rapports de contraste, écart `reussi`–`primary` : hors mission (mission 007).
-8. MCU `customColor` et visibilité du constructeur à `errorPalette` : besoin n° 1, autre mission.
+7. Nuancier officiel RAL (`#E6B019`, `#417E57`) : pages relues par le relecteur le 2026-10-23 ; la **méthode** qui produit ces valeurs d'affichage n'est pas précisée par RAL, elles ne sont donc pas des mesures.
+8. Teintes HCT, rapports de contraste, écart `reussi`–`primary` : hors mission (mission 007).
+9. MCU `customColor` et visibilité du constructeur à `errorPalette` : besoin n° 1, autre mission.
 
 ## 6. Trois points au sol (à vérifier par Pascal sur l'écran)
 
-1. **Jaune d'alerte, trois candidats côte à côte avec du texte noir :** `#E2AA00` (ISO à β 0,45,
-   J2), `#F9A900` (RAL 1003, J3) et `#F6D04D` (ANSI, J4). Le plus sensible : « jaune clair » de la
+1. **Jaune d'alerte, quatre candidats côte à côte avec du texte noir :** `#E2AA00` (ISO à β 0,45,
+   J2), `#F9A900` (RAL 1003, J3), `#E6B019` (RAL 1003, nuancier officiel, J3b) et `#F6D04D` (ANSI, J4). Le plus sensible : « jaune clair » de la
    spec correspond-il à J4 plutôt qu'à l'ISO ? À voir en plein soleil (critère 6 de la spec).
 2. **Vert de réussite, candidats côte à côte :** `#31865C`, `#0F8558`, `#417E57`, `#00843D`, **et à côté
    VertMarculus `#374742`** et un `primary` clair foncé : se distingue-t-il de `primary` sans le
@@ -145,7 +146,7 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 
 ## 8. Questions à Pascal (je ne tranche pas)
 
-- « Jaune clair » : ambre ISO (RAL 1003, `#F9A900`), jaune ANSI pâle (`#F6D04D`), ou ISO à β élevé
+- « Jaune clair » : ambre ISO (RAL 1003, `#F9A900` ou `#E6B019` du nuancier officiel), jaune ANSI pâle (`#F6D04D`), ou ISO à β élevé
   (hors gamut, écrêté) ?
 - Acceptes-tu de payer ISO 3864-1 et l'Annexe E de 3864-4 pour lever les points 1 et 2 de §5 ?
 - Garde-t-on un vert normatif R2/R3 comme teinte de départ, harmonisé ou non, après mesure HCT
@@ -156,7 +157,10 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 - ISO 3864-4:2011, Table 1, aperçu : https://cdn.standards.iteh.ai/samples/51000/096ba63848784a5f9bec95746e5b7196/ISO-3864-4-2011.pdf
 - Wikipédia, ISO 3864 (RAL, CMYK, hex ; secondaire) : https://en.wikipedia.org/wiki/ISO_3864
 - Wikipédia, List of RAL colours (`#F9A800`, `#0F8558` ; secondaire) : https://en.wikipedia.org/wiki/List_of_RAL_colours
-- Nuancier RAL, ral-farben.de (`#E6B019`, `#417E57` ; primaire, rapporté par le relecteur, URL exacte à fournir)
+- Nuancier RAL, ral-farben.de (primaire pour RAL ; valeurs d'affichage, méthode non précisée ; relu 2026-10-23 par le relecteur) :
+  - vue d'ensemble : https://www.ral-farben.de/en/all-ral-colours
+  - RAL 1003 : https://www.ral-farben.de/en/colour/ral-classic/ral-1003/9086 (`#E6B019`)
+  - RAL 6032 : https://www.ral-farben.de/en/colour/ral-classic/ral-6032/9218 (`#417E57`)
 - LinkML valuesets, SafetyColorEnum (ANSI Z535.1 ; secondaire) : https://linkml.io/valuesets/elements/SafetyColorEnum/
 - ISO 22324:2022 (résumé de Wikipédia et de iteh) : https://en.wikipedia.org/wiki/ISO_22324 (non lue directement)
 - IEC 60073 (métadonnées seulement) : https://reference.globalspec.com/ref/3879665/iec-60073-2002

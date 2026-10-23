@@ -78,3 +78,21 @@ Pascal choisit la teinte de réussi et le jaune en une lecture, sans nouvelle re
 6. **§4** : écrire l'effet de l'harmonisation comme « hypothèse à mesurer » (écart HSL ≠
    rotation HCT), pas « rapprocherait déjà ».
 7. Remplir « Redite par l'agent » en tête de fiche.
+
+## Remarques du relecteur — aller-retour 2/3 (2026-10-23)
+
+Points 1 à 7 traités ; quatre retouches mineures dans `docs/referentiels/couleurs-etat.md` :
+
+1. **Inscrire les URL du nuancier RAL** (relues par le relecteur le 2026-10-23, réponse 200)
+   en §9, J3b et R2b, et remplacer « rapporté par le relecteur, non relue » par
+   « relue 2026-10-23 (relecteur) » ; retirer ou reformuler le point 9 de §5 :
+   - vue d'ensemble : https://www.ral-farben.de/en/all-ral-colours
+   - RAL 1003 : https://www.ral-farben.de/en/colour/ral-classic/ral-1003/9086 → `#E6B019`
+   - RAL 6032 : https://www.ral-farben.de/en/colour/ral-classic/ral-6032/9218 → `#417E57`
+   - Fiabilité : couleur d'affichage des pastilles du site, **méthode non précisée** par
+     RAL ; ne pas la présenter comme une mesure.
+2. **Concordance §4** : « R2 et R3 (≈ 148° à 151°) concordent » n'est plus exact ; donner
+   l'étendue réelle (142° à 157° avec R2 et R2b).
+3. **Échantillon §6.1 et question §8** : ajouter `#E6B019` au côte à côte jaune, et le citer
+   en §8 à côté de `#F9A900`, pour que les deux côtés suivent la même règle.
+4. **Numérotation de §5** : remettre dans l'ordre (aujourd'hui 1-6, 9, 7, 8).
