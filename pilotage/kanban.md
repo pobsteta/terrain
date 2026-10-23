@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 3 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 4 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,20 +22,16 @@ _Modèle de carte :_
 
 ## Validé
 
-- [010-valeur-provisoire](missions/010-valeur-provisoire.md) · depuis le cycle 3
-  - Homme : `archiviste` (sonnet)
-  - Mission : ligne « valeur provisoire » au gabarit de fiche du plugin (cause A) ; prochain `/boucle`
-  - Moyens : dépôt du plugin ; PR
-- [011-liste-de-controle](missions/011-liste-de-controle.md) · depuis le cycle 3
-  - Homme : `archiviste` (sonnet)
-  - Mission : liste de contrôle avant « prêt » (cause B) ; prochain `/boucle`
-  - Moyens : 7 renvois du journal ; PR sur le plugin
-- [012-dependances](missions/012-dependances.md) · depuis le cycle 3
-  - Homme : `archiviste` (sonnet)
-  - Mission : rubrique « dépend de / rouge attendu jusqu'à » (cause C) ; prochain `/boucle`
-  - Moyens : dépôt du plugin ; PR
-
 ## Planifié
+
+- [013-reussi-provisoire](missions/013-reussi-provisoire.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : marquer #0F8558 provisoire jusqu'à l'essai au soleil ; lancée au cycle 4
+  - Moyens : README, ADR 0002, spec ; PR
+- [012-dependances](missions/012-dependances.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : rubrique « dépend de / rouge attendu jusqu'à » (cause C) ; lancée au cycle 4, après la fusion de la 010
+  - Moyens : dépôt du plugin ; PR
 
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 3
   - Homme : Pascal, hors agents
@@ -44,6 +40,16 @@ _Modèle de carte :_
 
 ## Terminé
 
+- [011-liste-de-controle](missions/011-liste-de-controle.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : liste de contrôle avant « prêt » (cause B) ; lancée au cycle 4
+  - Moyens : 7 renvois du journal ; PR sur le plugin
+  - Livré : contenu fusionné via la PR #20 du plugin (v0.5.0), PR #21 fermée
+- [010-valeur-provisoire](missions/010-valeur-provisoire.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : ligne « valeur provisoire » au gabarit de fiche du plugin (cause A) ; lancée au cycle 4
+  - Moyens : dépôt du plugin ; PR
+  - Livré : PR pobsteta/methode-imperatrice#20 fusionnée (plugin v0.5.0)
 - [009-memoire-v0.6.0](missions/009-memoire-v0.6.0.md) · depuis le cycle 3
   - Homme : `archiviste` (sonnet)
   - Mission : corrections P1 et P2 du bilan n° 1 ; lancée au bilan du 2026-10-23
@@ -110,3 +116,5 @@ l'inscrit avec ce qu'elle nous apprend._
 - cycle 1 · table de référence WCAG `terrain-style/src/test/resources/contraste/reference.csv` (200 couples, deux outils tiers, rejouable à l'octet) · pour les développeurs de Surculus · première livraison : de quoi tester leur propre palette d'état dès maintenant
 - cycle 2 · module `terrain-style` et `Contraste.rapport` (WCAG 2.2), publiable par JitPack au premier tag · pour les développeurs de Marculus, Groma et Surculus · une fonction à appeler au lieu d'une table à rejouer
 - cycle 3 · `terrain-style` complet, tag v0.6.0 : 48 rôles Material 3 + réussi et alerte, clair et sombre, tous à 7:1 (variante CONTENT, ADR 0004) · pour les développeurs de Marculus, Groma et Surculus · une palette entière à épingler par JitPack, au lieu d'une seule fonction de contraste (proposée par l'orchestrateur ; Pascal a ordonné fusion et tag)
+- bilan du 2026-10-23 · terrain-style v0.6.0 reprenable par un successeur (documents remis à jour, marche à suivre du repli `#00843D`, prérequis des tests) · pour les développeurs de Marculus, Groma et Surculus et un futur mainteneur · une palette qu'un autre que nous sait faire évoluer, au lieu d'une palette seulement publiée (acceptée par Pascal)
+- cycle 4 · plugin `imperatrice` v0.5.0 : rubrique « Valeur provisoire » et liste de contrôle avant « prêt », tirées du Pareto du bilan n° 1 · pour l'orchestrateur et les agents de tous les projets qui utilisent le plugin · une méthode qui vise 60 % des incidents du bilan, au lieu d'une palette (acceptée par Pascal)

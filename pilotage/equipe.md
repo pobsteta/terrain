@@ -41,6 +41,7 @@
 | [010](missions/010-valeur-provisoire.md) valeur provisoire avant mesure | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [011](missions/011-liste-de-controle.md) liste de contrôle avant « prêt » | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [012](missions/012-dependances.md) dépendances entre missions | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
+| [013](missions/013-reussi-provisoire.md) réussi #0F8558 provisoire | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
 terrain, après la mission 007, et noté au carnet des écarts ; échéance fixée au bilan n° 1 : 2026-10-30.
