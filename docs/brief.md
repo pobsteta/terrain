@@ -10,9 +10,10 @@
 
 ## Ma réponse d'abord (fiche n° 15)
 
-> _Ce que j'attends, et pourquoi, en quelques lignes._
+> J'attends une cohérence des applications pour terrain-style et la capacité profonde d'un
+> grand contraste pour une utilisation sur le terrain en extérieur.
 >
-> — _Pascal, le JJ mois AAAA, écrit avant de lire la critique du contradicteur._
+> — Pascal, le 23 octobre 2026, écrit avant de lire la critique du contradicteur.
 
 ## Le problème, et pour qui (Abstraction)
 
