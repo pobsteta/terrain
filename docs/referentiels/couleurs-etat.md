@@ -71,6 +71,7 @@ la région, ce qui n'est pas une mesure mais une conséquence de β max.
 **Écart relevé :**
 - J2 (`#E2AA00`, teinte HSL ≈ 45°) et J3 (`#F3AD1E` / `#F9A900`, ≈ 40°) concordent : un **jaune ambre**,
   pas un « jaune clair ». C'est le jaune ISO à son β minimum (0,45).
+- J3b (`#E6B019`, nuancier officiel RAL, ≈ 44°) est de la même famille ambre que J2 et J3.
 - J4 (`#F6D04D`, ≈ 46°) est nettement plus clair et plus pâle : c'est la norme **américaine**, pas ISO.
 - Cause probable : ISO admet β de 0,45 à 0,70, donc une région large ; RAL 1003 en prend le bas,
   ANSI un jaune plus clair. Les teintes HSL (J2, J3, J4) sont voisines ; la différence est surtout de
@@ -102,11 +103,11 @@ confondre. Ces valeurs sont des verts moyens ; la teinte de départ HCT reste à
 (mission 007).
 
 **Distance à `primary` (VertMarculus `#374742`) :** en HSL, teinte ≈ 161° pour `#374742`, soit
-10 à 13° d'écart avec R2/R3, sur un vert très peu saturé (le vert d'état est beaucoup plus saturé).
+4 à 19° d'écart avec R2, R2b et R3 (4° pour `#0F8558`, R2 ; 19° pour `#417E57`, R2b), sur un vert très peu saturé (le vert d'état est beaucoup plus saturé).
 La spec cite aussi `#3E7A40` (teinte HSL ≈ 122°, jaunâtre) comme couple d'essai de contraste, ce
 n'est **pas** une source de teinte. **L'écart HCT avant/après harmonisation n'est pas calculé** (hors mission
 et sans outil) : il reste dû à la mission 007. `Blend.harmonize` tourne d'au plus 15° (ADR 0002),
-l'écart HSL de 10 à 13° n'est **pas** une rotation HCT. **Hypothèse à mesurer** : harmoniser
+l'écart HSL de 4 à 19° (R2, R2b, R3) n'est **pas** une rotation HCT. **Hypothèse à mesurer** : harmoniser
 pourrait rapprocher « réussi » de `primary` ; **c'est l'argument de fond de la question ouverte, à mesurer en HCT avant de trancher.**
 
 **Retour hex → chromaticité (calcul du relecteur, aller-retour 1 ; approximatif : couleur d'écran assimilée à une couleur d'objet sous D65) :** `#F6D04D` (ANSI) est **hors** de la région jaune ISO ; `#31865C` et `#00843D` sont **hors** de la région verte ISO ; `#0F8558` est dedans. Non rejoué par l'acquéreur.
@@ -149,8 +150,9 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 - « Jaune clair » : ambre ISO (RAL 1003, `#F9A900` ou `#E6B019` du nuancier officiel), jaune ANSI pâle (`#F6D04D`), ou ISO à β élevé
   (hors gamut, écrêté) ?
 - Acceptes-tu de payer ISO 3864-1 et l'Annexe E de 3864-4 pour lever les points 1 et 2 de §5 ?
-- Garde-t-on un vert normatif R2/R3 comme teinte de départ, harmonisé ou non, après mesure HCT
-  de la mission 007 ?
+- Garde-t-on un vert publié (R2 `#31865C`/`#0F8558`, R2b `#417E57` du nuancier RAL, ou R3 ANSI
+  `#00843D` ; aucun n'est une teinte normative) comme teinte de départ, harmonisé ou non, après
+  mesure HCT de la mission 007 ?
 
 ## 9. Sources (consultées 2026-10-23)
 
