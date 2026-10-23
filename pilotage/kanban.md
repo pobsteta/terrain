@@ -27,10 +27,16 @@ _Modèle de carte :_
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 3
   - Homme : Pascal, hors agents
   - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
-  - Moyens : même écran, plein soleil, fiche en thème clair ; noté au carnet des écarts ; repli `#00843D` (v0.6.1) si réussi se confond avec `primary`
+  - Moyens : même écran, plein soleil, fiche en thème clair ; repli `#00843D` (v0.6.1) si réussi se confond avec `primary`
+  - Résultat : une ligne `écart` au carnet des écarts de `pilotage/journal.md`, puis une note datée de gel dans l'ADR 0002 (même PR que la levée de la mention « provisoire », marche à suivre du README)
 
 ## Terminé
 
+- [014-corrections-bilan-2](missions/014-corrections-bilan-2.md) · depuis le cycle 4
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 à P3 du bilan n° 2 ; lancée au bilan n° 2
+  - Moyens : rapport de l'archiviste ; liste de contrôle jointe ; PR
+  - Livré : PR #20 fusionnée (1 retouche sur décisions de Pascal)
 - [013-reussi-provisoire](missions/013-reussi-provisoire.md) · depuis le cycle 4
   - Homme : `archiviste` (sonnet)
   - Mission : marquer #0F8558 provisoire jusqu'à l'essai au soleil ; lancée au cycle 4
@@ -119,3 +125,5 @@ l'inscrit avec ce qu'elle nous apprend._
 - cycle 3 · `terrain-style` complet, tag v0.6.0 : 48 rôles Material 3 + réussi et alerte, clair et sombre, tous à 7:1 (variante CONTENT, ADR 0004) · pour les développeurs de Marculus, Groma et Surculus · une palette entière à épingler par JitPack, au lieu d'une seule fonction de contraste (proposée par l'orchestrateur ; Pascal a ordonné fusion et tag)
 - bilan du 2026-10-23 · terrain-style v0.6.0 reprenable par un successeur (documents remis à jour, marche à suivre du repli `#00843D`, prérequis des tests) · pour les développeurs de Marculus, Groma et Surculus et un futur mainteneur · une palette qu'un autre que nous sait faire évoluer, au lieu d'une palette seulement publiée (acceptée par Pascal)
 - cycle 4 · plugin `imperatrice` v0.5.0 : rubrique « Valeur provisoire » et liste de contrôle avant « prêt », tirées du Pareto du bilan n° 1 · pour l'orchestrateur et les agents de tous les projets qui utilisent le plugin · une méthode qui vise 60 % des incidents du bilan, au lieu d'une palette (acceptée par Pascal)
+- cycle 4 (complément) · plugin `imperatrice` v0.6.0 : rubrique « Dépend de / rouge attendu jusqu'à » · mêmes bénéficiaires que la ligne « cycle 4 » · complète cette livraison, n'en est pas une nouvelle
+- bilan du 2026-10-23 (n° 2) · méthode outillée contre les causes A, B et C (plugin v0.6.0) et terrain dont l'état ouvert se lit en une minute · pour l'orchestrateur, les agents et un successeur · le successeur passe sans réserve (avec réserves au bilan n° 1) et les trois remèdes existent, pas encore en service ici (acceptée par Pascal)

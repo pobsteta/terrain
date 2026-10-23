@@ -10,7 +10,8 @@
 ## Plafond humain
 
 - **PR ouvertes en même temps, au plus :** 3
-- **Rythme de relecture de Pascal :** _…_
+- **Rythme de relecture de Pascal :** 10 PR par semaine (Pascal, bilan n° 2 du 2026-10-23)
+- **Version du plugin attendue :** `imperatrice` ≥ 0.6.0
 
 ## Le vivier (catalogue, pas une équipe)
 
@@ -42,6 +43,7 @@
 | [011](missions/011-liste-de-controle.md) liste de contrôle avant « prêt » | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [012](missions/012-dependances.md) dépendances entre missions | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [013](missions/013-reussi-provisoire.md) réussi #0F8558 provisoire | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
+| [014](missions/014-corrections-bilan-2.md) corrections du bilan n° 2 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 2 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
 terrain, après la mission 007, et noté au carnet des écarts ; échéance fixée au bilan n° 1 : 2026-10-30.
