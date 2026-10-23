@@ -23,7 +23,7 @@
   au soleil. Le style viendrait sinon d'une copie de `Theme.kt` d'une appli à l'autre.
 - **Bénéficiaires** : d'abord les trois applications (Surculus en premier, qui épinglera
   le module), ensuite les forestiers qui les lisent sur le terrain, en plein soleil.
-- **Coût complet aujourd'hui** : _…_
+- **Coût complet aujourd'hui** : inconnu.
 
 ## Ce que fait terrain (module `terrain-style`)
 
