@@ -20,6 +20,39 @@ _Modèle de carte :_
 
 ## Bac à sable
 
+- [001-faits-mcu-compose](missions/001-faits-mcu-compose.md) · depuis le cycle 0
+  - Homme : `acquereur` (opus)
+  - Mission : faits MCU et Compose pour trancher les ADR 0001 et 0002 ; cycle 1
+  - Moyens : WebFetch, dépôt MCU, référence `ColorScheme` ; PR `docs/referentiels/mcu-compose.md`
+- [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 0
+  - Homme : `acquereur` (opus)
+  - Mission : conventions des couleurs d'état, valeurs sRGB sourcées ; cycle 1
+  - Moyens : pages ISO/IEC, MDC ; PR `docs/referentiels/couleurs-etat.md`
+- [003-tests-contraste](missions/003-tests-contraste.md) · depuis le cycle 0
+  - Homme : `testeur` (sonnet)
+  - Mission : tests de `Contraste` et table de deux outils tiers ; cycle 1
+  - Moyens : Gradle, outils tiers versionnés ; PR
+- [004-module-contraste](missions/004-module-contraste.md) · depuis le cycle 0
+  - Homme : `dev` (sonnet)
+  - Mission : module `terrain-style` et `Contraste` ; cycle 2, après 003
+  - Moyens : modèle `terrain-carte` ; PR
+- [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 0
+  - Homme : `testeur` (sonnet)
+  - Mission : tests des couples à 7:1 ; cycle 2
+  - Moyens : API de la spec ; PR
+- [006-generation-schemas](missions/006-generation-schemas.md) · depuis le cycle 0
+  - Homme : `dev` (opus), tenu
+  - Mission : génération des schémas ; cycle 3, après ADR 0001 et mission 001
+  - Moyens : sources MCU ; plan d'abord ; PR
+- [007-couleurs-semantiques](missions/007-couleurs-semantiques.md) · depuis le cycle 0
+  - Homme : `dev` (sonnet)
+  - Mission : réussi et alerte ; cycle 4, après ADR 0002, 002, 006 et le choix de Pascal
+  - Moyens : PR
+- [008-publication](missions/008-publication.md) · depuis le cycle 0
+  - Homme : `dev` (sonnet)
+  - Mission : CI sur tags et README ; cycle 4, après ADR 0003
+  - Moyens : PR ; le tag est posé par Pascal
+
 ## Validé
 
 ## Planifié
