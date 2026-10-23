@@ -3,7 +3,7 @@ package fr.nemeton.terrain.style
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 /**
@@ -109,8 +109,8 @@ class ContrasteTest {
     }
 
     @Test
-    fun `4,478 ne tient pas 4,5 et 4,542 le tient (pas d'arrondi du rapport par le test de seuil)`() {
-        // Le test de seuil du projet tronque : l'API renvoie le rapport brut, on vérifie qu'il est du bon côté.
+    fun `le rapport brut de 777777 sur blanc est sous 4,5 et celui de 767676 le tient (seuil sur le rapport brut)`() {
+        // Vérifie un seuil sur le rapport brut renvoyé par l'API (la troncature est l'affaire du test de couples).
         assertTrue(Contraste.rapport(0xFF777777, 0xFFFFFFFF) < 4.5, "777777 sur blanc est sous 4,5")
         assertTrue(Contraste.rapport(0xFF767676, 0xFFFFFFFF) >= 4.5, "767676 sur blanc tient 4,5")
     }
@@ -162,29 +162,29 @@ class ContrasteTest {
     fun `extension de signe d'un Int negatif refusee`() {
         val etendu = 0xFFFFFFFF.toInt().toLong() // -1L : 0xFFFFFFFFFFFFFFFF
         assertEquals(-1L, etendu)
-        assertFails { Contraste.luminance(etendu) }
-        assertFails { Contraste.rapport(etendu, 0xFF000000) }
-        assertFails { Contraste.rapport(0xFF000000, etendu) }
-        assertFails { Contraste.luminance(0xFF3E7A40.toInt().toLong()) }
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(etendu) }
+        assertFailsWith<IllegalArgumentException> { Contraste.rapport(etendu, 0xFF000000) }
+        assertFailsWith<IllegalArgumentException> { Contraste.rapport(0xFF000000, etendu) }
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(0xFF3E7A40.toInt().toLong()) }
     }
 
     @Test
     fun `valeur au-dela de 32 bits refusee`() {
-        assertFails { Contraste.luminance(0x1_FF000000L) }
-        assertFails { Contraste.rapport(0x1_FFFFFFFFL, 0xFF000000) }
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(0x1_FF000000L) }
+        assertFailsWith<IllegalArgumentException> { Contraste.rapport(0x1_FFFFFFFFL, 0xFF000000) }
     }
 
     @Test
     fun `alpha different de FF refuse (spec, alpha toujours FF)`() {
-        // Déduit de la spec (« alpha toujours FF ») ; la fiche ne nomme que l'extension de signe.
-        assertFails { Contraste.luminance(0x00FFFFFF) }
-        assertFails { Contraste.luminance(0x80808080) }
-        assertFails { Contraste.rapport(0x00FFFFFF, 0xFF000000) }
+        // Tranché par Pascal le 2026-10-23, inscrit dans docs/spec.md (Données).
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(0x00FFFFFF) }
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(0x80808080) }
+        assertFailsWith<IllegalArgumentException> { Contraste.rapport(0x00FFFFFF, 0xFF000000) }
     }
 
     @Test
     fun `negatif quelconque refuse`() {
-        assertFails { Contraste.luminance(Long.MIN_VALUE) }
-        assertFails { Contraste.rapport(-0x00FFFFFFL, 0xFFFFFFFF) }
+        assertFailsWith<IllegalArgumentException> { Contraste.luminance(Long.MIN_VALUE) }
+        assertFailsWith<IllegalArgumentException> { Contraste.rapport(-0x00FFFFFFL, 0xFFFFFFFF) }
     }
 }

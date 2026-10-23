@@ -7,7 +7,7 @@
 
 **En une phrase (quoi, et pourquoi) :** Écrire, sans lire le code qui l'implémente, les tests d'acceptation de `Contraste` et leur table de référence calculée par deux outils tiers, pour que la fonction de contraste ne soit pas son propre juge.
 
-**Redite par l'agent :** _à compléter par l'agent avant d'agir — s'il n'y arrive pas, il s'arrête._
+**Redite par l'agent :** Écrire les tests d'acceptation de `Contraste` (sans lire son code) et leur table de référence calculée par deux outils tiers appliquant la formule WCAG à la lettre, pour que la fonction de contraste ne soit pas son propre juge.
 
 ## Les trois questions (règle de staffing)
 
