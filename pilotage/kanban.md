@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 0 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 1 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,18 +22,6 @@ _Modèle de carte :_
 
 ## Validé
 
-- [001-faits-mcu-compose](missions/001-faits-mcu-compose.md) · depuis le cycle 0
-  - Homme : `acquereur` (opus)
-  - Mission : faits MCU et Compose pour trancher les ADR 0001 et 0002 ; cycle 1
-  - Moyens : WebFetch, dépôt MCU, référence `ColorScheme` ; PR `docs/referentiels/mcu-compose.md`
-- [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 0
-  - Homme : `acquereur` (opus)
-  - Mission : conventions des couleurs d'état, valeurs sRGB sourcées ; cycle 1
-  - Moyens : pages ISO/IEC, MDC ; PR `docs/referentiels/couleurs-etat.md`
-- [003-tests-contraste](missions/003-tests-contraste.md) · depuis le cycle 0
-  - Homme : `testeur` (sonnet)
-  - Mission : tests de `Contraste` et table de deux outils tiers ; cycle 1
-  - Moyens : Gradle, outils tiers versionnés ; PR
 - [004-module-contraste](missions/004-module-contraste.md) · depuis le cycle 0
   - Homme : `dev` (sonnet)
   - Mission : module `terrain-style` et `Contraste` ; cycle 2, après 003
@@ -58,7 +46,21 @@ _Modèle de carte :_
 
 ## Planifié
 
+- [002-references-couleurs-etat](missions/002-references-couleurs-etat.md) · depuis le cycle 1
+  - Homme : `acquereur` (opus)
+  - Mission : conventions des couleurs d'état, valeurs sRGB sourcées ; cycle 1
+  - Moyens : pages ISO/IEC, MDC ; PR `docs/referentiels/couleurs-etat.md`
+
 ## Terminé
+
+- [001-faits-mcu-compose](missions/001-faits-mcu-compose.md) · depuis le cycle 1
+  - Homme : `acquereur` (opus)
+  - Mission : faits MCU et Compose pour trancher les ADR 0001 et 0002 ; cycle 1
+  - Moyens : WebFetch, dépôt MCU, référence `ColorScheme` ; PR #4 fusionnée
+- [003-tests-contraste](missions/003-tests-contraste.md) · depuis le cycle 1
+  - Homme : `testeur` (sonnet)
+  - Mission : tests de `Contraste` et table de deux outils tiers ; cycle 1
+  - Moyens : Gradle, color2k 2.0.4 et culori 4.0.2 ; PR #3 fusionnée
 
 ## Abandonné
 
