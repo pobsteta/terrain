@@ -96,3 +96,12 @@ Points 1 à 7 traités ; quatre retouches mineures dans `docs/referentiels/coule
 3. **Échantillon §6.1 et question §8** : ajouter `#E6B019` au côte à côte jaune, et le citer
    en §8 à côté de `#F9A900`, pour que les deux côtés suivent la même règle.
 4. **Numérotation de §5** : remettre dans l'ordre (aujourd'hui 1-6, 9, 7, 8).
+
+## Remarque du relecteur — aller-retour 3/3 (2026-10-23)
+
+Une seule retouche, dans `docs/referentiels/couleurs-etat.md`, §4 (l. 104 à 109) : l'écart
+des verts candidats avec `primary` (`#374742`, ≈ 161° HSL) n'est plus « 10 à 13° » mais
+**4° (`#0F8558`, R2) à 19° (`#417E57`, R2b)** ; remplacer les deux occurrences par
+« 4 à 19° (R2, R2b, R3) ». Facultatif, au même passage : situer J3b (`#E6B019`, ≈ 44°,
+famille ambre) en §3 « Écart relevé » ; en §8, ne pas dire « normatif » de R2/R3 et citer
+R2b. C'est le dernier renvoi : au-delà, la décision remonte à Pascal.
