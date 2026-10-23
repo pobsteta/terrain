@@ -4,8 +4,8 @@
 > tout démarrage. Règle de staffing : un agent par mission qui passe les trois
 > questions, jamais un agent « par principe ».
 
-- **Statut :** proposée
-- **Validée par :** _…_
+- **Statut :** validée
+- **Validée par :** Pascal, le 2026-10-23
 
 ## Plafond humain
 

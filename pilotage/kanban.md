@@ -20,6 +20,8 @@ _Modèle de carte :_
 
 ## Bac à sable
 
+## Validé
+
 - [001-faits-mcu-compose](missions/001-faits-mcu-compose.md) · depuis le cycle 0
   - Homme : `acquereur` (opus)
   - Mission : faits MCU et Compose pour trancher les ADR 0001 et 0002 ; cycle 1
@@ -53,7 +55,6 @@ _Modèle de carte :_
   - Mission : CI sur tags et README ; cycle 4, après ADR 0003
   - Moyens : PR ; le tag est posé par Pascal
 
-## Validé
 
 ## Planifié
 
