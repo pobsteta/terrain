@@ -22,10 +22,6 @@ _Modèle de carte :_
 
 ## Validé
 
-- [009-memoire-v0.6.0](missions/009-memoire-v0.6.0.md) · depuis le cycle 3
-  - Homme : `archiviste` (sonnet)
-  - Mission : corrections P1 et P2 du bilan n° 1 ; lancée au bilan du 2026-10-23
-  - Moyens : rapport de l'archiviste ; PR
 - [010-valeur-provisoire](missions/010-valeur-provisoire.md) · depuis le cycle 3
   - Homme : `archiviste` (sonnet)
   - Mission : ligne « valeur provisoire » au gabarit de fiche du plugin (cause A) ; prochain `/boucle`
@@ -48,6 +44,11 @@ _Modèle de carte :_
 
 ## Terminé
 
+- [009-memoire-v0.6.0](missions/009-memoire-v0.6.0.md) · depuis le cycle 3
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 et P2 du bilan n° 1 ; lancée au bilan du 2026-10-23
+  - Moyens : rapport de l'archiviste ; PR
+  - Livré : PR #16 fusionnée (1 aller-retour de relecture)
 - [005-tests-jetons](missions/005-tests-jetons.md) · depuis le cycle 3
   - Homme : `testeur` (sonnet)
   - Mission : tests des couples à 7:1 ; cycle 2
