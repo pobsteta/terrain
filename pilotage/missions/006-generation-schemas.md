@@ -61,10 +61,10 @@ La CI régénère et ne trouve aucune différence ; Pascal reconnaît (ou non) V
 
 - **Branche** : partir de `mission/005-tests-jetons` (rebasée sur `main` après la mission
   004) ; la PR 006 fusionne avec 005 et 007, ensemble, vertes.
-- **Périmètre de l'API** : 006 fournit `StyleTerrain`, `Schema` (48 rôles et
-  `interditsEnTexte`) et des valeurs provisoires lisibles pour `reussi` et `alerte` ne sont
-  **pas** à inventer : `Semantique` et ses valeurs arrivent avec 007. Si les tests de 005 ne
-  peuvent pas compiler sans elles, le dire au plan.
+- **Périmètre de l'API** : 006 fournit `StyleTerrain` et `Schema` (48 rôles et
+  `interditsEnTexte`). `Semantique`, `reussi` et `alerte` arrivent avec 007 : ne pas
+  inventer de valeurs provisoires. Les tests de 005 ne compileront qu'avec 007 ; le plan dit
+  comment 006 se vérifie d'ici là (par exemple sur la seule partie schémas).
 - **`Schema` refuse** toute valeur hors `0xFF000000..0xFFFFFFFF` par
   `IllegalArgumentException`.
 - **README** : chaque rôle déclaré « interdit en texte » y est écrit entre accents graves.
