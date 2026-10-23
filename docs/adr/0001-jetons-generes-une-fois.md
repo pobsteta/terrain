@@ -1,7 +1,7 @@
 # ADR 0001 — jetons générés une fois par les sources de Material Color Utilities, figés dans le code
 
 - **Date :** 2026-10-23
-- **Statut :** proposée (corrigée après la critique du `contradicteur` du 2026-10-23)
+- **Statut :** acceptée par Pascal le 2026-10-23 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur)
 - **Tranchée par :** Pascal
 

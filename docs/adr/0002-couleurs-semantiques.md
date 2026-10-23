@@ -1,7 +1,7 @@
 # ADR 0002 — couleurs sémantiques communes (réussi, alerte, erreur)
 
 - **Date :** 2026-10-23
-- **Statut :** proposée ; erreur, alerte (dont sa valeur) et repli arbitrés par Pascal le 2026-10-23
+- **Statut :** acceptée par Pascal le 2026-10-23 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur), sur une proposition du `contradicteur`
 - **Tranchée par :** Pascal
 

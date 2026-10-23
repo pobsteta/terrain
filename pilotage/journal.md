@@ -58,3 +58,5 @@
 2026-10-23 · Pascal · terrain-style · cap · alerte « jaune clair » → #E2AA00 (jaune ISO 3864-4, ambre), texte noir (9,98:1) · pourquoi : la norme elle-même (mission 002) · fait : brief, spec, ADR 0002. Vert de réussi : attendre la mesure HCT (mission 007) ; ISO 3864-1 et annexe E non achetées ; Kotlin 1.8 / JDK 14 gardés, marqués non sourcés.
 2026-10-23 · Pascal · ADR 0001-0003 · colonnes « Prêts à payer ? » : inconnu (sur son ordre). Statut des ADR inchangé (proposées).
 2026-10-23 · Pascal · cycle 2 · lancé sur son ordre : missions 004 (dev) et 005 (testeur) ; avec la PR #5 ouverte, plafond de 3 atteint ; la PR de pilotage/cycle-1 attendra une place.
+2026-10-23 · Pascal · ADR 0001-0003 · acceptées (« oui j accepte »), « Prêts à payer ? » : inconnu. Missions 006 et 008 ont désormais leurs moyens ; 007 attend la PR #5, la mission 006 et le choix du vert.
+2026-10-23 · Pascal · cycle 1 · livraison retenue : table de référence WCAG pour les développeurs de Surculus (proposition de l orchestrateur, acceptée).

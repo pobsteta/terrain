@@ -81,3 +81,4 @@ l'inscrit avec ce qu'elle nous apprend._
 - bilan du AAAA-MM-JJ · livraison · pour qui · ce qu'elle apporte de plus que la précédente
 - bilan du AAAA-MM-JJ · mauvaise nouvelle : … · pour qui · ce qu'elle nous apprend
 ```
+- cycle 1 · table de référence WCAG `terrain-style/src/test/resources/contraste/reference.csv` (200 couples, deux outils tiers, rejouable à l'octet) · pour les développeurs de Surculus · première livraison : de quoi tester leur propre palette d'état dès maintenant

@@ -34,9 +34,9 @@
 | [003](missions/003-tests-contraste.md) tests de `Contraste` + table tierce | `testeur` | sonnet | appuyer | oui / oui / oui | 1 |
 | [004](missions/004-module-contraste.md) module + `Contraste` | `dev` | sonnet | appuyer | oui / oui / après 003 | 2 |
 | [005](missions/005-tests-jetons.md) tests des jetons | `testeur` | sonnet | appuyer | oui / oui / oui | 2 |
-| [006](missions/006-generation-schemas.md) génération des schémas clair et sombre | `dev` | opus | **tenir** | oui / **non** (ADR 0001) / **non** (mission 001) | 3 |
-| [007](missions/007-couleurs-semantiques.md) réussi et alerte | `dev` | sonnet | appuyer | oui / **non** (ADR 0002, choix de Pascal) / **non** (002, 006) | 4 |
-| [008](missions/008-publication.md) CI sur tags + README | `dev` | sonnet | appuyer | oui / **non** (ADR 0003) / oui | 4 |
+| [006](missions/006-generation-schemas.md) génération des schémas clair et sombre | `dev` | opus | **tenir** | oui / oui (ADR 0001 acceptée) / oui (mission 001 fusionnée) | 3 |
+| [007](missions/007-couleurs-semantiques.md) réussi et alerte | `dev` | sonnet | appuyer | oui / **non** (vert de réussi après mesure HCT) / **non** (002 à fusionner, 006) | 4 |
+| [008](missions/008-publication.md) CI sur tags + README | `dev` | sonnet | appuyer | oui / oui (ADR 0003 acceptée) / oui | 4 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
 terrain, après la mission 007, et noté au carnet des écarts.

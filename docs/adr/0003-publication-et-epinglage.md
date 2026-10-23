@@ -1,7 +1,7 @@
 # ADR 0003 — publication de `terrain-style` : tag sur `main` vert, construit par JitPack
 
 - **Date :** 2026-10-23
-- **Statut :** proposée (corrigée après la critique du `contradicteur` du 2026-10-23)
+- **Statut :** acceptée par Pascal le 2026-10-23 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur), sur une remarque du `contradicteur`
 - **Tranchée par :** Pascal
 
