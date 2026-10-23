@@ -121,3 +121,12 @@
   Color Utilities pour ce jaune ; jaune interdit en texte.
 - **Repli** : un rôle qui échoue à 7:1 est documenté « interdit en texte ».
 - **Corrections techniques** de la spec et des ADR 0001 et 0003 : toutes appliquées.
+
+## Arbitrages de Pascal (2026-10-23, sur les référentiels du cycle 1)
+
+- **Alerte** : jaune de sécurité d'ISO 3864-4, `#E2AA00` (ambre), texte noir ; remplace
+  « jaune clair » des arbitrages précédents.
+- **Réussi** : le vert de départ attend la mesure HCT de la mission 007.
+- **Normes** : ISO 3864-1 et l'annexe E d'ISO 3864-4 ne sont pas achetées pour l'instant.
+- **Référentiel MCU** : Kotlin 1.8 et JDK 14, cités de mémoire, restent marqués « non
+  sourcés » ; la mission 006 les confirmera.
