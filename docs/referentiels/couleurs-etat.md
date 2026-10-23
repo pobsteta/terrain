@@ -63,8 +63,9 @@ la région, ce qui n'est pas une mesure mais une conséquence de β max.
 | # | Source | Qui, pour quoi | Valeur | Conversion | Fiabilité |
 |---|---|---|---|---|---|
 | J1 | ISO 3864-4 Table 1 (primaire) | normalisation des matériaux de panneaux | région (x,y) + β 0,45 à 0,70 | aucune (pas d'hex) | forte, lue |
-| J2 | Conversion à la main de J1 : moyenne des 4 sommets (x 0,4775 ; y 0,4708) | acquéreur, pour comparer | β 0,45 : lin. R 0,763 G 0,404 B −0,014 -> `#E2AA00` ; β 0,70 : R 1,19 G 0,63 B < 0 (hors gamut, écrêté) -> `#FFD000` | xyY -> XYZ -> sRGB linéaire (matrice IEC 61966-2-1, blanc D65, **sans adaptation** : D65 des deux côtés), encodage sRGB, écrêtage [0;1] | moyenne, **à rejouer par un outil**, pas un point normatif |
-| J3 | RAL 1003 « Signal Yellow », rattaché à ISO 3864-4 (Wikipédia ISO 3864) | RAL, éditeur de collection | `#F3AD1E` (tableau « safety colours ») **et** `#F9A900` (tableau 3864-2) ; une autre copie : `#F9A800` | non précisée | secondaire, **trois valeurs entre elles** |
+| J2 | Conversion à la main de J1 : moyenne des 4 sommets (x 0,4775 ; y 0,4708) | acquéreur, pour comparer | β 0,45 : lin. R 0,763 G 0,404 B −0,014 (B écrêté à 0) -> `#E2AA00` ; β 0,70 : R 1,19 G 0,63 B < 0 (hors gamut, écrêté) -> `#FFD000`. **L'écrêtage déplace la couleur** : `#FFD000` vaut ≈ β 0,66 et chromaticité ≈ (0,457 ; 0,475) (calcul du relecteur), encore dans la région ; ce n'est pas le β 0,70 visé | xyY -> XYZ -> sRGB linéaire (matrice IEC 61966-2-1, blanc D65, **sans adaptation** : D65 des deux côtés), encodage sRGB, écrêtage [0;1] | moyenne, **à rejouer par un outil**, pas un point normatif |
+| J3 | RAL 1003 « Signal Yellow », rattaché à ISO 3864-4 (Wikipédia ISO 3864) | RAL, éditeur de collection | `#F3AD1E` (tableau « safety colours ») **et** `#F9A900` (tableau 3864-2, Wikipédia « ISO 3864 ») ; `#F9A800` (Wikipédia « List of RAL colours », relu 2026-10-23) | non précisée | secondaire, **trois valeurs entre elles** |
+| J3b | Nuancier officiel RAL (ral-farben.de), **source la plus primaire** pour RAL 1003 | RAL gGmbH | `#E6B019` | non précisée | primaire pour RAL, **valeur rapportée par le relecteur (aller-retour 1) ; non relue par l'acquéreur** (page ral-farben.de non retrouvée, 404 sur l'URL tentée) |
 | J4 | ANSI Z535.1 « safety yellow » (LinkML valuesets) | ANSI, États-Unis (Munsell, illuminant C) | `#F6D04D`, PMS 116 C | non précisée, approximation tierce | secondaire, autre norme |
 
 **Écart relevé :**
@@ -87,15 +88,16 @@ la région, ce qui n'est pas une mesure mais une conséquence de β max.
 | # | Source | Ce qu'elle dit | Valeur sRGB | Fiabilité |
 |---|---|---|---|---|
 | R1 | ISO 3864-4 Table 1, région verte | région très large (x 0,026 à 0,285 ; y 0,364 à 0,776), β 0,11 à 0,25 | non calculée (région trop large pour une teinte unique) | forte, lue ; **ne fixe pas une teinte** |
-| R2 | RAL 6032 « Signal Green » rattaché à ISO 3864-4 (Wikipédia) | vert « condition sûre » | `#31865C` (tableau 1) ; autre copie `#237F52` | secondaire, deux valeurs |
+| R2 | RAL 6032 « Signal Green » rattaché à ISO 3864-4 (Wikipédia « ISO 3864 ») | vert « condition sûre » | `#31865C` (tableau 1) ; `#0F8558` (Wikipédia « List of RAL colours », relu 2026-10-23). `#237F52` **retiré** : aucune source retrouvée | secondaire, deux valeurs |
+| R2b | Nuancier officiel RAL (ral-farben.de), RAL 6032 | source la plus primaire | `#417E57` | **rapportée par le relecteur, non relue par l'acquéreur** |
 | R3 | ANSI Z535.1 « safety green » (LinkML) | vert « sécurité, premiers secours » | `#00843D`, PMS 355 C | secondaire |
 | R4 | ISO 22324:2022 (alertes codées par couleur), via résumés : « Green is associated with a safe status … no action is required » ; jaune = « caution … prepare » ; rouge = danger | **sens** seulement, ne donne pas de teinte (hors champ : « the method for displaying colour codes ») | aucune | secondaire (l'aperçu ANSI webstore a répondu 403, non lu) |
 | R5 | IEC 60073 | vert = condition normale/sûre, jaune = anormale (de mémoire, **non confirmé par un texte lu** ; seule la fiche de métadonnées a été trouvée) | aucune | non vérifiée |
 | R6 | MDC-Android `docs/theming/Color.md` (lu) | ne traite **ni réussi, ni vert, ni jaune** ; seulement `error` ; harmonisation `harmonizeWithPrimary` (error harmonisé par défaut) ; pas de hex ni de ton HCT | aucune | forte, mais **ne répond pas** |
 
 **Concordance :** R2 et R3 (HSL ≈ 148° à 151°, vert franc, légèrement bleuté) concordent entre eux
-(`#31865C` ≈ 150°, `#237F52` ≈ 151°, `#00843D` ≈ 148°). Teintes HSL, **pas HCT** : à ne pas
-confondre. Ces trois valeurs sont des verts moyens ; la teinte de départ HCT reste à mesurer
+(`#31865C` ≈ 150°, `#00843D` ≈ 148°) ; `#0F8558` (≈ 157°) et `#417E57` (≈ 142°) sont voisins (calcul à la main). `#237F52` est retiré (sans source). Teintes HSL, **pas HCT** : à ne pas
+confondre. Ces valeurs sont des verts moyens ; la teinte de départ HCT reste à mesurer
 (mission 007).
 
 **Distance à `primary` (VertMarculus `#374742`) :** en HSL, teinte ≈ 161° pour `#374742`, soit
@@ -103,8 +105,10 @@ confondre. Ces trois valeurs sont des verts moyens ; la teinte de départ HCT re
 La spec cite aussi `#3E7A40` (teinte HSL ≈ 122°, jaunâtre) comme couple d'essai de contraste, ce
 n'est **pas** une source de teinte. **L'écart HCT avant/après harmonisation n'est pas calculé** (hors mission
 et sans outil) : il reste dû à la mission 007. `Blend.harmonize` tourne d'au plus 15° (ADR 0002),
-donc, vu l'écart HSL de 10 à 13°, harmoniser rapprocherait déjà « réussi » de `primary` ;
-**c'est l'argument de fond de la question ouverte, à mesurer en HCT avant de trancher.**
+l'écart HSL de 10 à 13° n'est **pas** une rotation HCT. **Hypothèse à mesurer** : harmoniser
+pourrait rapprocher « réussi » de `primary` ; **c'est l'argument de fond de la question ouverte, à mesurer en HCT avant de trancher.**
+
+**Retour hex → chromaticité (calcul du relecteur, aller-retour 1 ; approximatif : couleur d'écran assimilée à une couleur d'objet sous D65) :** `#F6D04D` (ANSI) est **hors** de la région jaune ISO ; `#31865C` et `#00843D` sont **hors** de la région verte ISO ; `#0F8558` est dedans. Non rejoué par l'acquéreur.
 
 **Écart relevé :** pas de teinte « réussi » normative. Les normes donnent un **sens** (vert = sûr),
 pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal choisit.
@@ -117,7 +121,8 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 3. ISO 22324:2022 : aperçu ANSI webstore refusé (403) ; sens des couleurs repris de résumés.
 4. IEC 60073 : texte non lu.
 5. Blocs « blanc » et « noir » de la Table 1 : partiellement masqués par le filigrane.
-6. Aucune conversion exécutée par un outil ; J2 est à la main, à rejouer (deux outils, pas le code testé).
+6. Aucune conversion exécutée par un outil de l'acquéreur ; J2 est à la main. Elle a été **rejouée une fois par le relecteur** (conforme : `#E2AA00`, `#FFD000`) ; un second rejeu par deux outils indépendants reste utile. À β 0,45, B < 0 est aussi écrêté.
+9. Nuancier officiel RAL (`#E6B019`, `#417E57`) : valeurs rapportées par le relecteur, page ral-farben.de non relue.
 7. Teintes HCT, rapports de contraste, écart `reussi`–`primary` : hors mission (mission 007).
 8. MCU `customColor` et visibilité du constructeur à `errorPalette` : besoin n° 1, autre mission.
 
@@ -126,7 +131,7 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 1. **Jaune d'alerte, trois candidats côte à côte avec du texte noir :** `#E2AA00` (ISO à β 0,45,
    J2), `#F9A900` (RAL 1003, J3) et `#F6D04D` (ANSI, J4). Le plus sensible : « jaune clair » de la
    spec correspond-il à J4 plutôt qu'à l'ISO ? À voir en plein soleil (critère 6 de la spec).
-2. **Vert de réussite, candidats côte à côte :** `#31865C`, `#237F52`, `#00843D`, **et à côté
+2. **Vert de réussite, candidats côte à côte :** `#31865C`, `#0F8558`, `#417E57`, `#00843D`, **et à côté
    VertMarculus `#374742`** et un `primary` clair foncé : se distingue-t-il de `primary` sans le
    texte ? Distinct aussi du jaune pour un œil daltonien (WCAG 1.4.1 : l'icône double la couleur).
 3. **Jaune sur fond de conteneur sombre (SPEC_2021, niveau 1,0) :** le jaune figé ne passe pas par
@@ -150,6 +155,8 @@ pas une couleur d'écran. Les hex existants sont des conversions tierces. Pascal
 
 - ISO 3864-4:2011, Table 1, aperçu : https://cdn.standards.iteh.ai/samples/51000/096ba63848784a5f9bec95746e5b7196/ISO-3864-4-2011.pdf
 - Wikipédia, ISO 3864 (RAL, CMYK, hex ; secondaire) : https://en.wikipedia.org/wiki/ISO_3864
+- Wikipédia, List of RAL colours (`#F9A800`, `#0F8558` ; secondaire) : https://en.wikipedia.org/wiki/List_of_RAL_colours
+- Nuancier RAL, ral-farben.de (`#E6B019`, `#417E57` ; primaire, rapporté par le relecteur, URL exacte à fournir)
 - LinkML valuesets, SafetyColorEnum (ANSI Z535.1 ; secondaire) : https://linkml.io/valuesets/elements/SafetyColorEnum/
 - ISO 22324:2022 (résumé de Wikipédia et de iteh) : https://en.wikipedia.org/wiki/ISO_22324 (non lue directement)
 - IEC 60073 (métadonnées seulement) : https://reference.globalspec.com/ref/3879665/iec-60073-2002
