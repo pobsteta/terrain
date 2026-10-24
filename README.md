@@ -151,7 +151,7 @@ Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surC
 - `alerte` : jaune de sécurité `#E2AA00` (ISO 3864-4) en `couleur` et `conteneur`, noir `#000000`
   dessus, dans les deux thèmes.
 
-`interditsEnTexte` vaut `{"alerte.couleur"}` dans chaque schéma, par décision (ADR 0002) : le
+`interditsEnTexte` vaut `{"alerte.couleur"}` dans chaque schéma : seul `alerte.couleur` est interdit en texte, par décision (ADR 0002) : le
 jaune sert de fond, jamais de texte.
 
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
