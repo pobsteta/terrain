@@ -176,7 +176,7 @@ _À écrire par Pascal. Le `contradicteur` a été lancé avant, sur l'ordre de 
 ## Ce que fait la correction
 
 - **En une phrase** : un échec d'installation laisse intact le modèle en place, un modèle
-  n'est déclaré installé que s'il a la structure d'un modèle Vosk, et l'appelant dit
+  n'est déclaré installé que s'il a la structure d'un modèle Vosk à grammaire dynamique, et l'appelant dit
   explicitement s'il contrôle l'empreinte.
 - **Critère d'acceptation** : chaque constat du brief de Surculus a un test dans
   `terrain-voix` qui le montre corrigé (spec, partie `terrain-voix`) ; v0.7.0 publiée ;
@@ -199,3 +199,16 @@ _À écrire par Pascal. Le `contradicteur` a été lancé avant, sur l'ordre de 
   valeur par défaut ; v0.7.0.
 - **Vocabulaire** : `motsConnus` inchangé ; une fonction ajoutée distingue « illisible » de
   « connu ».
+
+## Arbitrages de Pascal (2026-10-24, après la critique de l'ADR 0005 et de la spec)
+
+- **Structure** : contrôle des fichiers d'un modèle Vosk et détection du dossier racine ;
+  jeux d'essai refaits.
+- **Marge d'espace libre** : provisoire, proposée par le `dev`, fixée par Pascal.
+- **Modèles à `HCLG.fst`** (sans grammaire dynamique) : refusés ; pas de repli sur
+  `words.txt` pour le vocabulaire.
+- **Reprise** : quand le nouveau modèle est vérifié, on avance (bascule terminée) ; sinon,
+  on remet l'ancien.
+- **Corrections techniques** de la seconde critique (table d'états, `estInstalle` sans
+  écriture, verrou, espace injectable, erreurs typées, jeux d'essai figés, écriture forcée
+  sur le disque, source de la version) : toutes appliquées.

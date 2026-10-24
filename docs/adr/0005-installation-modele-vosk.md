@@ -10,8 +10,9 @@
 
 `InstallationModele` ne touche plus au modèle en place tant que le nouveau n'est pas
 décompressé, vérifié et prêt. L'empreinte devient un choix explicite de l'appelant. Le
-vocabulaire gagne une lecture qui distingue « illisible » de « connu ». Le tout est publié en
-**v0.7.0**, parce que la signature du constructeur change.
+vocabulaire gagne une lecture qui distingue « illisible » de « connu ». Un modèle n'est installé que s'il porte
+une grammaire dynamique. Le tout est publié en **v0.7.0**, parce que la signature du
+constructeur change.
 
 ## Contexte
 
@@ -52,74 +53,95 @@ une reprise si le processus est tué entre les deux, ce qu'Android peut faire sa
 
 ## Ce qui est décidé (arbitrages de Pascal du 2026-10-24)
 
+Le détail (table d'états, ordre des opérations, erreurs, jeux d'essai) est dans
+`docs/spec.md`, partie `terrain-voix`. Ce qui suit en est l'essentiel.
+
 - **Échec : l'ancien modèle est gardé.**
-  - La décompression se fait dans un dossier à côté (`<dossier>.nouveau`, sur le même système
-    de fichiers que le dossier cible, jamais dans le cache).
-  - Le contenu est vérifié, puis le témoin est posé dans ce dossier.
-  - La bascule se fait en deux renommages : l'ancien vers `<dossier>.ancien`, puis le nouveau
-    vers `<dossier>`. On efface ensuite `.ancien`.
-  - Une reprise remet l'ancien en place si le processus a été tué entre les deux renommages,
-    puis nettoie les restes.
-  - Le test de terrain « telechargement - par URL, puis interruption » et la KDoc « Échec →
-    dossier effacé » sont **inversés**. C'est un changement de comportement documenté : Marculus
-    est prévenu par la note de version.
-- **Disque plein : la mise à jour est refusée.** Avant de commencer, l'espace libre est contrôlé
-  (`File.usableSpace`). S'il ne suffit pas, le modèle en place est gardé, et le message dit
-  l'espace manquant.
+  - On décompresse dans `<nom>.nouveau`, à côté du dossier et jamais dans le cache.
+  - On vérifie le contenu, on force l'écriture sur le disque, puis on pose le témoin.
+  - On bascule en deux renommages : l'ancien vers `<nom>.ancien`, puis le nouveau vers le
+    dossier.
+  - Une reprise, au début de chaque opération et sous verrou, applique une table d'états
+    écrite. Si le nouveau est vérifié, elle **avance** ; sinon, elle remet l'ancien en place
+    (décision de Pascal du 2026-10-24).
+  - `estInstalle` n'écrit jamais : Marculus l'appelle depuis l'interface.
+  - Le test de terrain et la KDoc « Échec → dossier effacé » sont **inversés**.
+- **Disque plein : la mise à jour est refusée.**
+  - Le contrôle se fait par une fonction injectable (`File::getUsableSpace` par défaut,
+    `getAllocatableBytes` sur Android).
+  - Il a lieu avant le téléchargement (`Content-Length`) et avant la décompression (somme des
+    tailles du répertoire central).
+  - Les octets réellement écrits sont comptés.
+  - La marge est provisoire : le `dev` la propose, Pascal la fixe.
 - **Empreinte : choix explicite.**
-  - Le paramètre `sha256: String? = null` est remplacé par un type `Empreinte` à deux formes :
-    - `Empreinte.Sha256(hex)` : la forme est contrôlée à la construction (64 caractères
-      hexadécimaux, FIPS 180-4), avec un message qui le dit ;
-    - `Empreinte.NonControlee` : un refus de contrôler écrit en toutes lettres par l'appelant.
-  - Il n'y a pas de valeur par défaut. Le message de refus donne l'empreinte attendue **et**
+  - `Empreinte.Sha256(hex)` : forme contrôlée à la construction (64 caractères hexadécimaux,
+    FIPS 180-4), normalisée en minuscules.
+  - `Empreinte.NonControlee` : un refus de contrôler, écrit par l'appelant.
+  - Il n'y a pas de valeur par défaut. En cas d'écart, l'erreur donne l'empreinte attendue et
     l'empreinte obtenue.
-  - Coût : Marculus change une ligne à la montée de version.
+  - Coût : Marculus change une ligne.
+- **Structure : un modèle à grammaire dynamique, et rien d'autre.**
+  - Un modèle valide a `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst` et `graph/Gr.fst`.
+  - Un modèle à `HCLG.fst` est refusé (`SansGrammaireDynamique`) : Vosk n'y applique pas de
+    grammaire, et terrain ne sert que la grammaire fermée (décision de Pascal du 2026-10-24).
+  - La racine de l'archive est détectée, en ignorant `__MACOSX/`. Une archive sans dossier de
+    tête est installée si sa structure est bonne.
 - **Vocabulaire : ajout d'une fonction.**
-  - `motsConnus` reste tel quel, pour ne pas casser Marculus (`DicteeVocale.kt:252`).
-  - Une nouvelle fonction rend « connus » ou « illisible (raison) ». Elle lit `graph/words.txt`
-    (format texte de Kaldi) quand `Gr.fst` manque.
-- **Archive vide et structure du modèle** (corrections techniques proposées par le
-  `contradicteur`, à valider à la porte n° 1) :
-  - Avant la bascule, on contrôle la structure publiée par alphacephei : `am/final.mdl`,
-    `conf/model.conf`, et `graph/HCLG.fst` ou bien `graph/HCLr.fst` avec `graph/Gr.fst`.
-  - Cela couvre l'archive vide, le zip sans entrée et le dossier racine absent.
-  - Le dossier racine de l'archive est détecté, et non plus supposé.
-- **Version : v0.7.0.** En 0.y.z, le chiffre du milieu marque un changement incompatible :
-  c'est l'usage de Cargo, et le précédent de terrain (v0.1.2 → v0.2.0).
+  - `motsConnus` reste tel quel.
+  - `lireVocabulaire` rend `Connus(mots)` ou `Illisible(raison)`, sans repli sur `words.txt`.
+- **Erreurs typées**, sur le modèle de `SystemeNonGere` : l'application traduit, et le test
+  vérifie le type.
+- **Jeux d'essai figés**, fabriqués par Info-ZIP, avec des empreintes calculées par
+  `sha256sum`, sur le modèle de `terrain-gpkg/src/test/resources/gpkg/fabriquer.sh`.
+- **Version : v0.7.0.**
+  - La signature du constructeur change : `cache` disparaît, `empreinte` devient obligatoire.
+  - La règle 4 de SemVer ne fonde rien ici : en 0.y.z, elle permet tout.
+  - Ce qui fonde le choix, c'est l'usage de Cargo (le chiffre du milieu d'une 0.x vaut un
+    majeur) et le précédent de terrain (v0.1.2 → v0.2.0).
 
 ## Le crible FRANCE
 
 | Lettre | Question | Réponse (une ligne) | Ce que ça coûte | Prêts à payer ? |
 |---|---|---|---|---|
-| **F**rugale | La plus simple qui tienne ? | deux renommages et une reprise, en Kotlin pur ; un type à deux formes pour l'empreinte | plus de code et six tests de plus dans `InstallationModele` | inconnu |
-| **R**esponsable | Qui fait quoi ? | terrain garantit la bascule et la structure ; chaque appelant choisit et tient son empreinte | Marculus doit calculer une empreinte, ou écrire `NonControlee` | inconnu |
-| **A**nticiper | Et si l'imprévu arrive ? | crash entre les renommages : reprise ; disque plein : refus ; archive refaite sans racine : refus | environ trois fois la taille du modèle sur le disque pendant la mise à jour | inconnu |
-| **N**ovateur | Toutes les idées ? | quatre options, dont le catalogue de modèles (D, écartée pour l'instant) | — | — |
-| **C**oût | Dépense inutile ? | pas de dépendance nouvelle | Marculus, encore en v0.5.0, absorbe aussi la v0.6.0 à la montée | inconnu |
-| **É**cologique | Réutilisation ? | Surculus pourra retirer son garde-fou (`VerificationModele.kt`) ; Marculus en profite | — | inconnu |
+| **F**rugale | La plus simple qui tienne ? | deux renommages, une table de reprise à quatre lignes, un type à deux formes pour l'empreinte, en Kotlin pur | une vingtaine de tests et un script de jeux d'essai | inconnu |
+| **R**esponsable | Qui fait quoi ? | terrain garantit la bascule, la reprise et la structure ; chaque appelant choisit son empreinte et sa mesure de l'espace | Marculus calcule une empreinte, ou écrit `NonControlee` | inconnu |
+| **A**nticiper | Et si l'imprévu arrive ? | processus tué ou batterie vide : reprise et écriture forcée ; disque plein : refus ; archive tronquée, piégée ou à `HCLG` : refus ; archive sans dossier de tête : installée si la structure y est | environ trois fois la taille du modèle sur le disque pendant la mise à jour (non mesuré) | inconnu |
+| **N**ovateur | Toutes les idées ? | quatre options, dont le catalogue de modèles (D, écartée pour l'instant) ; avancer ou reculer à la reprise | — | — |
+| **C**oût | Dépense inutile ? | pas de dépendance nouvelle | Marculus, encore en v0.5.0, absorbe aussi v0.6.0 ; Surculus réécrit six tests | inconnu |
+| **É**cologique | Réutilisation ? | Surculus allège son garde-fou (`VerificationModele.kt` : il garde son empreinte, et le contrôle du vide devient inutile) ; Marculus en profite | — | inconnu |
 
 ## Valeurs sacrifiées
 
-- **Compatibilité ascendante pour Marculus.** Le constructeur change : on l'accepte, parce qu'un
-  oubli d'empreinte ne doit plus passer en silence.
+- **Compatibilité ascendante.** Le constructeur change pour Marculus, et six tests de Surculus
+  sont à réécrire. On l'accepte : un oubli d'empreinte ne doit plus passer en silence.
 - **Une seule source pour l'empreinte.** Sans catalogue (option D), chaque application tient la
-  sienne. Si deux applications prennent le même modèle, la même valeur existe à deux endroits.
-- **Capacité sur disque presque plein.** On refuse une mise à jour qu'on aurait pu faire en
+  sienne.
+- **Capacité sur un disque presque plein.** On refuse une mise à jour qu'on aurait pu faire en
   effaçant d'abord l'ancien modèle.
+- **Gros modèles en dictée libre.** Les modèles à `HCLG.fst` sont refusés : ce serait un autre
+  usage, à décider à part.
+- **Simplicité.** La reprise demande une table d'états et un verrou. En échange, `estInstalle`
+  reste une lecture pure.
 
 ## Sources
 
-- Brief de Surculus du 2026-10-24, issue #23 ; code de `terrain-voix` à `d840329`.
-- Oracle, Javadoc Java SE 17, `java.nio.file.Files.move` —
-  https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Files.html
-- man7.org, `rename(2)` — https://man7.org/linux/man-pages/man2/rename.2.html
-- Android Developers, « Access app-specific files » (le cache peut être effacé ; contrôler
-  l'espace libre) — https://developer.android.com/training/data-storage/app-specific
+- Brief de Surculus du 2026-10-24, issue #23 ; code de `terrain-voix` à `d840329` (v0.6.0,
+  inchangé depuis sur `main`).
+- Critique du `contradicteur` (deux passes, 2026-10-24), dans `pilotage/journal.md`.
+- alphacep/vosk-api, `src/recognizer.cc`, l. 58-61 (« Runtime graphs are not supported by this
+  model ») et `src/model.cc` — https://github.com/alphacep/vosk-api
 - Alphacephei, « Vosk Models » (structure d'un modèle ; aucune empreinte publiée) —
   https://alphacephei.com/vosk/models
+- Oracle, Javadoc Java SE 17 : `java.nio.file.Files.move`, `java.io.File.getUsableSpace`
+  (« a hint, but not a guarantee »), `java.util.zip.ZipEntry.getSize` (-1 si inconnu) —
+  https://docs.oracle.com/en/java/javase/17/docs/api/java.base/
+- man7.org, `rename(2)` — https://man7.org/linux/man-pages/man2/rename.2.html
+- Android Developers, « Access app-specific files » —
+  https://developer.android.com/training/data-storage/app-specific
 - NIST FIPS 180-4, Secure Hash Standard — https://csrc.nist.gov/pubs/fips/180-4/upd1/final
 - SemVer 2.0.0, règle 4 — https://semver.org/lang/fr/ ; The Cargo Book, « SemVer
   compatibility » — https://doc.rust-lang.org/cargo/reference/semver.html (non relu)
+- LWN, « ext4 and data loss » — https://lwn.net/Articles/322823/ (non relu)
 
 ## Question de contrôle
 
