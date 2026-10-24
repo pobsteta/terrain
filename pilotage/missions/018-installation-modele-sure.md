@@ -69,3 +69,11 @@ pas._
 ## Comment saura-t-on que ça marche ?
 
 Surculus retire de son garde-fou le contrôle du vide et remplace son test « ECART terrain-voix » par l'archive tronquée, à la montée en v0.7.0.
+
+## Contrat d'API fixé par les tests de 017 (2026-10-24)
+
+Les tests de 017 supposent des noms et des types, reportés dans le corps de la PR #26. Ils font contrat : tu t'y conformes, sans modifier une assertion. Si l'un te paraît faux, dis-le dans ton plan, et Pascal tranche. Décisions de Pascal du 2026-10-24 à respecter en plus de la spec :
+
+- `graph/disambig_tid.int` est obligatoire.
+- Toute entrée qui sort du dossier ou contient `..` donne `ArchiveIllisible`.
+- Le constructeur n'écrit rien sur le disque.

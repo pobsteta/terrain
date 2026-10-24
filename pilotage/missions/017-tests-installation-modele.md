@@ -67,3 +67,20 @@ La marge d'espace libre n'est pas encore fixée (mission 018, puis Pascal) : les
 ## Comment saura-t-on que ça marche ?
 
 Les missions 018 et 019 passent au vert sans modifier une assertion de cette mission.
+
+## Remarques du relecteur (aller-retour 1/3, 2026-10-24)
+
+Verdict de la relecture 1 : prêt, avec des retouches. Pascal a tranché, le 2026-10-24, les questions du testeur et du relecteur (spec mise à jour sur `origin/pilotage/brief-voix`) :
+
+- **`graph/disambig_tid.int` est obligatoire** : ajoute-le à toutes les bonnes archives. Ajoute aussi une archive `sans-disambig.zip`, qui donne `StructureInvalide`.
+- **Vocabulaire** : on lit la table de sortie si elle existe, sinon celle d'entrée. Les tests restent tels quels. Mets à jour le commentaire qui parle de « question ouverte » : la mission 016 a mesuré les deux tables, et elles sont identiques.
+- **Entrée évadée** : toute entrée qui sort du dossier, ou dont le chemin contient `..` (même `a/../b`, qui reste sous la racine), donne `ArchiveIllisible`. Resserre le test d'évasion sur ce type. Ajoute une archive `point-point-interne.zip` (`racine/a/../b`) qui donne `ArchiveIllisible`. Le test doit nettoyer, avant et après, le fichier qu'il traque dans `/tmp`.
+- **Constructeur** : il n'écrit rien sur le disque. Garde la photo prise avant la construction.
+
+Retouches du relecteur :
+1. `racine-seule.zip` doit contenir exactement le dossier racine, et rien d'autre.
+2. Ajoute une bonne archive qui contient un fichier vide (comme `ivector/online_cmvn.conf` dans le vrai modèle). Elle doit s'installer.
+3. Reporte dans le corps de la PR, comme contrat pour les missions 018 et 019, les noms et types que tu as supposés : paquet, types de premier niveau, champs et leurs types, signature d'`installer` avec `continuer`.
+4. Relance `fabriquer.sh`, `sha256sum -c` et le comptage des tests, puis rends les nouveaux chiffres.
+
+Liste de contrôle jointe de nouveau.

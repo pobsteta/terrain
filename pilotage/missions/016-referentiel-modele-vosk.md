@@ -64,3 +64,12 @@ Dépend de : rien. CI rouge attendue : aucune.
 ## Comment saura-t-on que ça marche ?
 
 Le dev de la mission 018 propose la marge à partir de la taille mesurée ici, sans rien deviner.
+
+## Remarques du relecteur (aller-retour 1/3, 2026-10-24)
+
+Verdict de la relecture 1 : prêt. Toutes les mesures ont été rejouées et sont identiques, et l'empreinte est égale à celle de Surculus. Il reste des retouches :
+
+1. **`graph/disambig_tid.int`** : écris que Vosk s'arrête sans ce fichier en grammaire dynamique (`model.cc`, commit `4ab9821`, l. 298-300). Pascal l'a ajouté le 2026-10-24 aux fichiers obligatoires de la spec. Dis aussi que `ivector/` n'est chargé que si `ivector/final.ie` existe (l. 258-275).
+2. **Intitulé du tableau** : remplace « fichiers que terrain-voix attend (ADR 0005) » par « fichiers que la fiche demande de vérifier ». `ivector/` et `graph/words.txt` viennent de la fiche, pas de l'ADR.
+3. **§7 « Rejouer »** : donne des chemins absolus séparés pour le venv, `cmp.py` et le modèle extrait, sans lancer de script depuis le dossier extrait.
+4. **Symboles** : précise que les 135 774 symboles comprennent des symboles spéciaux (`<eps>`, `#0`, `<s>`, `</s>`, `[unk]`).

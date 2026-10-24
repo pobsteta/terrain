@@ -179,8 +179,11 @@ validé en clair et en sombre. Les deux questions d'origine sont tranchées par 
 
 ### Modèle valide
 
-Un modèle est valide s'il contient `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst` et
-`graph/Gr.fst`. Un modèle à `graph/HCLG.fst` sans `HCLr.fst` est refusé par
+Un modèle est valide s'il contient `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst`,
+`graph/Gr.fst` et `graph/disambig_tid.int` (sans ce dernier, Vosk s'arrête en grammaire
+dynamique : `vosk-api/src/model.cc`, commit `4ab9821`, l. 298-300 ; décision de Pascal du
+2026-10-24). Un fichier vide n'est pas une faute : `ivector/online_cmvn.conf` fait 0 octet
+dans le vrai modèle (`docs/referentiels/modele-vosk.md`). Un modèle à `graph/HCLG.fst` sans `HCLr.fst` est refusé par
 `SansGrammaireDynamique` : Vosk n'y applique pas de grammaire (« Runtime graphs are not
 supported by this model », `vosk-api/src/recognizer.cc`), et terrain ne sert que la grammaire
 fermée (décision de Pascal du 2026-10-24). Ces fichiers sont nécessaires, pas suffisants : un
@@ -203,6 +206,8 @@ qui s'applique l'emporte :
 | R3 | `D` sans témoin ou absent, `N` sans témoin ou absent, `A` avec témoin | **reculer** : effacer `D` et `N`, renommer `A` → `D` | vrai |
 | R4 | aucun témoin nulle part | effacer `D`, `N` et `A` | faux |
 
+- **Le constructeur n'écrit rien** : ni le dossier parent, ni le verrou, qui n'est créé qu'au
+  début de `installer`, `telecharger` ou `supprimer` (décision de Pascal du 2026-10-24).
 - **`estInstalle` n'écrit jamais.** C'est une lecture pure, sûre sur le fil principal. Elle
   rend vrai en R1, R2 et R3, puisque le modèle y est récupérable.
 - **La reprise se fait au début de `installer`, `telecharger` et `supprimer`**, sous le
@@ -230,6 +235,8 @@ premier.
    `EspaceInsuffisant(manquant)`, et rien n'est effacé.
 7. Effacer un `N` resté là, puis décompresser dans `N` en comptant les octets écrits. Au-delà
    de la taille déclarée, `ArchiveIllisible`. Toute entrée qui sort de `N` est refusée.
+   Toute entrée dont le chemin contient un segment `..`, même s'il reste sous la racine,
+   donne `ArchiveIllisible(raison)` (décision de Pascal du 2026-10-24).
    `continuer` est consulté pendant la décompression : s'il devient faux, `Interrompu`.
 8. Forcer l'écriture des fichiers sur le disque (`FileChannel.force(true)`), écrire le témoin
    dans `N`, puis forcer à nouveau.
@@ -260,9 +267,9 @@ Elle prend le verrou, puis efface `D`, `N`, `A` et `<nom>.zip`, chacun témoin e
 - Elle rend `Illisible(raison)` sur un en-tête ou une table illisible, et `Connus(mots)`
   sinon.
 - Vosk lit son lexique dans les symboles de **sortie** de `Gr.fst` (`vosk-api/src/model.cc`),
-  alors que `motsConnus` lit ceux d'**entrée**. `lireVocabulaire` lit la table de sortie. Le
-  `dev` vérifie sur le vrai `vosk-model-small-fr-0.22` si les deux tables sont identiques, et
-  le dit dans sa PR.
+  alors que `motsConnus` lit ceux d'**entrée**. `lireVocabulaire` lit la table de sortie si
+  elle existe, sinon celle d'entrée (décision de Pascal du 2026-10-24). Sur
+  `vosk-model-small-fr-0.22`, les deux tables sont identiques (135 774 symboles, mission 016).
 
 ## Jeux d'essai
 
@@ -278,9 +285,12 @@ ne calcule pas les empreintes de référence. Les archives sont :
 - zip sans entrée ;
 - racine seule ;
 - sans `am/final.mdl` ;
+- sans `graph/disambig_tid.int` ;
+- avec un fichier vide (comme `ivector/online_cmvn.conf`), installée ;
 - à `HCLG.fst` ;
 - avec `__MACOSX/` ;
-- avec une entrée qui sort du dossier.
+- avec une entrée qui sort du dossier ;
+- avec une entrée `a/../b` qui reste sous la racine.
 
 Les fichiers de modèle y sont des fichiers factices (quelques octets), sauf pour le
 vocabulaire, qui garde son jeu actuel.
@@ -325,5 +335,3 @@ version de v0.7.0 donne :
 
 - **La marge d'espace libre** : valeur provisoire, que le `dev` propose et que Pascal fixe
   (décision du 2026-10-24).
-- **Tables d'entrée et de sortie de `Gr.fst`** : sont-elles identiques sur
-  `vosk-model-small-fr-0.22` ? Le `dev` le vérifie sur le vrai fichier.

@@ -81,7 +81,8 @@ Le détail (table d'états, ordre des opérations, erreurs, jeux d'essai) est da
     l'empreinte obtenue.
   - Coût : Marculus change une ligne.
 - **Structure : un modèle à grammaire dynamique, et rien d'autre.**
-  - Un modèle valide a `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst` et `graph/Gr.fst`.
+  - Un modèle valide a `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst`, `graph/Gr.fst` et
+    `graph/disambig_tid.int` (ajouté le 2026-10-24, sur la relecture de la mission 016).
   - Un modèle à `HCLG.fst` est refusé (`SansGrammaireDynamique`) : Vosk n'y applique pas de
     grammaire, et terrain ne sert que la grammaire fermée (décision de Pascal du 2026-10-24).
   - La racine de l'archive est détectée, en ignorant `__MACOSX/`. Une archive sans dossier de
