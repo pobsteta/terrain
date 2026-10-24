@@ -142,3 +142,69 @@ validé en clair et en sombre. Les deux questions d'origine sont tranchées par 
 2026-10-23 (ADR 0002, notes « levé le » et « Amendé le ») : teinte de départ de « réussi »
 `#0F8558`, non harmonisé, **gelée le 2026-10-24** (ADR 0002, note « Gel ») ; jaune d'alerte
 `#E2AA00`.
+
+---
+
+# Spec de `terrain-voix` : installation du modèle (issue #23)
+
+- **Statut :** proposée, porte n° 1 à passer
+- **Tirée de :** `docs/brief.md`, partie « Deuxième objet » ; décision : ADR 0005 (proposée)
+
+## Parcours
+
+1. **Sur le terrain** : le forestier a un modèle qui marche. Il lance une mise à jour (Wi-Fi)
+   ou un import par fichier. Si l'opération échoue ou s'il l'annule, il garde son modèle et
+   un message lui dit pourquoi.
+2. **Dans l'application** : le développeur construit `InstallationModele(dossier, cache, url,
+   empreinte)` en passant `Empreinte.Sha256(hex)` ou `Empreinte.NonControlee`. Il appelle
+   `telecharger` ou `installer`, et lit `estInstalle`.
+
+## Comportement
+
+- **Bascule.** On décompresse dans `<dossier>.nouveau` (même parent que `dossier`), on
+  contrôle la structure, on pose le témoin dans `.nouveau`, puis on renomme `dossier` en
+  `<dossier>.ancien`, `.nouveau` en `dossier`, et on efface `.ancien`. Tout échec avant le
+  second renommage laisse `dossier` intact et efface `.nouveau`.
+- **Reprise.** Au début de chaque opération et dans `estInstalle` : si `dossier` n'a pas de
+  témoin et que `<dossier>.ancien` en a un, `.ancien` est remis en place ; les restes
+  (`.nouveau`, `.ancien` après bascule réussie) sont effacés.
+- **Espace.** Avant de télécharger ou de décompresser, `File.usableSpace` du parent de
+  `dossier` doit couvrir la taille décompressée annoncée par l'archive, avec une marge. Sinon,
+  refus avec l'espace manquant dans le message ; rien n'est effacé. La marge est une valeur
+  provisoire, à fixer par le `dev` et à soumettre à Pascal.
+- **Structure.** Un modèle est valide s'il contient `am/final.mdl`, `conf/model.conf`, et
+  `graph/HCLG.fst` ou bien `graph/HCLr.fst` avec `graph/Gr.fst` (alphacephei, « Vosk
+  Models »). Le dossier racine de l'archive est détecté (un seul dossier de tête commun), et
+  non supposé.
+- **Empreinte.** `Empreinte.Sha256(hex)` refuse à la construction tout ce qui n'est pas 64
+  caractères hexadécimaux, avec un message qui le dit. Au contrôle, un écart donne un message
+  avec l'empreinte attendue et l'empreinte obtenue.
+- **Vocabulaire.** `VocabulaireVosk.motsConnus` est inchangé. La fonction ajoutée rend
+  `Connus(mots)` ou `Illisible(raison)`, et lit `graph/words.txt` quand `Gr.fst` manque.
+
+## Critères d'acceptation
+
+Un test par cas dans `terrain-voix`. Chacun vérifie que **le contenu** de l'ancien modèle est
+intact (un fichier présent, un fichier du nouveau absent), pas seulement le témoin :
+
+1. empreinte fausse ;
+2. archive à bonne empreinte mais tronquée ;
+3. archive vide (0 octet), zip sans entrée, zip avec seulement le dossier racine ;
+4. archive sans structure Vosk, et archive sans dossier racine (bien installée si la
+   structure y est) ;
+5. annulation et coupure de `telecharger` sur un modèle installé (le test actuel est
+   inversé) ;
+6. crash simulé entre les deux renommages, puis reprise ;
+7. espace insuffisant ;
+8. forme d'empreinte invalide (vide, 63 caractères, caractère non hexadécimal) ;
+9. vocabulaire : `Gr.fst` illisible donne `Illisible` ; `words.txt` seul donne `Connus`.
+
+Les empreintes de référence des tests sont calculées par `sha256sum` (GNU coreutils), pas par
+le code testé. `./gradlew test` passe en CI. Le README décrit le nouveau constructeur et la
+note de version de v0.7.0 prévient Marculus.
+
+## Questions ouvertes
+
+- La marge d'espace libre (valeur provisoire, voir « Espace »).
+- Les corrections de structure (contrôle des fichiers Vosk, racine détectée) : proposées par
+  le `contradicteur`, à valider par Pascal à la porte n° 1.

@@ -147,3 +147,55 @@
 - **Bord de la pastille d'alerte** sur surface claire (1,06 à 2,10:1) : noté au carnet des
   écarts, à vérifier pendant l'essai au soleil.
 
+
+---
+
+# Deuxième objet : corrections de `terrain-voix` (issue #23)
+
+> Statut : proposé, porte n° 1 à passer. Tiré du brief de Surculus du 2026-10-24
+> (`surculus/pilotage/briefs/vers-terrain/2026-10-24-ecarts-terrain-voix.md`, issue
+> [#23](https://github.com/pobsteta/terrain/issues/23)), critiqué par le `contradicteur` le
+> 2026-10-24, avec les arbitrages de Pascal du même jour. Décision : ADR 0005.
+
+## Ma réponse d'abord (fiche n° 15)
+
+_À écrire par Pascal. Le `contradicteur` a été lancé avant, sur l'ordre de Pascal du
+2026-10-24 (journal)._
+
+## Le problème, et pour qui (Abstraction)
+
+- **Problème** : un import ou une mise à jour ratés du modèle Vosk (archive refusée ou
+  illisible, coupure réseau, annulation) effacent le modèle qui marchait. Une archive vide ou
+  mal formée peut aussi être déclarée « installée ». Le forestier découvre en forêt, hors
+  réseau, que la dictée ne marche plus.
+- **Bénéficiaires** : d'abord les développeurs de Surculus et de Marculus, qui utilisent
+  `InstallationModele`, puis les forestiers qui dictent sur le terrain. Groma n'utilise pas ces
+  classes.
+- **Coût complet aujourd'hui** : inconnu.
+
+## Ce que fait la correction
+
+- **En une phrase** : un échec d'installation laisse intact le modèle en place, un modèle
+  n'est déclaré installé que s'il a la structure d'un modèle Vosk, et l'appelant dit
+  explicitement s'il contrôle l'empreinte.
+- **Critère d'acceptation** : chaque constat du brief de Surculus a un test dans
+  `terrain-voix` qui le montre corrigé (spec, partie `terrain-voix`) ; v0.7.0 publiée ;
+  Surculus remplace son test « ECART terrain-voix » par le cas de l'archive à bonne empreinte
+  mais illisible, et ses 162 cas de `DicteeRejeuTest` restent verts.
+
+## Ce qu'elle ne fait pas (hors périmètre)
+
+- Le catalogue des modèles dans terrain (URL et empreinte communes) : option D de l'ADR 0005,
+  écartée pour l'instant.
+- La montée de version dans Marculus et Surculus : elle se fait dans leurs dépôts.
+- Changer le type de `motsConnus`.
+
+## Arbitrages de Pascal (2026-10-24, après la critique du contradicteur)
+
+- **Échec** : l'ancien modèle est gardé (décompression à côté, deux renommages, reprise
+  après crash) ; le test de terrain et la KDoc « Échec → dossier effacé » sont inversés.
+- **Disque plein** : la mise à jour est refusée, et le modèle en place est gardé.
+- **Empreinte** : choix explicite (`Empreinte.Sha256` ou `Empreinte.NonControlee`), sans
+  valeur par défaut ; v0.7.0.
+- **Vocabulaire** : `motsConnus` inchangé ; une fonction ajoutée distingue « illisible » de
+  « connu ».
