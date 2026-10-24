@@ -22,17 +22,22 @@ _Modèle de carte :_
 
 ## Validé
 
+- [015-gel-reussi](missions/015-gel-reussi.md) · depuis le cycle 5
+  - Homme : `archiviste` (sonnet)
+  - Mission : geler `#0F8558` après l'essai au soleil (note datée de l'ADR 0002, mention « provisoire » retirée, spec à « Aucune ») ; lancée le 2026-10-24
+  - Moyens : README, spec, ADR 0002, `couleurs-etat.md` ; liste de contrôle jointe ; PR
+
 ## Planifié
 
-- Essai au soleil (critère 6 de la spec) · depuis le cycle 3
+## Terminé
+
+- Essai au soleil (critère 6 de la spec) · depuis le cycle 5
   - Homme : Pascal, hors agents
   - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
   - Dépend de : l'intégration de terrain-style dans Marculus (faite par Pascal, hors de ce dépôt) ; l'essai se fait dans Marculus
   - Moyens : même écran, plein soleil, fiche en thème clair ; repli `#00843D` (v0.6.1) si réussi se confond avec `primary`
   - Résultat : une ligne `écart` au carnet des écarts de `pilotage/journal.md`, puis une note datée de gel dans l'ADR 0002 (même PR que la levée de la mention « provisoire », marche à suivre du README)
-
-## Terminé
-
+  - Livré : fait par Pascal dans Marculus le 2026-10-24 ; tout est lisible, en clair comme en sombre ; `#0F8558` gardé (gel : mission 015)
 - [014-corrections-bilan-2](missions/014-corrections-bilan-2.md) · depuis le cycle 4
   - Homme : `archiviste` (sonnet)
   - Mission : corrections P1 à P3 du bilan n° 2 ; lancée au bilan n° 2

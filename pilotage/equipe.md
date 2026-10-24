@@ -43,7 +43,8 @@
 | [011](missions/011-liste-de-controle.md) liste de contrôle avant « prêt » | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [012](missions/012-dependances.md) dépendances entre missions | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
 | [013](missions/013-reussi-provisoire.md) réussi #0F8558 provisoire | `archiviste` | sonnet | appuyer | oui / oui / oui | 4 |
+| [015](missions/015-gel-reussi.md) gel de réussi `#0F8558` | `archiviste` | sonnet | appuyer | oui / oui / oui | 5 |
 | [014](missions/014-corrections-bilan-2.md) corrections du bilan n° 2 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 2 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
-terrain, après la mission 007, et noté au carnet des écarts ; échéance fixée au bilan n° 1 : 2026-10-30.
+terrain, après la mission 007, et noté au carnet des écarts ; échéance fixée au bilan n° 1 : 2026-10-30. Fait dans Marculus le 2026-10-24.
