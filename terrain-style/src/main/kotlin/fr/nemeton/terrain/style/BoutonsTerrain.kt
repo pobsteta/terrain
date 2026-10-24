@@ -1,61 +1,60 @@
 package fr.nemeton.terrain.style
 
 /**
- * Dimensions et formes des boutons de Compose Material 3 1.4.0, en dp (`docs/referentiels/style-marculus.md`
- * § 4, une propriété par ligne du tableau). Marculus ne fixe rien au niveau du thème : son style
- * est le défaut M3 (ADR 0006). Les boutons sont des pilules ([formePilulePourcent]).
+ * Dimensions et formes des boutons de Compose Material 3 1.4.0, en dp (`Float`)
+ * (`docs/referentiels/style-marculus.md` § 4, une valeur par ligne du tableau). Marculus ne fixe
+ * rien au niveau du thème : son style est le défaut M3 (ADR 0006). Les boutons sont des pilules :
+ * [FormesTerrain.pilulePourcent].
  */
 object BoutonsTerrain {
+    val hauteurMin: Float = 40f
+    val largeurMin: Float = 58f
+    val tailleIcone: Float = 18f
+    val espaceIcone: Float = 8f
+    val epaisseurTrait: Float = 1f
 
-    /** Marges intérieures en dp : début, haut, fin, bas. */
-    class Marges(val debutDp: Int, val hautDp: Int, val finDp: Int, val basDp: Int)
+    /** Début et fin de `Button`, fin de `Button` avec icône. */
+    val margeHorizontale: Float = 24f
 
-    val hauteurMinDp: Int = 40
-    val largeurMinDp: Int = 58
+    /** Haut et bas, tous les boutons. */
+    val margeVerticale: Float = 8f
 
-    /** `Button`, `OutlinedButton`, `ElevatedButton`, `FilledTonalButton`. */
-    val margesBouton = Marges(24, 8, 24, 8)
-    val margesBoutonAvecIcone = Marges(16, 8, 24, 8)
+    /** Début de `Button` avec icône. */
+    val margeHorizontaleAvecIcone: Float = 16f
 
-    /** `TextButton`. */
-    val margesBoutonTexte = Marges(12, 8, 12, 8)
-    val margesBoutonTexteAvecIcone = Marges(12, 8, 16, 8)
+    /** Début et fin de `TextButton`, début de `TextButton` avec icône. */
+    val margeHorizontaleTexte: Float = 12f
 
-    /** Taille de l'icône dans un bouton (`ButtonDefaults.IconSize`). */
-    val iconeDp: Int = 18
-    val espaceIconeTexteDp: Int = 8
-    val formePilulePourcent: Int = FormesTerrain.pilulePourcent
-
-    /** Trait de `OutlinedButton`. */
-    val traitContourDp: Int = 1
+    /** Fin de `TextButton` avec icône. */
+    val margeFinTexteAvecIcone: Float = 16f
 
     /** Élévation de `Button` au repos, puis au survol. */
-    val elevationDp: Int = 0
-    val elevationSurvolDp: Int = 1
+    val elevation: Float = 0f
+    val elevationSurvol: Float = 1f
 
     /** `OutlinedButton` et `TextButton` : aucune élévation (`elevation = null`). */
-    val elevationContourEtTexteDp: Int? = null
+    val elevationContourEtTexte: Float? = null
 
     /** Style du texte : `labelLarge`. */
-    val styleTexte: TypoTerrain.Style = TypoTerrain.labelLarge
+    val styleTexte: StyleTexte = TypoTerrain.labelLarge
 
-    val iconBoutonZoneTactileDp: Int = 48
-    val iconBoutonConteneurDp: Int = 40
+    val zoneTactileBoutonIcone: Float = 48f
+    val conteneurBoutonIcone: Float = 40f
 
-    val fabDp: Int = 56
-    val fabIconeDp: Int = 24
-    val fabRayonDp: Int = FormesTerrain.large
-    val fabElevationDp: Int = 6
+    val fabTaille: Float = 56f
+    val fabTailleIcone: Float = 24f
+    val fabRayon: Float = FormesTerrain.large
+    val fabElevation: Float = 6f
 
-    val petitFabDp: Int = 40
-    val petitFabIconeDp: Int = 24
-    val petitFabRayonDp: Int = FormesTerrain.medium
+    val petitFabTaille: Float = 40f
+    val petitFabTailleIcone: Float = 24f
+    val petitFabRayon: Float = FormesTerrain.medium
 
     /** `AssistChip`, `FilterChip`. */
-    val puceHauteurDp: Int = 32
-    val puceIconeDp: Int = 18
-    val puceRayonDp: Int = FormesTerrain.small
+    val puceHauteur: Float = 32f
+    val puceTailleIcone: Float = 18f
+    val puceRayon: Float = FormesTerrain.small
 
     /** `Card` et `ElevatedCard`. */
-    val carteRayonDp: Int = FormesTerrain.medium
+    val carteRayon: Float = FormesTerrain.medium
 }
