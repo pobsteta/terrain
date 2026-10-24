@@ -13,7 +13,7 @@ Licence : **GPL-3.0-or-later** (`LICENSE`).
 |---|---|---|
 | `terrain-journal` | `fr.nemeton.terrain.journal` : `Fusion` (union sur l'UUID, « dernière écriture gagne » sur `modifie`, la locale à égalité, rien d'effacé), `HorlogeMonotone` (`modifie` strictement croissant), `Identifiants` (UUID v4) | Kotlin pur, JVM 17 |
 | `terrain-gpkg` | `fr.nemeton.terrain.gpkg` : couches vecteur d'un GeoPackage en SQL simple (`GeoPackage` : couches, entités, insertion), format des géométries (`FormatGpkg`, WKB ISO / EWKB, Z et M ignorés), systèmes `Systeme` (Lambert-93, WGS 84, Web Mercator ; les autres refusés par `SystemeNonGere`) | Kotlin pur, JVM 17 ; l'application fournit une `BaseSqlite` |
-| `terrain-voix` | `fr.nemeton.terrain.voix` : `NoyauPtt` (push-to-talk : une seule session quelle que soit la source tenue, bip obligatoire, coupure pendant une annonce TTS), `NombresFrancais`, `AlphabetRadio` (replis quand le modèle ignore le mot OTAN), `GrammaireFermee` (JSON Vosk, jeton `[unk]` de rejet), `VocabulaireVosk` (mots connus du modèle, lus dans `graph/Gr.fst`), `InstallationModele` (téléchargement ou archive locale, SHA-256, témoin de fin) | Kotlin pur, JVM 17 |
+| `terrain-voix` | `fr.nemeton.terrain.voix` : `NoyauPtt` (push-to-talk : une seule session quelle que soit la source tenue, bip obligatoire, coupure pendant une annonce TTS), `NombresFrancais`, `AlphabetRadio` (replis quand le modèle ignore le mot OTAN), `GrammaireFermee` (JSON Vosk, jeton `[unk]` de rejet), `VocabulaireVosk` (mots connus du modèle, lus dans `graph/Gr.fst`), `InstallationModele` (téléchargement ou archive locale ; le modèle en place survit à tout échec ; `reprendre()` avant de charger le modèle ; empreinte explicite `Empreinte.Sha256` ou `Empreinte.NonControlee` ; erreurs typées) | Kotlin pur, JVM 17 |
 | `terrain-carte` | `fr.nemeton.terrain.carte` : couches WMTS de la Géoplateforme (`Geoplateforme` : Plan IGN, Ortho IGN, cadastre ; URL d'une tuile), `Attributions`, `Echelle` (résolution au sol, distance ronde, libellé), `Emprise` / `Tuile` / `ZoneTuiles` (tuiles à télécharger pour le hors-ligne), `GrilleWebMercator` (ortho déjà sur la grille XYZ) | Kotlin pur, JVM 17 |
 | `terrain-style` | `fr.nemeton.terrain.style` : le style de Marculus (ADR 0006) : `StyleTerrain` (48 rôles de couleur, clair et sombre, plus `reussi` et `alerte`), `FormesTerrain`, `TypoTerrain`, `BoutonsTerrain`, et `Contraste` (rapport de contraste WCAG 2.2 sur des ARGB `0xFFRRGGBB` en `Long` ; toute autre valeur refusée par `IllegalArgumentException`) | Kotlin pur, JVM 17 |
 | `terrain-gnss` | `fr.nemeton.terrain.gnss` : NMEA (découpe du flux, GGA/GSA/GST/RMC/GSV, fix, précision, skyplot), client NTRIP (requête, réponse, sourcetable, GGA renvoyée au caster) ; `fr.nemeton.terrain.geo` : position WGS 84, aire, distance et azimut, point dans polygone, Lambert-93 ↔ WGS 84 ↔ Web Mercator | Kotlin pur, JVM 17 |
@@ -56,6 +56,60 @@ val gga = NmeaParser.parseGga(phrase) ?: return   // null si somme de contrôle 
 val fix = NmeaParser.fixDepuis(gga)
 if (fix.qualite == QualiteFix.RTK_FIXE) { /* position centimétrique */ }
 ```
+
+### Modèle Vosk : `terrain-voix`
+
+`InstallationModele` installe un modèle Vosk à grammaire dynamique (ADR 0005, spec de
+`terrain-voix`). **Le modèle en place survit à tout échec** : le nouveau est décompressé dans
+`<nom>.nouveau`, vérifié, écrit sur le disque et marqué d'un témoin, puis la bascule se fait en
+deux renommages. Une reprise, au début de chaque opération et sous verrou, termine ou défait une
+bascule interrompue (processus tué, batterie vide). **Avant de charger le modèle**, l'application
+appelle `reprendre()` hors du fil principal : une bascule interrompue est remise dans le dossier
+du modèle, là où Vosk le cherche.
+
+```kotlin
+import fr.nemeton.terrain.voix.*
+
+val installation = InstallationModele(
+    File(filesDir, "vosk-model-small-fr-0.22"),           // à côté : .nouveau, .ancien, .zip, .verrou
+    "https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip",
+    Empreinte.Sha256("…64 caractères hexadécimaux…"),     // ou Empreinte.NonControlee, écrit en toutes lettres
+    espaceDisponible = { storageManager.getAllocatableBytes(storageManager.getUuidForPath(it)) },
+)
+installation.reprendre()                                  // hors du fil principal, avant de charger le modèle
+if (!installation.estInstalle) {                          // lecture pure, sûre sur le fil principal
+    installation.telecharger(progression = { … }, continuer = { !annule })  // hors du fil principal
+        .onFailure { e ->
+            when (e) {
+                is EspaceInsuffisant -> "Il manque ${e.manquant} octets"
+                is EmpreinteInattendue -> "Archive altérée (attendue ${e.attendue}, obtenue ${e.obtenue})"
+                is ArchiveIllisible -> "Archive ou réseau en défaut : ${e.raison}"
+                is StructureInvalide -> "Modèle incomplet : ${e.manquant}"
+                is SansGrammaireDynamique -> "Modèle sans grammaire dynamique (HCLG.fst)"
+                is Interrompu -> "Annulé"
+                else -> "Erreur d'entrée-sortie : ${e.message}"   // IOException : le modèle en place reste
+            }
+        }
+}
+// Import par fichier : installation.installer(archive, continuer = { !annule })
+```
+
+- **Modèle valide** : `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst`, `graph/Gr.fst`,
+  `graph/disambig_tid.int`, sous une racine détectée (dossier de tête ou non ; `__MACOSX/` et
+  `.DS_Store` ignorés) ; tout `graph/HCLG.fst` est refusé (`SansGrammaireDynamique`).
+- **Espace** : l'installation demande la taille décompressée plus une marge de 32 Mio
+  (`InstallationModele.MARGE_ESPACE`) ; le téléchargement demande `Content-Length` plus la marge
+  avant de commencer. Pour `vosk-model-small-fr-0.22`, prévoir 144 271 562 octets libres avant un
+  téléchargement (archive, modèle décompressé et marge), 102 038 239 pour un import.
+- **Refus** (`ArchiveIllisible`) : zip illisible ou tronqué, CRC-32 faux, entrée hors du dossier,
+  à segment `..`, absolue, en double ou dont le nom n'est pas en UTF-8, plusieurs modèles, réseau
+  en défaut.
+- Une entrée `.installe` de l'archive est ignorée : le seul témoin est celui que pose
+  l'installation. Si seul l'effacement final de l'ancien modèle échoue, l'installation réussit ;
+  la reprise suivante l'efface.
+- Le verrou est partagé par le processus : un appel depuis un autre fil attend. Un appel imbriqué
+  depuis `progression` ou `continuer` obtient `OverlappingFileLockException` dans son `Result`.
+- `<nom>.verrou` n'est jamais effacé ; `supprimer()` efface le modèle et ses restes.
 
 ### GeoPackage sur Android
 
