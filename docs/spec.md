@@ -147,8 +147,8 @@ validé en clair et en sombre. Les deux questions d'origine sont tranchées par 
 
 # Spec de `terrain-voix` : installation du modèle (issue #23)
 
-- **Statut :** proposée, porte n° 1 à passer
-- **Tirée de :** `docs/brief.md`, partie « Deuxième objet » ; décision : ADR 0005 (proposée)
+- **Statut :** validée par Pascal le 2026-10-24 (porte n° 1)
+- **Tirée de :** `docs/brief.md`, partie « Deuxième objet » ; décision : ADR 0005, acceptée par Pascal le 2026-10-24
 - **Critiquée par :** `contradicteur`, 2026-10-24 (deux passes ; corrections reportées)
 
 ## Parcours

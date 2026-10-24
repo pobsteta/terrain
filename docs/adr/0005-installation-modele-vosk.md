@@ -1,7 +1,7 @@
 # ADR 0005 — installation du modèle Vosk : l'ancien modèle survit à tout échec
 
 - **Date :** 2026-10-24
-- **Statut :** proposée (arbitrages de Pascal du 2026-10-24 reportés ; porte n° 1 à passer)
+- **Statut :** acceptée par Pascal le 2026-10-24 (« Prêts à payer ? » : inconnu)
 - **Proposée par :** Claude (orchestrateur), sur le brief de Surculus (issue
   [#23](https://github.com/pobsteta/terrain/issues/23)) et la critique du `contradicteur`
 - **Tranchée par :** Pascal

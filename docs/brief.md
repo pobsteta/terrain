@@ -152,7 +152,7 @@
 
 # Deuxième objet : corrections de `terrain-voix` (issue #23)
 
-> Statut : proposé, porte n° 1 à passer. Tiré du brief de Surculus du 2026-10-24
+> Statut : validé par Pascal le 2026-10-24 (porte n° 1). Tiré du brief de Surculus du 2026-10-24
 > (`surculus/pilotage/briefs/vers-terrain/2026-10-24-ecarts-terrain-voix.md`, issue
 > [#23](https://github.com/pobsteta/terrain/issues/23)), critiqué par le `contradicteur` le
 > 2026-10-24, avec les arbitrages de Pascal du même jour. Décision : ADR 0005.
