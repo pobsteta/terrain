@@ -6,6 +6,7 @@
   (et de son noir), pour l'ADR 0002 (`docs/adr/0002-couleurs-semantiques.md`).
 - **Statut :** matière à choisir. **Aucune valeur n'est choisie ici.**
 - **Statut, ajouté le 2026-10-23 après l'ADR 0002 :** valeurs choisies (`reussi` provisoire jusqu'au 2026-10-30) ; ce fichier reste matière.
+- **Statut, ajouté le 2026-10-24 :** `reussi` `#0F8558` gelé, gardé sans repli, après l'essai au soleil de Pascal dans Marculus (ADR 0002, note « Gel, ajoutée le 2026-10-24 ») ; la ligne du 2026-10-23 ci-dessus est conservée, sa réserve « provisoire » est levée ; ce fichier reste matière.
 - **Limite de l'outil :** cette mission n'a eu aucun moyen d'exécuter du code. Toute conversion
   faite ci-dessous est **à la main** (méthode donnée) et marquée « à rejouer ». Aucun calcul
   HCT ni de contraste n'a été fait (hors mission, mission 007).
