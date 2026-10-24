@@ -3,6 +3,7 @@ package fr.nemeton.terrain.voix
 import java.io.File
 import java.net.InetAddress
 import java.net.ServerSocket
+import java.nio.channels.OverlappingFileLockException
 import java.nio.file.Files
 import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.atomic.AtomicInteger
@@ -330,6 +331,146 @@ class InstallationModeleSureteTest {
     @Test
     fun `archive absente - ArchiveIllisible`() {
         reprise()
+    }
+
+    // ================================================================ relecture 1 de 018 : témoin de l'archive
+
+    @Test
+    fun `archive qui contient un temoin - installee, aucun temoin dans nouveau avant l'etape 8`() {
+        // L'entrée `.installe` vient en premier : décompressée, elle poserait un témoin dès le début.
+        val a = zip("temoin.zip", "m/.installe", *modele("m/"))
+        var appels = 0
+        var temoinAvant = false
+        val r = installation().installer(a, continuer = {
+            appels++
+            if (File(nouveau, TEMOIN).exists()) temoinAvant = true
+            true
+        })
+        assertTrue(r.isSuccess, "échec : ${r.exceptionOrNull()}")
+        assertTrue(appels > 0, "continuer n'a pas été consulté")
+        assertFalse(temoinAvant, "un témoin existait dans .nouveau avant l'étape 8")
+        assertEquals("temoin.zip", File(cible, TEMOIN).readText(), "le témoin est celui de l'étape 8, pas celui de l'archive")
+    }
+
+    @Test
+    fun `archive qui contient un dossier temoin - installee, le dossier n'est pas decompresse`() {
+        val a = zip("temoin-dossier.zip", "m/.installe/piege.txt", *modele("m/"))
+        assertTrue(installation().installer(a).isSuccess)
+        assertTrue(File(cible, TEMOIN).isFile)
+        assertEquals("temoin-dossier.zip", File(cible, TEMOIN).readText())
+    }
+
+    @Test
+    fun `processus tue juste apres l'entree temoin de l'archive - la reprise ne fait pas avancer, l'ancien reste`() {
+        dossier(cible, true, "ancien")
+        val a = zip("temoin-coupe.zip", "m/.installe", *modele("m/"))
+        val capture = File(entrees, "capture")
+        var appels = 0
+        // Au 3e appel de continuer (l'entrée `.installe` est passée), on fige `.nouveau` tel qu'un
+        // processus tué à cet instant le laisserait, puis on arrête.
+        erreur<Interrompu>(installation().installer(a, continuer = {
+            if (++appels == 3) nouveau.copyRecursively(capture)
+            appels < 3
+        }))
+        assertFalse(nouveau.exists())
+        capture.copyRecursively(nouveau)
+        assertFalse(File(nouveau, TEMOIN).exists(), "témoin dans .nouveau en pleine décompression")
+        assertTrue(installation().reprendre().isSuccess)
+        assertEquals(listOf(TEMOIN, "ancien.txt"), contenu(cible))
+        assertFalse(nouveau.exists())
+    }
+
+    // ================================================================ reprendre()
+
+    @Test
+    fun `reprendre - etat R2 (ancien et nouveau a temoin, dossier absent) - le nouveau passe en dossier`() {
+        dossier(ancien, true, "ancien"); dossier(nouveau, true, "nouveau")
+        assertTrue(installation().reprendre().isSuccess)
+        assertEquals(listOf(TEMOIN, "nouveau.txt"), contenu(cible))
+        assertFalse(nouveau.exists()); assertFalse(ancien.exists())
+    }
+
+    @Test
+    fun `reprendre - etat R3 (seul l'ancien a temoin) - l'ancien revient en dossier`() {
+        dossier(ancien, true, "ancien"); dossier(nouveau, false, "partiel"); dossier(cible, false, "reste")
+        assertTrue(installation().reprendre().isSuccess)
+        assertEquals(listOf(TEMOIN, "ancien.txt"), contenu(cible))
+        assertFalse(nouveau.exists()); assertFalse(ancien.exists())
+    }
+
+    @Test
+    fun `reprendre - etat R4 (aucun temoin) - tout est efface, rien n'est installe`() {
+        dossier(cible, false, "a"); dossier(nouveau, false, "b")
+        val i = installation()
+        assertTrue(i.reprendre().isSuccess)
+        assertFalse(cible.exists()); assertFalse(nouveau.exists()); assertFalse(ancien.exists())
+        assertFalse(i.estInstalle)
+        assertEquals(listOf("modele.verrou"), contenu(racine))
+    }
+
+    @Test
+    fun `reprendre - etat R1 (modele en place) - rien ne change`() {
+        dossier(cible, true, "en-place")
+        assertTrue(installation().reprendre().isSuccess)
+        assertEquals(listOf(TEMOIN, "en-place.txt"), contenu(cible))
+    }
+
+    // ================================================================ étape 12, appel imbriqué, noms non UTF-8
+
+    @Test
+    fun `etape 12 - l'effacement de l'ancien echoue - succes, le nouveau est en place, la reprise suivante efface l'ancien`() {
+        // Un sous-dossier sans droit d'écriture empêche d'effacer l'ancien (sans point d'injection).
+        val sonde = File(entrees, "sonde").apply { mkdirs() }
+        File(sonde, "f").writeText("f")
+        sonde.setWritable(false)
+        val effacable = File(sonde, "f").delete()
+        sonde.setWritable(true)
+        if (effacable) return // droits ignorés (super-utilisateur) : l'échec ne se provoque pas ici
+
+        dossier(cible, true, "ancien")
+        val bloque = File(cible, "bloque").apply { mkdirs() }
+        File(bloque, "f").writeText("f")
+        bloque.setWritable(false)
+        try {
+            val r = installation().installer(archive("bonne.zip"))
+            assertTrue(r.isSuccess, "échec : ${r.exceptionOrNull()}")
+            assertTrue(File(cible, "nouveau.txt").isFile)
+            assertEquals("bonne.zip", File(cible, TEMOIN).readText())
+            assertTrue(ancien.exists(), "l'effacement aurait dû échouer")
+            assertFalse(File(ancien, TEMOIN).exists(), "le témoin de l'ancien part en premier")
+        } finally {
+            File(ancien, "bloque").setWritable(true)
+            bloque.setWritable(true)
+        }
+        assertTrue(installation().reprendre().isSuccess)
+        assertFalse(ancien.exists())
+        assertTrue(File(cible, "nouveau.txt").isFile)
+    }
+
+    @Test
+    fun `appel imbrique depuis continuer - OverlappingFileLockException dans son Result, l'installation reussit`() {
+        val i = installation()
+        var imbrique: Result<Unit>? = null
+        val r = i.installer(archive("bonne.zip"), continuer = {
+            if (imbrique == null) imbrique = i.supprimer()
+            true
+        })
+        assertTrue(r.isSuccess, "échec : ${r.exceptionOrNull()}")
+        assertIs<OverlappingFileLockException>(imbrique!!.exceptionOrNull())
+        assertTrue(File(cible, "nouveau.txt").isFile)
+    }
+
+    @Test
+    fun `nom d'entree qui n'est pas en UTF-8 - ArchiveIllisible`() {
+        val a = File(entrees, "latin1.zip")
+        ZipOutputStream(a.outputStream(), Charsets.ISO_8859_1).use { z ->
+            (modele("m/") + "m/coupé.txt").forEach {
+                z.putNextEntry(ZipEntry(it)); z.write("x\n".toByteArray()); z.closeEntry()
+            }
+        }
+        dossier(cible, true, "ancien")
+        erreur<ArchiveIllisible>(installation().installer(a))
+        assertEquals(listOf(TEMOIN, "ancien.txt"), contenu(cible))
     }
 
     // ================================================================ supprimer, Empreinte

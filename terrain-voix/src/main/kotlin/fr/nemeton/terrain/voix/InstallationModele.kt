@@ -27,14 +27,22 @@ import java.util.zip.ZipFile
  * d'un témoin ; la bascule se fait ensuite en deux renommages (l'ancien vers `<nom>.ancien`, le
  * nouveau vers [dossier]). Une archive illisible, une empreinte fausse, un disque plein, une coupure
  * réseau ou une annulation laissent [dossier] intact. Si le processus est tué entre deux étapes,
- * la reprise, appliquée sous verrou au début de [installer], [telecharger] et [supprimer], remet
- * un état sûr : elle avance si le nouveau est prêt, sinon elle remet l'ancien.
+ * la reprise (R1 à R4), appliquée sous verrou au début de [installer], [telecharger], [supprimer]
+ * et [reprendre], remet un état sûr : elle avance si le nouveau est prêt, sinon elle remet l'ancien.
+ * Le seul témoin est celui que pose l'installation (étape 8) : une entrée `.installe` de l'archive
+ * est ignorée, jamais décompressée.
+ *
+ * **Avant de charger le modèle**, l'application appelle [reprendre] hors du fil principal : une
+ * bascule interrompue (états R2 et R3) est ainsi remise en [dossier], là où Vosk le cherche.
  *
  * Dans le dossier parent, à côté de [dossier] : `<nom>.nouveau`, `<nom>.ancien`, `<nom>.zip`
  * (archive téléchargée) et `<nom>.verrou` (jamais effacé). Le constructeur n'écrit rien.
  *
- * Bloquant : [installer], [telecharger] et [supprimer] s'appellent hors du fil principal ;
- * [estInstalle] est une lecture pure.
+ * Bloquant : [installer], [telecharger], [supprimer] et [reprendre] s'appellent hors du fil
+ * principal ; [estInstalle] est une lecture pure. Le verrou est partagé par tout le processus :
+ * un second appel depuis un autre fil attend la fin du premier. Un appel imbriqué, fait depuis
+ * `progression` ou `continuer` (même fil, verrou déjà tenu), n'attend pas : il obtient un
+ * `java.nio.channels.OverlappingFileLockException` dans son `Result`, sans rien toucher.
  *
  * @param empreinte empreinte attendue de l'archive, ou [Empreinte.NonControlee] : un choix
  *   explicite de l'appelant, sans valeur par défaut.
@@ -60,6 +68,14 @@ class InstallationModele(
      */
     val estInstalle: Boolean
         get() = aTemoin(dossier) || aTemoin(nouveau) || aTemoin(ancien)
+
+    /**
+     * Prend le verrou et applique la reprise R1 à R4, sans rien installer : un modèle à témoin
+     * laissé par une bascule interrompue est remis en [dossier], tout dossier sans témoin est
+     * effacé (témoin d'abord). À appeler hors du fil principal avant de charger le modèle. Un
+     * échec d'entrée-sortie est porté par le `Result`.
+     */
+    fun reprendre(): Result<Unit> = runCatching { sousVerrou { } }
 
     /**
      * Efface le modèle ([dossier], `<nom>.nouveau`, `<nom>.ancien`, chacun témoin en premier) et
@@ -103,7 +119,9 @@ class InstallationModele(
      * ([StructureInvalide]), empreinte ([EmpreinteInattendue]), structure du modèle sous sa racine
      * ([StructureInvalide], [SansGrammaireDynamique]), espace libre ([EspaceInsuffisant]), puis
      * décompression sûre (noms, tailles, CRC-32 : [ArchiveIllisible] ; [continuer] faux :
-     * [Interrompu]). Le nom de l'archive est noté dans le témoin.
+     * [Interrompu]). Le nom de l'archive est noté dans le témoin. Une entrée `.installe` sous la
+     * racine de l'archive est ignorée. Si seul l'effacement final de `<nom>.ancien` échoue, le
+     * nouveau modèle est en place et le résultat est un succès : la reprise suivante l'effacera.
      *
      * **Sur tout échec, [dossier] est intact.**
      */
@@ -120,7 +138,7 @@ class InstallationModele(
         return synchronized(moniteur) {
             FileChannel.open(fichierVerrou.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE).use { canal ->
                 canal.lock().use {
-                    reprendre()
+                    appliquerReprise()
                     action()
                 }
             }
@@ -128,7 +146,7 @@ class InstallationModele(
     }
 
     /** Table d'états R1 à R4 de la spec : la première règle qui s'applique l'emporte. */
-    private fun reprendre() {
+    private fun appliquerReprise() {
         when {
             aTemoin(dossier) -> { // R1
                 invalider(nouveau)
@@ -160,6 +178,8 @@ class InstallationModele(
             ZipFile(archive)
         } catch (e: IOException) {
             throw ArchiveIllisible("pas un zip lisible (${e.message ?: e.javaClass.simpleName})")
+        } catch (e: IllegalArgumentException) { // nom d'entrée qui n'est pas en UTF-8
+            throw ArchiveIllisible("nom d'entrée illisible (${e.message})")
         }
         zip.use { z ->
             val entrees = lireZip { z.entries().toList() }
@@ -175,7 +195,12 @@ class InstallationModele(
 
             // 4. Racine, puis structure.
             val racine = racine(utiles.map { it.name }.toSet())
-            val sousRacine = entrees.filter { !ignoree(it.name) && it.name.startsWith(racine) && it.name != racine }
+            // Une entrée `.installe` de l'archive n'est jamais décompressée : le seul témoin est
+            // celui de l'étape 8 (sinon une coupure en pleine décompression ferait avancer R2).
+            val sousRacine = entrees.filter {
+                !ignoree(it.name) && it.name.startsWith(racine) && it.name != racine &&
+                    !estTemoin(it.name.removePrefix(racine))
+            }
 
             // 5. Somme des tailles décompressées, sous la racine.
             var somme = 0L
@@ -305,7 +330,13 @@ class InstallationModele(
             }
             throw e
         }
-        invalider(ancien) // 12
+        // 12 : le nouveau est en place ; un échec ici n'est pas un échec de l'installation,
+        // la reprise R1 effacera l'ancien à l'opération suivante.
+        try {
+            invalider(ancien)
+        } catch (_: Exception) {
+            // Effacement refusé (droits, entrée-sortie) : l'installation a réussi quand même.
+        }
     }
 
     // ------------------------------------------------------------------ téléchargement
@@ -358,6 +389,9 @@ class InstallationModele(
     // ------------------------------------------------------------------ disque
 
     private fun aTemoin(d: File) = File(d, TEMOIN).isFile
+
+    /** `.installe` (fichier ou dossier) au sommet du modèle, en nom relatif à la racine. */
+    private fun estTemoin(relatif: String) = relatif.trimEnd('/').substringBefore('/') == TEMOIN
 
     /**
      * Invalide puis efface un dossier de modèle : **le témoin d'abord**, écrit sur le disque, puis
@@ -425,6 +459,8 @@ class InstallationModele(
             throw ArchiveIllisible("zip invalide (${e.message})")
         } catch (e: EOFException) {
             throw ArchiveIllisible("zip tronqué (${e.message})")
+        } catch (e: IllegalArgumentException) { // ZipCoder : nom d'entrée qui n'est pas en UTF-8
+            throw ArchiveIllisible("nom d'entrée illisible (${e.message})")
         }
 
         /** Lecture du réseau : une faute d'entrée-sortie devient [ArchiveIllisible] (« réseau : … »). */
