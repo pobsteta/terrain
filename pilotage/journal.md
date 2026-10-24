@@ -214,3 +214,4 @@
 2026-10-24 · Claude (orchestrateur) · mission 022 · correction d'une ligne de README faite par l'orchestrateur, sans toucher au test (409/409 verts, CI verte), plutôt qu'un renvoi (règle « aller plus vite ») ; PR #31 fusionnée sur ordre de Pascal ; PR #30 fusionnée avec elle.
 2026-10-24 · Pascal · mission 022 · nuancier validé : « oui c'est le vert de Marculus » ; ordre : fusionner et publier la v0.7.1.
 2026-10-24 · Claude (orchestrateur) · publication · tag v0.7.1 sur main bb2b519, CI du tag verte, JitPack 200 : terrain-style reprend le style de Marculus ; cartes 021 et 022 en Terminé ; cycle 6 clos (dernier cycle : 6), livraison inscrite.
+2026-10-24 · Claude (orchestrateur) · README · coordonnées des six modules alignées sur v0.7.1 (tous publiés sous chaque tag ; terrain-voix était resté en v0.6.0), signalé par le dev de 022.
