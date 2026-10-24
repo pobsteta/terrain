@@ -22,10 +22,6 @@ _Modèle de carte :_
 
 ## Validé
 
-- [020-referentiel-style-marculus](missions/020-referentiel-style-marculus.md) · depuis le cycle 6 — **priorité absolue (Pascal)**
-  - Homme : `dev` (sonnet)
-  - Mission : relever le style de Marculus v0.65.0 et les défauts de Material 3 (BOM 2026.02.01)
-  - Moyens : dépôt Marculus, jars Material 3 ; référentiel et CSV ; PR
 - [021-tests-style-marculus](missions/021-tests-style-marculus.md) · depuis le cycle 6
   - Homme : `testeur` (sonnet)
   - Mission : tests d'égalité au style de Marculus ; 7:1 devient informatif
@@ -34,23 +30,30 @@ _Modèle de carte :_
   - Homme : `dev` (sonnet)
   - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.6.2 après le « c'est vert » de Pascal
   - Moyens : après 021 ; branche de 021
-- [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 5
-  - Homme : `testeur` (sonnet)
-  - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`
-  - Moyens : spec, ADR 0005, Info-ZIP, `sha256sum` ; PR en brouillon, CI rouge annoncée jusqu'à 019
-- [018-installation-modele-sure](missions/018-installation-modele-sure.md) · depuis le cycle 5
-  - Homme : `dev` (opus), tenu
-  - Mission : réécrire `InstallationModele` (ADR 0005) ; plan d'abord, marge proposée puis fixée par Pascal
-  - Moyens : après 016 et 017 ; branche de 017
-- [019-lire-vocabulaire](missions/019-lire-vocabulaire.md) · depuis le cycle 5
-  - Homme : `dev` (sonnet)
-  - Mission : ajouter `lireVocabulaire` (connus / illisible)
-  - Moyens : après 016 et 018 ; branche de 018
-
 ## Planifié
 
 ## Terminé
 
+- [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 6
+  - Homme : `testeur` (sonnet)
+  - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`
+  - Moyens : spec, ADR 0005, Info-ZIP, `sha256sum` ; PR en brouillon, CI rouge annoncée jusqu'à 019
+  - Livré : PR #26 fusionnée (3 relectures + complément)
+- [018-installation-modele-sure](missions/018-installation-modele-sure.md) · depuis le cycle 6
+  - Homme : `dev` (opus), tenu
+  - Mission : réécrire `InstallationModele` (ADR 0005) ; plan d'abord, marge proposée puis fixée par Pascal
+  - Moyens : après 016 et 017 ; branche de 017
+  - Livré : PR #26 fusionnée (1 relecture + renvoi 1/3 ; renvoi non relu, fusion sur ordre de Pascal)
+- [019-lire-vocabulaire](missions/019-lire-vocabulaire.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : ajouter `lireVocabulaire` (connus / illisible)
+  - Moyens : après 016 et 018 ; branche de 018
+  - Livré : PR #26 fusionnée (intégrée par l'orchestrateur, non relue à part)
+- [020-referentiel-style-marculus](missions/020-referentiel-style-marculus.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : relever le style de Marculus v0.65.0 et les défauts de Material 3 (BOM 2026.02.01)
+  - Moyens : dépôt Marculus, jars Material 3 ; référentiel et CSV ; PR
+  - Livré : PR #29 fusionnée (1 relecture)
 - [016-referentiel-modele-vosk](missions/016-referentiel-modele-vosk.md) · depuis le cycle 6
   - Homme : `dev` (sonnet)
   - Mission : relever le vrai modèle small-fr-0.22 (fichiers, tailles, empreinte, tables de `Gr.fst`)
