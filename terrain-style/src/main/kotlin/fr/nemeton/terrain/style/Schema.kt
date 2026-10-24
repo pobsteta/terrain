@@ -5,13 +5,14 @@ package fr.nemeton.terrain.style
  * 48 rôles, même ordre), en ARGB 32 bits `0xFFRRGGBB` dans un [Long].
  *
  * Toute valeur hors de [`0xFF000000`, `0xFFFFFFFF`] est refusée par
- * [IllegalArgumentException]. Les valeurs de [StyleTerrain] sont générées, jamais retouchées.
+ * [IllegalArgumentException]. Les valeurs de [StyleTerrain] sont celles du style de Marculus
+ * (ADR 0006), recopiées du référentiel, jamais retouchées.
  *
  * [reussi] et [alerte] sont les deux couleurs d'état communes (ADR 0002) ; l'erreur est `error*`.
  *
- * [interditsEnTexte] nomme les rôles qui ne tiennent pas 7:1 en texte sur l'un de leurs fonds
- * (critère 2 de la spec), plus `alerte.couleur` par décision (ADR 0002) : ils ne servent qu'en
- * fond ou en décor. Une couleur d'état s'y nomme `reussi.couleur`, `alerte.conteneur`…
+ * [interditsEnTexte] nomme les rôles qui ne servent pas en texte : `alerte.couleur`, par décision
+ * (ADR 0002) ; le jaune sert de fond ou de décor. Le style n'impose aucun contraste minimal
+ * (ADR 0006). Une couleur d'état s'y nomme `reussi.couleur`, `alerte.conteneur`…
  */
 class Schema(
     val primary: Long,
