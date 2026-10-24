@@ -84,9 +84,11 @@ zipper avec-fichier-vide.zip $BON $R/ivector/online_cmvn.conf $R/nouveau.txt
 # 13. entrée « vosk-model-test/a/../b » : reste sous la racine, mais son chemin contient « .. »
 zipper point-point-interne.zip $BON $R/a-b.txt
 printf '@ %s/a-b.txt\n@=%s/a/../b\n' $R $R | zipnote -w point-point-interne.zip
+# 14. HCLG.fst ET HCLr.fst : les cinq fichiers obligatoires, plus graph/HCLG.fst (refusé : décision du 2026-10-24)
+zipper hclg-et-hclr.zip $BON $R/graph/HCLG.fst
 
 rm -rf "$T"
 # Empreintes de référence : calculées par sha256sum, jamais par le code testé.
 sha256sum bonne.zip bonne-sans-racine.zip tronquee.zip vide.zip sans-entree.zip racine-seule.zip \
   sans-final-mdl.zip hclg.zip avec-macosx.zip evasion.zip sans-disambig.zip avec-fichier-vide.zip \
-  point-point-interne.zip > empreintes.txt
+  point-point-interne.zip hclg-et-hclr.zip > empreintes.txt

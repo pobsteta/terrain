@@ -341,6 +341,13 @@ class InstallationModeleTest {
     }
 
     @Test
+    fun `critere 2 - modele a HCLG-fst et a HCLr-fst - SansGrammaireDynamique, l'ancien est intact`() {
+        poserAncien()
+        erreur<SansGrammaireDynamique>(installation().installer(archive("hclg-et-hclr.zip")))
+        assertAncienIntact("HCLG et HCLr")
+    }
+
+    @Test
     fun `critere 2 - archive avec __MACOSX et DS_Store - installee, sans ces deux restes`() {
         poserAncien()
         val i = installation()
