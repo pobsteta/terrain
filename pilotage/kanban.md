@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 5 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 6 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,18 +22,20 @@ _Modèle de carte :_
 
 ## Validé
 
-- [021-tests-style-marculus](missions/021-tests-style-marculus.md) · depuis le cycle 6
-  - Homme : `testeur` (sonnet)
-  - Mission : tests d'égalité au style de Marculus ; 7:1 devient informatif
-  - Moyens : après 020 ; branche de 020
-- [022-style-marculus](missions/022-style-marculus.md) · depuis le cycle 6
-  - Homme : `dev` (sonnet)
-  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.7.1 après le « c'est vert » de Pascal
-  - Moyens : après 021 ; branche de 021
 ## Planifié
 
 ## Terminé
 
+- [021-tests-style-marculus](missions/021-tests-style-marculus.md) · depuis le cycle 6
+  - Homme : `testeur` (sonnet)
+  - Mission : tests d'égalité au style de Marculus ; 7:1 devient informatif
+  - Moyens : après 020 ; branche de 020
+  - Livré : PR #30 fusionnée via #31 (409 tests)
+- [022-style-marculus](missions/022-style-marculus.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.7.1 après le « c'est vert » de Pascal
+  - Moyens : après 021 ; branche de 021
+  - Livré : PR #31 fusionnée ; **tag v0.7.1** (nuancier validé par Pascal : « oui c'est le vert de Marculus »)
 - [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 6
   - Homme : `testeur` (sonnet)
   - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`
@@ -168,3 +170,4 @@ l'inscrit avec ce qu'elle nous apprend._
 - cycle 4 (complément) · plugin `imperatrice` v0.6.0 : rubrique « Dépend de / rouge attendu jusqu'à » · mêmes bénéficiaires que la ligne « cycle 4 » · complète cette livraison, n'en est pas une nouvelle
 - bilan du 2026-10-23 (n° 2) · méthode outillée contre les causes A, B et C (plugin v0.6.0) et terrain dont l'état ouvert se lit en une minute · pour l'orchestrateur, les agents et un successeur · le successeur passe sans réserve (avec réserves au bilan n° 1) et les trois remèdes existent, pas encore en service ici (acceptée par Pascal)
 - cycle 5 · mauvaise nouvelle : rien de lancé (pause décidée au bilan n° 2) ; le plugin v0.6.0 n'est pas encore installé ici (cache en 0.3.0), donc les trois remèdes du bilan n° 2 ne servent pas encore, et le vert de réussi attend toujours sa mesure · pour les développeurs de Marculus, Groma et Surculus · la prochaine livraison est l'essai au soleil de Pascal, d'ici le 2026-10-30 (acceptée par Pascal)
+- cycle 6 · `terrain-style` v0.7.1, le style de Marculus (couleurs, formes, typographie, boutons), et `terrain-voix` v0.7.0 (installation sûre du modèle Vosk) · pour les développeurs de Marculus, Groma et Surculus · une seule palette, celle que Pascal a validée au soleil, au lieu d'une palette générée qui avait perdu le vert ; et un modèle de dictée qui survit aux coupures (proposée par l'orchestrateur)
