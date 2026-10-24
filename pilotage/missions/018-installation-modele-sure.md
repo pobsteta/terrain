@@ -90,3 +90,19 @@ Le plan rendu le 2026-10-24 (journal) est validé. On l'exécute tel quel, avec 
 Le détail est dans la spec, rubrique « Précisions du plan de la mission 018 ».
 
 Tes tests unitaires, en plus de ceux de 017, sont annoncés au §5 du plan : états fabriqués après chaque étape, deux instances en parallèle, `Content-Length` trop grand, CRC faux. Pendant la mission, tu peux mettre `VocabulaireVoskTest.kt` de côté en local, sans jamais le committer ni le modifier. La CI reste rouge jusqu'à 019, comme le dit la rubrique « Dépend de ».
+
+## Remarques du relecteur (aller-retour 1/3, 2026-10-24)
+
+Verdict de la relecture 1 : à reprendre, sur un point court. Le reste suit la spec : 60 tests de 017 et 26 tests de sûreté verts en local, rouge de la CI limité à `VocabulaireVoskTest.kt`. Pascal a tranché le 2026-10-24 (spec mise à jour, rubrique « Précisions du plan de la mission 018 ») :
+
+1. **(P1) `.installe` dans l'archive** : l'entrée est **ignorée**, jamais décompressée. Aujourd'hui, une entrée `<racine>/.installe` pose le témoin dans `.nouveau` dès le début de la décompression. Une coupure à ce moment fait alors avancer R2 vers un modèle incomplet. Le relecteur l'a vérifié par une sonde. Ajoute un test de sûreté : une archive qui contient `.installe` s'installe, et aucun témoin n'existe dans `.nouveau` avant l'étape 8. Fabrique l'archive dans le test : ne touche pas à `fabriquer.sh` ni aux tests de 017.
+2. **Ajoute `reprendre(): Result<Unit>`** : la fonction prend le verrou et applique R1-R4, sans rien installer. Couvre-la par des tests (R2 et R3 fabriqués sur le disque, puis `reprendre()`, puis l'état d'arrivée). Ajoute-la à la KDoc, au README et à la note de version : Marculus et Surculus doivent l'appeler hors du fil principal avant de charger le modèle.
+3. **Étape 12** : si l'effacement de `<nom>.ancien` échoue, rends un **succès**. Ajoute un test si tu peux le provoquer sans point d'injection ; sinon, dis-le.
+4. **Tes quatre choix sont retenus** : `supprimer(): Result<Unit>`, `ErreurModele` scellée, refus de noms avant l'étape 7, fsync de dossier au mieux. Dis-les dans la note de version.
+
+Retouches du relecteur :
+- dis en KDoc qu'un appel imbriqué depuis `progression` ou `continuer` obtient un `OverlappingFileLockException` dans le `Result` ;
+- mets la branche à jour de `main` par un merge de `origin/main`, sans rebase ni force ; seul `docs/referentiels/modele-vosk.md` diffère, sans conflit ;
+- rafraîchis l'état de la branche et les décomptes dans le corps de la PR #26.
+
+Facultatif, si c'est simple : un nom d'entrée qui n'est pas en UTF-8 doit donner `ArchiveIllisible`, et non `IllegalArgumentException`.

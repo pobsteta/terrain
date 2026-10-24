@@ -353,6 +353,18 @@ version de v0.7.0 donne :
 - **CRC-32** de chaque entrée contrôlé pendant la décompression ; un écart donne
   `ArchiveIllisible`.
 - **Deux racines candidates** à la même profondeur : `ArchiveIllisible("plusieurs modèles")`.
+- **Entrée `.installe` dans l'archive** : ignorée, jamais décompressée ; le seul témoin est
+  celui que pose l'étape 8 (décision de Pascal du 2026-10-24, relecture de la mission 018).
+- **`reprendre(): Result<Unit>`**, fonction publique ajoutée : prend le verrou et applique la
+  reprise R1-R4, sans rien installer. À appeler hors du fil principal avant de charger le
+  modèle, pour qu'un état R2 ou R3 laissé par une coupure soit remis en `dossier`. La note de
+  version le demande à Marculus et à Surculus (décision de Pascal du 2026-10-24).
+- **Étape 12** : si l'effacement de `<nom>.ancien` échoue, `installer` rend un **succès** ; le
+  nouveau modèle est en place et la reprise R1 effacera l'ancien à l'opération suivante
+  (décision de Pascal du 2026-10-24).
+- **`supprimer(): Result<Unit>`** ; les erreurs ont pour parente scellée `ErreurModele` ; les
+  noms d'entrées sont refusés juste avant toute écriture (étape 7) ; l'écriture forcée d'un
+  dossier est tentée au mieux (choix du `dev` retenus par Pascal le 2026-10-24).
 - **Refus rangés sous `ArchiveIllisible`** : nom d'entrée absolu, `..` séparé par `/` ou `\`,
   entrée en double, taille inconnue, somme de tailles qui déborde, et réseau (injoignable,
   erreur HTTP, URL `file:` absente : `ArchiveIllisible("réseau : …")`).
