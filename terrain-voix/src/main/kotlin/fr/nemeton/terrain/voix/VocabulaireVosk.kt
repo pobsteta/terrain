@@ -3,6 +3,15 @@ package fr.nemeton.terrain.voix
 import java.io.DataInputStream
 import java.io.File
 
+/** Résultat de [VocabulaireVosk.lireVocabulaire] : mots connus, ou vocabulaire illisible. */
+sealed interface Vocabulaire
+
+/** Sous-ensemble des candidats présents dans le lexique du modèle. */
+data class Connus(val mots: Set<String>) : Vocabulaire
+
+/** Le lexique n'a pas pu être lu ; [raison] est destinée au journal ou à l'opérateur. */
+data class Illisible(val raison: String) : Vocabulaire
+
 /**
  * Vocabulaire du modèle acoustique.
  *
@@ -43,10 +52,67 @@ object VocabulaireVosk {
     }
 
     private const val DRAPEAU_SYMBOLES_ENTREE = 0x1
+    private const val DRAPEAU_SYMBOLES_SORTIE = 0x2
+
+    /**
+     * Comme [motsConnus], mais distingue un vocabulaire illisible d'un vocabulaire connu.
+     *
+     * Vosk lit son lexique dans les symboles de **sortie** de `graph/Gr.fst` : on lit cette table
+     * si elle existe, sinon celle d'entrée. Pas de repli sur `words.txt`. Sans `Gr.fst`, en-tête
+     * ou table illisible, ou aucune table de symboles : [Illisible].
+     */
+    fun lireVocabulaire(dossier: File, candidats: Set<String>): Vocabulaire {
+        val fst = File(dossier, "graph/Gr.fst")
+        if (!fst.isFile) return Illisible("pas de Gr.fst")
+        return try {
+            DataInputStream(fst.inputStream().buffered(1 shl 16)).use { flux ->
+                if (flux.lireInt() != FST_MAGIC) return Illisible("Gr.fst : nombre magique inattendu")
+                flux.lireChaine() // type de FST
+                flux.lireChaine() // type d'arc
+                flux.lireInt() // version
+                val drapeaux = flux.lireInt()
+                flux.lireLong() // propriétés
+                flux.lireLong() // état initial
+                flux.lireLong() // nombre d'états
+                flux.lireLong() // nombre d'arcs
+                val entree = drapeaux and DRAPEAU_SYMBOLES_ENTREE != 0
+                val sortie = drapeaux and DRAPEAU_SYMBOLES_SORTIE != 0
+                when {
+                    sortie -> {
+                        if (entree) flux.sauterTableSymboles()
+                        Connus(flux.lireTableSymboles(candidats, strict = true))
+                    }
+                    entree -> Connus(flux.lireTableSymboles(candidats, strict = true))
+                    else -> Illisible("Gr.fst sans table de symboles")
+                }
+            }
+        } catch (e: java.io.IOException) {
+            Illisible("Gr.fst illisible : ${e.message ?: e.javaClass.simpleName}")
+        } catch (e: IllegalArgumentException) {
+            Illisible("Gr.fst illisible : ${e.message}")
+        }
+    }
+
+    private fun DataInputStream.sauterTableSymboles() {
+        require(lireInt() == TABLE_MAGIC) { "table de symboles : nombre magique inattendu" }
+        lireChaine()
+        lireLong()
+        val taille = lireLong()
+        require(taille >= 0) { "table de symboles : taille négative" }
+        var i = 0L
+        while (i < taille) {
+            lireChaine()
+            lireLong()
+            i++
+        }
+    }
 
     /** Table de symboles OpenFst : magie, nom, clé libre, taille, puis (chaîne, clé) × taille. */
-    private fun DataInputStream.lireTableSymboles(candidats: Set<String>): Set<String> {
-        if (lireInt() != TABLE_MAGIC) return candidats
+    private fun DataInputStream.lireTableSymboles(candidats: Set<String>, strict: Boolean = false): Set<String> {
+        if (lireInt() != TABLE_MAGIC) {
+            require(!strict) { "table de symboles : nombre magique inattendu" }
+            return candidats
+        }
         lireChaine() // nom de la table
         lireLong() // prochaine clé disponible
         val taille = lireLong()
