@@ -98,7 +98,7 @@ Trois faits à ne pas manquer pour les missions suivantes :
 2. **`graph/disambig_tid.int` est obligatoire en grammaire dynamique.** Dans `src/model.cc` (commit
    `4ab9821`), quand `graph/HCLG.fst` est absent (ce qui est le cas ici), le code charge `HCLr.fst` et
    `Gr.fst` puis lit `disambig_tid.int` (chemin fixé l. 203) ; si la lecture échoue, il appelle
-   `KALDI_ERR` « Could not read disambig symbol table » : Vosk s'arrête (l. 291-302, dont l. 298-300).
+   `KALDI_ERR` « Could not read disambig symbol table » : le chargement du modèle échoue : `KALDI_ERR` lève une exception, que `vosk_model_new` rattrape (`catch (...)`) pour renvoyer NULL (`src/vosk_api.cc`, même commit, l. 31-38) (`model.cc` l. 291-302, dont l. 298-300).
    Le fichier est présent ici (380 octets). `ivector/`, elle, n'est chargée que si `ivector/final.ie`
    existe (l. 258-275) : sinon, si le réseau attend un i-vecteur (`IvectorDim() > 0`), `KALDI_ERR`
    « Can't find required ivector extractor » (l. 272-273), sinon le modèle fonctionne sans i-vecteurs
@@ -115,10 +115,12 @@ donne des WER de 23,95 % (cv), 19,30 % (mtedx) et 27,25 % (podcast), repris tels
 
 ## 4. Les tables de symboles d'entrée et de sortie de `graph/Gr.fst`
 
-**Réponse : identiques, octet pour octet.** Chaque table compte 135 774 symboles, **dont 5 symboles spéciaux** (`<eps>` clé 0, `[unk]` clé 135 769,
-`#0` clé 135 771, `<s>` et `</s>` clé 135 773, la même clé pour les deux ; relevé sur l'archive le
-2026-10-24 par un script qui lit les paires (symbole, clé) de la table d'entrée et filtre les symboles
-commençant par `<`, `[` ou `#` : ces 5 seulement, donc 135 769 mots ordinaires), porte le même nom
+**Réponse : identiques, octet pour octet.** Chaque table compte 135 774 symboles, **dont 6 symboles spéciaux**, ceux qui ne commencent pas par une lettre : `<eps>` (clé 0), `!SIL` (clé 135 768, le mot du
+silence de Kaldi), `[unk]` (135 769), `#0` (135 771), `<s>` et `</s>` (135 773, **la même clé pour les deux**) ;
+la clé 135 772 n'est utilisée par aucun symbole. Il reste donc **135 768 mots ordinaires**. Relevé sur l'archive le 2026-10-24 par
+les dernières lignes de `cmp.py` (§7), qui listent tous les symboles ne commençant pas par une lettre, les clés en double et les
+clés inutilisées. (Un filtre sur `<`, `[` et `#` en aurait manqué un : `!SIL`.) Les deux tables
+portent le même nom
 (`exp/chain_a/tdnn/lgraph/words.txt`) et la même clé libre (135 774) ; les paires (symbole, clé) sont les
 mêmes, dans le même ordre ; et les 2 826 405 octets de chacune sont égaux (table d'entrée : octets 65 à
 2 826 470 exclu ; table de sortie : 2 826 470 à 5 652 875 exclu ; fichier de 24 029 163 octets).
@@ -152,10 +154,11 @@ l'hexadécimal de `Gr.fst` (`xxd -s 0x70 -l 100`), `<eps>` a la clé 0 et `[unk]
 | https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip | l'archive (curl) |
 | https://alphacephei.com/vosk/models | taille « 41M » ; absence d'empreinte (curl, page HTML) |
 | https://raw.githubusercontent.com/alphacep/vosk-api/4ab9821510b488efb7740094714a130bd3545e90/src/model.cc (commit `4ab9821`, `master` le 2026-10-24, relevé par `https://api.github.com/repos/alphacep/vosk-api/commits/master` ; lignes relues sur ce commit le 2026-10-24) | l. 195-216 : disposition `am/`, `conf/`, `graph/`, `ivector/` ; l. 203 : chemin de `disambig_tid.int` ; l. 258-276 : `ivector/` si `final.ie` existe ; l. 263 : `online_cmvn.conf` ; l. 291-302 : `HCLG.fst` sinon `HCLr.fst` + `Gr.fst` + `disambig_tid.int` obligatoire (l. 298-300) ; l. 304-315 : `words.txt` en dernier recours |
-| https://raw.githubusercontent.com/alphacep/vosk-api/master/src/recognizer.cc (même commit) | l. 58-61 et 284-285 : « Runtime graphs are not supported by this model » si `hcl_fst_` est absent |
+| https://raw.githubusercontent.com/alphacep/vosk-api/4ab9821510b488efb7740094714a130bd3545e90/src/vosk_api.cc (commit `4ab9821`) | l. 31-38 : `vosk_model_new` rattrape toute exception (`catch (...)`) et renvoie NULL |
+| https://raw.githubusercontent.com/alphacep/vosk-api/4ab9821510b488efb7740094714a130bd3545e90/src/recognizer.cc (commit `4ab9821`) | l. 58-61 et 284-285 : « Runtime graphs are not supported by this model » si `hcl_fst_` est absent |
 | `terrain-voix/src/main/kotlin/fr/nemeton/terrain/voix/VocabulaireVosk.kt` (branche `pilotage/brief-voix`) | format de l'en-tête OpenFst, indicateurs |
 
-Les numéros de ligne de `model.cc` et `recognizer.cc` valent pour le commit `4ab9821` ; ils changent
+Les numéros de ligne de `model.cc`, `recognizer.cc` et `vosk_api.cc` valent pour le commit `4ab9821` ; ils changent
 avec la version.
 
 ## 6. Ce qui n'est pas mesuré
@@ -229,6 +232,26 @@ for k, t in enumerate(tables):
     print("OpenFst SymbolTable.read table", k+1, "num_symbols", st.num_symbols(), "checksum", st.labeled_checksum())
 ```
 
+Lignes ajoutées en fin de `cmp.py` (liste des symboles qui ne commencent pas par une lettre, clés en double,
+clés inutilisées ; elles utilisent `a`, la table d'entrée lue plus haut) :
+
+```python
+from collections import Counter
+pairs = a[3]
+spec = [(y, k) for y, k in pairs if not y[:1].isalpha()]
+print("symboles ne commençant pas par une lettre:", len(spec))
+for y, k in spec: print("  ", repr(y), k)
+print("mots ordinaires:", len(pairs) - len(spec))
+cnt = Counter(k for _, k in pairs)
+print("clés en double:", {k: [y for y, kk in pairs if kk == k] for k, v in cnt.items() if v > 1})
+print("clés inutilisées sous available_key:", sorted(set(range(a[1])) - set(cnt)))
+```
+
 Sortie relevée : « tables identical (name, available_key, size, pairs in order): True », « pairs
 identical as sets: True », « raw bytes identical: True », puis `num_symbols 135774` et le même
 `checksum` pour les tables 1 et 2.
+
+Sortie des lignes ajoutées (rejouée le 2026-10-24 sur une seconde copie de l'archive, même empreinte) :
+6 symboles ne commençant pas par une lettre : `'<eps>' 0`, `'!SIL' 135768`, `'[unk]' 135769`, `'#0' 135771`,
+`'<s>' 135773`, `'</s>' 135773` ; 135768 mots ordinaires ; clés en double : `{135773: ['<s>', '</s>']}` ;
+clés inutilisées : `[135772]`.
