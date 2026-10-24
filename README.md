@@ -83,9 +83,9 @@ module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuanc
 Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surCouleur`,
 `conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
 
-- `reussi` : **valeur provisoire jusqu'à l'essai au soleil du 2026-10-30** (mesure de Pascal ; elle
-  peut changer en v0.6.1, voir « Changer le vert de départ de `reussi` »). Généré par MCU avec la
-  palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
+- `reussi` : **`#0F8558` est définitif, validé par l'essai au soleil de Pascal du 2026-10-24**
+  dans Marculus (clair et sombre ; gel : ADR 0002, note « Gel, ajoutée le 2026-10-24 »). Généré
+  par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
   palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; l'écart de teinte
   HCT à `primary`, mesuré à chaque génération, est inscrit en tête de `StyleTerrain.kt` ;
 - `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
@@ -118,9 +118,9 @@ que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue l
 
 ### Changer le vert de départ de `reussi` (par exemple le repli `#00843D`)
 
-**`#0F8558` est provisoire jusqu'à l'essai au soleil du 2026-10-30** (mesure de Pascal) ; après
-l'essai, une note datée de l'ADR 0002 le gèle (garder `#0F8558` ou passer au repli). Les mentions
-de `#0F8558` ci-dessous suivent cette réserve.
+**`#0F8558` est gelé** : l'essai au soleil de Pascal du 2026-10-24 (dans Marculus) l'a validé et
+il est gardé, sans repli (ADR 0002, note « Gel, ajoutée le 2026-10-24 »). Ce qui suit décrit la
+marche à suivre **si** Pascal décidait un jour de le changer ; ce n'est plus un plan en cours.
 
 Cas prévu et **autorisé d'avance** par la décision de Pascal (mission 007) : repli `#00843D` si
 l'essai au soleil confond `reussi` et `primary`. Aucune nouvelle ADR n'est requise ; le passage
@@ -151,7 +151,7 @@ décidant.
    **Au gel** (après l'essai du 2026-10-30), que le vert soit changé **ou gardé**, retirer la
    mention « provisoire » de ce README (ligne `reussi` et début de cette section), de
    `docs/spec.md` (« Questions ouvertes ») et du code généré à la génération suivante, dans la
-   même PR que la note datée du gel. **Au gel, la spec repasse de « Une : l'essai au soleil » à
+   même PR que la note datée du gel (**fait le 2026-10-24**, mission 015 : gardé). **Au gel, la spec repasse de « Une : l'essai au soleil » à
    « Aucune » question ouverte**, que le vert soit changé ou gardé : la note datée de l'ADR 0002
    et la PR le disent aussi.
 6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
@@ -166,9 +166,9 @@ comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte 
 depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
 de contrôle (`verification-metadata.xml`).
 
-La prochaine version, v0.6.1, peut changer le vert de départ de `reussi` (valeur provisoire
-jusqu'à l'essai au soleil du 2026-10-30) : voir « Changer le vert de départ de `reussi` »
-(juste au-dessus).
+Le vert de départ de `reussi` (`#0F8558`) est gelé depuis l'essai au soleil du 2026-10-24 : la
+v0.6.0 le porte déjà et aucune version ne le change d'avance. Pour le changer malgré tout, voir
+« Changer le vert de départ de `reussi` » (juste au-dessus).
 
 Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
 `com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.

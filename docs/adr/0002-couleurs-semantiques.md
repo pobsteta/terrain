@@ -120,6 +120,20 @@ ISO 22324 et IEC 60073 à comparer).
   dans la même PR que la note datée du gel ; la marche à suivre du README (étape 5) le dit aussi.
   Complète la note « Valeur provisoire » ci-dessus, sans la modifier.
 
+- **Gel, ajoutée le 2026-10-24 (mission 015).** Le vert de départ de `reussi`, **`#0F8558`, est
+  gardé, sans repli `#00843D`**. Mesure : essai au soleil de Pascal, dans Marculus avec
+  `terrain-style` intégré, le 2026-10-24 : « le style est validé, en clair comme en sombre, tout
+  est lisible » (journal, lignes du 2026-10-24 « essai au soleil », décision de Pascal ; critère 6
+  de la spec). Limite : Pascal n'a pas détaillé un par un les trois points de la carte (confusion
+  avec `primary`, bord de l'alerte sur surface claire, etc.) ; le verdict est global. Levée de la
+  réserve : la note « Valeur provisoire » du 2026-10-23 est **levée le 2026-10-24** (elle reste
+  écrite ci-dessus) ; la mention « provisoire » est retirée du README, de la spec
+  (« Questions ouvertes » repasse à « Aucune ») et de `docs/referentiels/couleurs-etat.md`
+  (ligne datée ajoutée). Pas de changement de code ni de nouveau tag : la v0.6.0 porte déjà
+  `#0F8558`. Le code généré n'est pas touché par cette mission (il ne contient pas de mention
+  « provisoire » à retirer : vérifié par recherche). Complète les notes « Valeur provisoire » et
+  « Spec au gel » sans les modifier.
+
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?

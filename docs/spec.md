@@ -116,7 +116,8 @@ les autres briques.
    près (ARGB seulement), en CI.
 5. Chaque jeton est dans [`0xFF000000`, `0xFFFFFFFF`].
 6. Un essai au soleil (même écran, plein soleil, lecture d'une fiche en thème clair) est
-   fait et noté au carnet des écarts de `pilotage/journal.md`.
+   fait et noté au carnet des écarts de `pilotage/journal.md`. *Fait le 2026-10-24 par Pascal,
+   dans Marculus : style validé en clair et en sombre.*
 7. Un tag est publié sur un commit de `main` à CI verte, construit par JitPack, et le
    README liste `terrain-style` et les rôles interdits en texte.
 
@@ -136,7 +137,8 @@ les autres briques.
 
 ## Questions ouvertes
 
-Une : l'essai au soleil (critère 6), le 2026-10-30. Les deux questions d'origine sont
-tranchées par Pascal le 2026-10-23 (ADR 0002, notes « levé le » et « Amendé le ») : teinte de
-départ de « réussi » `#0F8558`, non harmonisé, **provisoire jusqu'à l'essai au soleil du
-2026-10-30** (ADR 0002, note du 2026-10-23 « provisoire ») ; jaune d'alerte `#E2AA00`.
+Aucune. L'essai au soleil (critère 6) est fait le 2026-10-24 par Pascal, dans Marculus : style
+validé en clair et en sombre. Les deux questions d'origine sont tranchées par Pascal le
+2026-10-23 (ADR 0002, notes « levé le » et « Amendé le ») : teinte de départ de « réussi »
+`#0F8558`, non harmonisé, **gelée le 2026-10-24** (ADR 0002, note « Gel ») ; jaune d'alerte
+`#E2AA00`.
