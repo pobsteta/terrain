@@ -57,6 +57,13 @@ Référentiels du domaine (le détail par module est dans `README.md`) :
   obligatoires.
 - **GNSS** : NMEA 0183 (GGA/GSA/GST/RMC/GSV, somme de contrôle vérifiée), NTRIP (RTCM),
   corrections du réseau **Centipède** ; récepteur de référence u-blox ZED-F9P en Bluetooth.
+- **Style** (`terrain-style`) : **le style de Marculus est la règle** (décision de Pascal du
+  2026-10-24, ADR 0006). Couleurs, formes, typographie et boutons reprennent Marculus, et ce
+  que Marculus ne fixe pas vaut la valeur par défaut de Material 3 à la version de Compose de
+  Marculus. Le style s'impose à Groma et à Surculus, sans écart propre à une application. On
+  ne génère pas, on n'invente pas, on ne retouche pas : pour changer le style, on change
+  d'abord Marculus, puis `docs/referentiels/style-marculus.md`, puis le code. La règle 7:1
+  n'est plus une règle commune.
 - **Voix** : Vosk en grammaire fermée (JSON, jeton `[unk]` de rejet), alphabet radio OTAN
   avec replis quand le modèle ignore le mot, nombres en français ; modèle installé avec
   vérification SHA-256.

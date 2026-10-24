@@ -143,3 +143,5 @@ ISO 22324 et IEC 60073 à comparer).
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?
+
+- **Après l'ADR 0006, note ajoutée le 2026-10-24.** `terrain-style` reprend le style de Marculus (ADR 0006). `reussi` (`#0F8558`, gelé) et `alerte` (`#E2AA00`) restent tels quels. `primary` devient `VertVif #3E7A40` : l'écart de teinte entre `reussi` et `primary` sera mesuré à nouveau et inscrit dans `docs/referentiels/style-marculus.md` (mission 020). La règle 7:1 tombe comme règle commune ; `alerte.couleur` reste interdit en texte, par décision.

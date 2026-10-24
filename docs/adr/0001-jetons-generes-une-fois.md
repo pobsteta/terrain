@@ -1,7 +1,7 @@
 # ADR 0001 — jetons générés une fois par les sources de Material Color Utilities, figés dans le code
 
 - **Date :** 2026-10-23
-- **Statut :** acceptée par Pascal le 2026-10-23 ; variante amendée par l'ADR 0004 (`CONTENT` au lieu de `FIDELITY`)
+- **Statut :** acceptée par Pascal le 2026-10-23 ; variante amendée par l'ADR 0004 (`CONTENT` au lieu de `FIDELITY`) ; **remplacée par l'ADR 0006 le 2026-10-24** (le style de Marculus est la règle)
 - **Proposée par :** Claude (orchestrateur)
 - **Tranchée par :** Pascal
 
@@ -94,3 +94,7 @@ compile en Kotlin 2.2).
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?
+
+## Note du 2026-10-24 : remplacée par l'ADR 0006
+
+Le 2026-10-24, Pascal a décidé que `terrain-style` reprend le style de Marculus (ADR 0006). Les 48 rôles ne sont plus générés par Material Color Utilities, et cette décision ne s'applique plus. Elle est gardée pour la mémoire.
