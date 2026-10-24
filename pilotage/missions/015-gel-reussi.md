@@ -34,7 +34,7 @@ pas._
 
 ## Harnais
 
-- **Peut :** modifier `README.md` (ligne `reussi` de la section terrain-style, début de « Changer le vert de départ de `reussi` », paragraphe v0.6.1 de « Publier une version ») ; `docs/spec.md` (« Questions ouvertes » à « Aucune », critère 6 noté fait le 2026-10-24 dans Marculus si le texte s'y prête, sans retirer le critère) ; `docs/adr/0002-couleurs-semantiques.md` (une note datée « Gel, ajoutée le 2026-10-24 », ajout seul) ; `docs/referentiels/couleurs-etat.md` (ligne de statut : une ligne datée ajoutée, sans effacer l'ancienne) ; ouvrir une PR en brouillon. Le kanban, l'équipe et le journal restent à l'orchestrateur.
+- **Peut :** modifier `README.md` (ligne `reussi` de la section terrain-style, début de « Changer le vert de départ de `reussi` », paragraphe v0.6.1 de « Publier une version », étape 5 « Au gel » de la marche à suivre — élargi par Pascal le 2026-10-24 —, paragraphe « autorisé d'avance » du repli) ; `docs/spec.md` (« Questions ouvertes » à « Aucune », critère 6 noté fait le 2026-10-24 dans Marculus si le texte s'y prête, sans retirer le critère) ; `docs/adr/0002-couleurs-semantiques.md` (une note datée « Gel, ajoutée le 2026-10-24 », ajout seul) ; `docs/referentiels/couleurs-etat.md` (ligne de statut : une ligne datée ajoutée, sans effacer l'ancienne) ; ouvrir une PR en brouillon. Le kanban, l'équipe et le journal restent à l'orchestrateur.
 - **Ne doit pas :** toucher à `main`, effacer une ligne du journal, effacer une décision datée (on ajoute une note « levé le … »), toucher à `docs/brief.md` (arbitrages datés), inventer une valeur ou une source, sortir du périmètre.
 - **Sources autorisées :** `README.md`, `docs/`, `pilotage/journal.md` (lecture : lignes du 2026-10-24 sur l'essai au soleil).
 
@@ -46,7 +46,7 @@ pas._
 
 ## Dépend de / rouge attendu jusqu'à
 
-Dépend de : rien (l'essai est fait). CI rouge attendue : aucune.
+Dépend de : PR #22 (lignes du journal du 2026-10-24 citées par la note de l'ADR 0002) ; ordre de fusion : #22 puis #24. CI rouge attendue : aucune.
 
 ## Tests
 
@@ -67,3 +67,18 @@ Dépend de : rien (l'essai est fait). CI rouge attendue : aucune.
 ## Comment saura-t-on que ça marche ?
 
 Un développeur de Surculus ou de Groma qui épingle v0.6.0 sait que réussi ne changera pas.
+
+## Remarques du relecteur (aller-retour 1/3, 2026-10-24)
+
+Décisions de Pascal du 2026-10-24 :
+- **Repli levé au gel :** l'autorisation d'avance du repli `#00843D` (mission 007) tombe au gel. Un changement de vert demande désormais une nouvelle décision de Pascal, consignée par une note datée de l'ADR 0002. Le README le dit, à la place de « autorisé d'avance », et garde l'avertissement ISO 3864-4. La note « Gel » de l'ADR le dit aussi.
+- **Étape 5 gardée :** la correction de l'étape 5 entre dans le harnais. Corriger dans la même phrase la date périmée « après l'essai du 2026-10-30 », car l'essai a eu lieu le 2026-10-24.
+
+À reprendre :
+1. **(P1) Citation de Pascal :** la note « Gel » met entre guillemets des mots qui ne sont pas les siens. L'erreur vient d'une ligne du journal écrite par l'orchestrateur, corrigée par la ligne suivante. Les mots exacts sont : « le test au soleil de marculus valide le style en clair comme en sombre tout est lisible ». Cite-les ainsi ou reformule sans guillemets.
+2. **(P2) Les trois points de la carte :** dans la « Limite », remplacer « confusion avec `primary`, bord de l'alerte sur surface claire, etc. » par les trois points de la carte « Essai au soleil » : les six bandeaux d'état en clair, `tertiary` contre `error` en sombre, le bord de la pastille d'alerte. Supprimer « etc. ». Le risque de confusion avec `primary` vient de la ligne « écart », pas de la carte : il peut être cité à part, en le disant.
+3. **(P2) Dépendance :** mettre à jour le corps de la PR #24 selon la rubrique « Dépend de » ci-dessus.
+4. **(P3) Rendu :** dire que `grep -i provisoire README.md` renvoie encore une ligne de consigne générique (marche à suivre), et laquelle.
+5. **(P3) Redite :** remplir la rubrique « Redite par l'agent » de cette fiche.
+
+Rien d'autre ne change. L'ADR reste en ajout seul : la note « Gel » n'est pas encore fusionnée, elle peut être corrigée dans cette branche.
