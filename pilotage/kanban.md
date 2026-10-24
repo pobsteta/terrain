@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 5 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 6 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -22,35 +22,53 @@ _Modèle de carte :_
 
 ## Validé
 
-- [020-referentiel-style-marculus](missions/020-referentiel-style-marculus.md) · depuis le cycle 6 — **priorité absolue (Pascal)**
-  - Homme : `dev` (sonnet)
-  - Mission : relever le style de Marculus v0.65.0 et les défauts de Material 3 (BOM 2026.02.01)
-  - Moyens : dépôt Marculus, jars Material 3 ; référentiel et CSV ; PR
+- [023-corrections-bilan-3](missions/023-corrections-bilan-3.md) · depuis le cycle 6
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 et P2 du test du successeur (brief, spec, jetons.csv, equipe, README Versions et migration)
+  - Moyens : rapport de l'archiviste ; liste de contrôle jointe ; PR
+- [024-decisions-et-contrat-avant-lancement](missions/024-decisions-et-contrat-avant-lancement.md) · depuis le cycle 6
+  - Homme : `archiviste` (sonnet)
+  - Mission : rubrique « Décisions et contrat avant lancement » et lecture des briefs entrants (plugin, causes B et C)
+  - Moyens : dépôt du plugin ; PR ; version 0.7.0
+## Planifié
+
+- [025-controle-des-recopies](missions/025-controle-des-recopies.md) · depuis le cycle 6
+  - Homme : `archiviste` (plugin), `testeur` (terrain)
+  - Mission : contrôle mécanique des recopies (cause G)
+  - Moyens : après 024
+
+## Terminé
+
 - [021-tests-style-marculus](missions/021-tests-style-marculus.md) · depuis le cycle 6
   - Homme : `testeur` (sonnet)
   - Mission : tests d'égalité au style de Marculus ; 7:1 devient informatif
   - Moyens : après 020 ; branche de 020
+  - Livré : PR #30 fusionnée via #31 (409 tests)
 - [022-style-marculus](missions/022-style-marculus.md) · depuis le cycle 6
   - Homme : `dev` (sonnet)
-  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.6.2 après le « c'est vert » de Pascal
+  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.7.1 après le « c'est vert » de Pascal
   - Moyens : après 021 ; branche de 021
-- [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 5
+  - Livré : PR #31 fusionnée ; **tag v0.7.1** (nuancier validé par Pascal : « oui c'est le vert de Marculus »)
+- [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 6
   - Homme : `testeur` (sonnet)
   - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`
   - Moyens : spec, ADR 0005, Info-ZIP, `sha256sum` ; PR en brouillon, CI rouge annoncée jusqu'à 019
-- [018-installation-modele-sure](missions/018-installation-modele-sure.md) · depuis le cycle 5
+  - Livré : PR #26 fusionnée (3 relectures + complément)
+- [018-installation-modele-sure](missions/018-installation-modele-sure.md) · depuis le cycle 6
   - Homme : `dev` (opus), tenu
   - Mission : réécrire `InstallationModele` (ADR 0005) ; plan d'abord, marge proposée puis fixée par Pascal
   - Moyens : après 016 et 017 ; branche de 017
-- [019-lire-vocabulaire](missions/019-lire-vocabulaire.md) · depuis le cycle 5
+  - Livré : PR #26 fusionnée (1 relecture + renvoi 1/3 ; renvoi non relu, fusion sur ordre de Pascal)
+- [019-lire-vocabulaire](missions/019-lire-vocabulaire.md) · depuis le cycle 6
   - Homme : `dev` (sonnet)
   - Mission : ajouter `lireVocabulaire` (connus / illisible)
   - Moyens : après 016 et 018 ; branche de 018
-
-## Planifié
-
-## Terminé
-
+  - Livré : PR #26 fusionnée (intégrée par l'orchestrateur, non relue à part)
+- [020-referentiel-style-marculus](missions/020-referentiel-style-marculus.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : relever le style de Marculus v0.65.0 et les défauts de Material 3 (BOM 2026.02.01)
+  - Moyens : dépôt Marculus, jars Material 3 ; référentiel et CSV ; PR
+  - Livré : PR #29 fusionnée (1 relecture)
 - [016-referentiel-modele-vosk](missions/016-referentiel-modele-vosk.md) · depuis le cycle 6
   - Homme : `dev` (sonnet)
   - Mission : relever le vrai modèle small-fr-0.22 (fichiers, tailles, empreinte, tables de `Gr.fst`)
@@ -165,3 +183,5 @@ l'inscrit avec ce qu'elle nous apprend._
 - cycle 4 (complément) · plugin `imperatrice` v0.6.0 : rubrique « Dépend de / rouge attendu jusqu'à » · mêmes bénéficiaires que la ligne « cycle 4 » · complète cette livraison, n'en est pas une nouvelle
 - bilan du 2026-10-23 (n° 2) · méthode outillée contre les causes A, B et C (plugin v0.6.0) et terrain dont l'état ouvert se lit en une minute · pour l'orchestrateur, les agents et un successeur · le successeur passe sans réserve (avec réserves au bilan n° 1) et les trois remèdes existent, pas encore en service ici (acceptée par Pascal)
 - cycle 5 · mauvaise nouvelle : rien de lancé (pause décidée au bilan n° 2) ; le plugin v0.6.0 n'est pas encore installé ici (cache en 0.3.0), donc les trois remèdes du bilan n° 2 ne servent pas encore, et le vert de réussi attend toujours sa mesure · pour les développeurs de Marculus, Groma et Surculus · la prochaine livraison est l'essai au soleil de Pascal, d'ici le 2026-10-30 (acceptée par Pascal)
+- cycle 6 · `terrain-style` v0.7.1, le style de Marculus (couleurs, formes, typographie, boutons), et `terrain-voix` v0.7.0 (installation sûre du modèle Vosk) · pour les développeurs de Marculus, Groma et Surculus · une seule palette, celle que Pascal a validée au soleil, au lieu d'une palette générée qui avait perdu le vert ; et un modèle de dictée qui survit aux coupures (proposée par l'orchestrateur)
+- bilan du 2026-10-24 (n° 3) · `terrain-style` v0.7.1 (le style de Marculus, validé par Pascal) et `terrain-voix` v0.7.0 (un modèle de dictée qui survit aux coupures) · pour les développeurs de Marculus, Groma et Surculus · deux versions dont les applications se servent, au lieu de la seule méthode au bilan n° 2 (acceptée par Pascal)

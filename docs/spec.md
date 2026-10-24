@@ -137,7 +137,7 @@ les autres briques.
    dans Marculus : style validé en clair et en sombre.*
 7. Un tag est publié sur un commit de `main` à CI verte, construit par JitPack, et le
    README liste `terrain-style` et les rôles interdits en texte. Pour le style de Marculus,
-   c'est **v0.6.2**.
+   c'est **v0.7.1**.
 8. Marculus réadopte `terrain-style` sans changement visible : sa capture avant et après est
    identique, en clair et en sombre (sa mission 006).
 

@@ -168,7 +168,7 @@ contraste 1,0, et le seuil de 7:1 pour tous les couples.
 - **Gardés** : `reussi` `#0F8558`, gelé le 2026-10-24 ; `alerte` `#E2AA00` ; `Contraste` ;
   Kotlin pur, sans Compose.
 - **Critère d'acceptation** : égalité au référentiel relevé dans Marculus et Material 3 ;
-  nuancier montré à Pascal ; Marculus réadopte sans changement visible ; tag **v0.6.2**.
+  nuancier montré à Pascal ; Marculus réadopte sans changement visible ; tag **v0.7.1**.
 
 ---
 
