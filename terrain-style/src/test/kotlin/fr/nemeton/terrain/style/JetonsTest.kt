@@ -16,14 +16,15 @@ import kotlin.test.assertTrue
  * Écrits sans lire le code de génération : seule l'API de la spec est connue
  * (`StyleTerrain.clair/sombre`, `Schema`, `Semantique`, `Contraste.rapport`).
  *
- * Conventions retenues (à valider par Pascal, voir le rapport de la mission) :
- *  - le nom d'un rôle interdit en texte est le nom du champ (`primary`) ou, pour une couleur
- *    sémantique, `reussi.couleur`, `alerte.couleur`, etc. ;
- *  - un couple « texte / fond » est exempté seulement si le rôle qui sert de TEXTE y figure ;
- *    `alerte.couleur` est interdit en texte mais reste le FOND de `alerte.surCouleur`, couple
- *    qui doit tenir 7:1 ;
- *  - rapport tronqué à 3 décimales (jamais arrondi), seuil 7,0 ; la marge affichée est
- *    `tronqué - 7,0`.
+ * Révisé par la mission 021 (ADR 0006, 2026-10-24) : la règle 7:1 tombe comme règle commune.
+ * Le test des couples est devenu informatif (il affiche le rapport, sans seuil) ;
+ * `interditsEnTexte` vaut `{alerte.couleur}`. L'égalité des valeurs au style de Marculus est
+ * dans `StyleMarculusTest` (couleurs), `FormesTerrainTest`, `TypoTerrainTest`, `BoutonsTerrainTest`.
+ * Restent ici : la forme du schéma, la plage ARGB, les refus d'`IllegalArgumentException`.
+ *
+ * Convention : le nom d'un rôle interdit en texte est le nom du champ (`primary`) ou, pour une
+ * couleur sémantique, `reussi.couleur`, `alerte.couleur`, etc. Rapport tronqué à 3 décimales
+ * (jamais arrondi) pour l'affichage.
  */
 class JetonsTest {
 
@@ -148,10 +149,16 @@ class JetonsTest {
         assertEquals(c.size, c.map { it.toString() }.toSet().size)
     }
 
-    // ---- Critère 2 : un test par couple et par thème ----
+    // ---- Contraste, pour information (ADR 0006 : la règle 7:1 tombe comme règle commune) ----
 
+    /**
+     * Affiche le rapport de chaque couple de la liste du critère 2, dans les deux thèmes, SANS
+     * échouer sur la valeur : le style est celui de Marculus, il n'a pas à tenir 7:1. Le test
+     * échoue seulement si un rapport n'est pas un nombre fini compris entre 1 et 21 (ce qui
+     * dirait que `Contraste` est cassé), ou si un jeton du couple est inconnu.
+     */
     @TestFactory
-    fun `chaque couple tient 7 pour 1 sauf role interdit en texte, avec sa marge affichee`(): List<DynamicTest> =
+    fun `le rapport de chaque couple est affiche pour information, sans seuil`(): List<DynamicTest> =
         themes.flatMap { (theme, schema) ->
             val valeurs = jetons(schema)
             couples().map { c ->
@@ -159,23 +166,13 @@ class JetonsTest {
                     val t = valeurs[c.texte] ?: error("jeton inconnu ${c.texte}")
                     val f = valeurs[c.fond] ?: error("jeton inconnu ${c.fond}")
                     val brut = Contraste.rapport(t, f)
-                    val tronque = tronque3(brut)
-                    val marge = tronque - 7.0
-                    val exempte = c.texte in schema.interditsEnTexte
                     println(
-                        "MARGE %-6s %-26s sur %-24s %s/%s rapport=%s marge=%s%s".format(
-                            theme, c.texte, c.fond, hex(t), hex(f), fmt(tronque),
-                            (if (marge >= 0) "+" else "") + fmt(marge),
-                            if (exempte) "  [interdit en texte]" else if (tronque < 7.0) "  [ECHEC]" else "",
+                        "RAPPORT %-6s %-26s sur %-24s %s/%s = %s:1".format(
+                            theme, c.texte, c.fond, hex(t), hex(f), fmt(tronque3(brut)),
                         ),
                     )
-                    if (!exempte) {
-                        assertTrue(
-                            tronque >= 7.0,
-                            "$theme : ${c.texte} (${hex(t)}) sur ${c.fond} (${hex(f)}) = ${fmt(tronque)} < 7,0 ; " +
-                                "ne pas retoucher la valeur : lister '${c.texte}' dans interditsEnTexte et le documenter",
-                        )
-                    }
+                    assertTrue(brut.isFinite() && brut >= 1.0, "$theme : ${c.texte} sur ${c.fond} : rapport $brut < 1")
+                    assertTrue(brut <= 21.0 + 1e-9, "$theme : ${c.texte} sur ${c.fond} : rapport $brut > 21")
                 }
             }
         }
@@ -183,36 +180,15 @@ class JetonsTest {
     // ---- Rôles interdits en texte ----
 
     @Test
+    fun `interditsEnTexte vaut exactement alerte couleur dans les deux themes`() {
+        for ((theme, s) in themes) assertEquals(setOf("alerte.couleur"), s.interditsEnTexte, "$theme : interditsEnTexte")
+    }
+
+    @Test
     fun `interditsEnTexte ne contient que des noms de jetons connus`() {
         for ((theme, s) in themes) {
             val connus = jetons(s).keys
             for (n in s.interditsEnTexte) assertTrue(n in connus, "$theme : '$n' n'est pas un jeton connu")
-        }
-    }
-
-    @Test
-    fun `alerte couleur est interdit en texte dans les deux themes`() {
-        for ((theme, s) in themes) assertTrue("alerte.couleur" in s.interditsEnTexte, "$theme : alerte.couleur absent de interditsEnTexte")
-    }
-
-    @Test
-    fun `un role interdit en texte ne l est pas par complaisance, il echoue au moins un couple ou est alerte couleur`() {
-        // Inférence de la règle « une valeur qui échoue n'est pas retouchée : le rôle passe interdit » :
-        // lister tous les rôles pour faire passer le test le viderait de son sens.
-        // Limité (décision de Pascal) aux rôles qui ont au moins un couple de texte : un rôle sans
-        // couple de texte n'est pas contrôlé ici ; `alerte.couleur` reste exclu (interdit par décision
-        // de sécurité, ADR 0002, et non parce qu'un couple échoue).
-        for ((theme, s) in themes) {
-            val v = jetons(s)
-            for (n in s.interditsEnTexte) {
-                if (n == "alerte.couleur") continue
-                val sesCouples = couples().filter { it.texte == n }
-                if (sesCouples.isEmpty()) continue
-                val echoue = sesCouples.any { c ->
-                    tronque3(Contraste.rapport(v.getValue(n), v.getValue(c.fond))) < 7.0
-                }
-                assertTrue(echoue, "$theme : '$n' est interdit en texte mais tient 7:1 sur tous ses couples")
-            }
         }
     }
 
