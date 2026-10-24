@@ -5,7 +5,9 @@
 - **Date de relevé :** 2026-10-24
 - **Décision éclairée :** ADR 0006 (« `terrain-style` reprend le style de Marculus »). Ce fichier
   **relève** ; il ne tranche rien.
-- **Statut :** relevé le 2026-10-24 ; **relu** par le `relecteur` le 2026-10-24 (96 couleurs, `Shapes`, `Typography`, boutons et écart HCT rejoués indépendamment, 0 écart) ; liste de contrôle passée ; non encore validé par Pascal (nuancier de la mission 022).
+- **Statut :** relevé le 2026-10-24 ; **relu** par le `relecteur` le 2026-10-24 (96 couleurs, `Shapes`, `Typography`, boutons et écart HCT rejoués indépendamment, 0 écart) ; liste de contrôle passée ; non encore validé par Pascal (nuancier de la mission 022). Aucune valeur
+  n'est prise de mémoire : chacune a sa source, sa ligne et sa version. Les décisions que le
+  relevé soulève sont en tête (« Écarts à lire d'abord »), pas ici.
 - **Mission redite :** relever dans Marculus (tag v0.65.0) et dans Compose Material 3 (BOM
   `2026.02.01`) les 48 rôles de couleur en clair et en sombre, les `Shapes`, la `Typography` et
   les dimensions et formes des boutons, puis mesurer l'écart de teinte HCT entre `reussi` et le
