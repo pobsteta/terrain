@@ -142,3 +142,221 @@ validé en clair et en sombre. Les deux questions d'origine sont tranchées par 
 2026-10-23 (ADR 0002, notes « levé le » et « Amendé le ») : teinte de départ de « réussi »
 `#0F8558`, non harmonisé, **gelée le 2026-10-24** (ADR 0002, note « Gel ») ; jaune d'alerte
 `#E2AA00`.
+
+---
+
+# Spec de `terrain-voix` : installation du modèle (issue #23)
+
+- **Statut :** validée par Pascal le 2026-10-24 (porte n° 1)
+- **Tirée de :** `docs/brief.md`, partie « Deuxième objet » ; décision : ADR 0005, acceptée par Pascal le 2026-10-24
+- **Critiquée par :** `contradicteur`, 2026-10-24 (deux passes ; corrections reportées)
+
+## Parcours
+
+1. **Sur le terrain** : le forestier a un modèle qui marche. Il lance une mise à jour (Wi-Fi)
+   ou un import par fichier. Si l'opération échoue, s'il l'annule ou si le téléphone s'éteint,
+   il garde son modèle, et l'application lui dit pourquoi.
+2. **Dans l'application** : le développeur construit
+   `InstallationModele(dossier, url, empreinte, espaceDisponible = File::getUsableSpace)`, avec
+   `Empreinte.Sha256(hex)` ou `Empreinte.NonControlee`. Il appelle `telecharger` ou
+   `installer` hors du fil principal, lit `estInstalle` où il veut, et traduit les erreurs
+   typées en messages.
+
+## Données
+
+| Donnée | Forme |
+|---|---|
+| Dossier du modèle | `dossier` ; à côté, dans le même parent : `<nom>.nouveau`, `<nom>.ancien`, `<nom>.zip` (archive téléchargée), `<nom>.verrou`. Plus rien dans le cache de l'application, qu'Android peut vider. |
+| Témoin | fichier `.installe` dans un dossier de modèle ; il contient l'origine. |
+| Empreinte | `Empreinte.Sha256(hex)` : 64 caractères hexadécimaux (FIPS 180-4), normalisés en minuscules ; sinon `EmpreinteMalFormee`. La forme est stricte, sans `trim` : un retour à la ligne final est refusé (décisions de Pascal du 2026-10-24). `Empreinte.NonControlee` : refus de contrôler, écrit par l'appelant. Pas de valeur par défaut. |
+| Espace disponible | `espaceDisponible: (File) -> Long`, par défaut `File::getUsableSpace`. Sur Android, l'application peut passer `StorageManager.getAllocatableBytes`. Les tests injectent une valeur. |
+| Erreurs | exceptions typées, portées par le `Result` : `EmpreinteMalFormee(valeur)`, `EmpreinteInattendue(attendue, obtenue)`, `ArchiveIllisible(raison)`, `StructureInvalide(manquant)` (`manquant` : chemin relatif du premier fichier obligatoire absent, par exemple `"graph/disambig_tid.int"`), `SansGrammaireDynamique`, `EspaceInsuffisant(manquant)`, `Interrompu`. L'application traduit, et les tests vérifient le type et les champs. |
+| Vocabulaire | nouvelle fonction `VocabulaireVosk.lireVocabulaire(dossier, candidats)` qui rend `Connus(mots)` ou `Illisible(raison)`. `motsConnus` est inchangé. |
+
+`InstallationModele.empreinte(InputStream)` reste publique, car Surculus l'appelle.
+
+## Comportement
+
+### Modèle valide
+
+Un modèle est valide s'il contient `am/final.mdl`, `conf/model.conf`, `graph/HCLr.fst`,
+`graph/Gr.fst` et `graph/disambig_tid.int` (sans ce dernier, Vosk s'arrête en grammaire
+dynamique : `vosk-api/src/model.cc`, commit `4ab9821`, l. 298-300 ; décision de Pascal du
+2026-10-24). Un fichier vide n'est pas une faute : `ivector/online_cmvn.conf` fait 0 octet
+dans le vrai modèle (`docs/referentiels/modele-vosk.md`). Un modèle qui contient `graph/HCLG.fst`, avec ou sans `HCLr.fst`, est refusé par
+`SansGrammaireDynamique` (Vosk charge `HCLG.fst` dès qu'il existe ; décision de Pascal du
+2026-10-24) : Vosk n'y applique pas de grammaire (« Runtime graphs are not
+supported by this model », `vosk-api/src/recognizer.cc`), et terrain ne sert que la grammaire
+fermée (décision de Pascal du 2026-10-24). Ces fichiers sont nécessaires, pas suffisants : un
+modèle qui demande `ivector/` échouera encore au chargement.
+
+**Racine de l'archive** : c'est le dossier le plus haut qui contient `am/final.mdl` et
+`conf/model.conf`. On ignore `__MACOSX/` et `.DS_Store`. La racine peut être celle du zip
+(archive sans dossier de tête). On n'installe que ce qui est sous cette racine.
+
+### Reprise (table d'états)
+
+`D` = `dossier`, `N` = `<nom>.nouveau`, `A` = `<nom>.ancien`. Chacun peut être absent, présent
+sans témoin, ou présent avec témoin. La reprise s'applique dans cet ordre, la première règle
+qui s'applique l'emporte :
+
+| # | État trouvé | Action de reprise | `estInstalle` avant reprise |
+|---|---|---|---|
+| R1 | `D` avec témoin | effacer `N` et `A` | vrai |
+| R2 | `D` sans témoin ou absent, `N` avec témoin | **avancer** : effacer `D`, renommer `N` → `D`, effacer `A` (décision de Pascal du 2026-10-24) | vrai |
+| R3 | `D` sans témoin ou absent, `N` sans témoin ou absent, `A` avec témoin | **reculer** : effacer `D` et `N`, renommer `A` → `D` | vrai |
+| R4 | aucun témoin nulle part | effacer `D`, `N` et `A` | faux |
+
+- **Le constructeur n'écrit rien** : ni le dossier parent, ni le verrou, qui n'est créé qu'au
+  début de `installer`, `telecharger` ou `supprimer` (décision de Pascal du 2026-10-24).
+- **`estInstalle` n'écrit jamais.** C'est une lecture pure, sûre sur le fil principal. Elle
+  rend vrai en R1, R2 et R3, puisque le modèle y est récupérable.
+- **La reprise se fait au début de `installer`, `telecharger` et `supprimer`**, sous le
+  verrou.
+- Pour invalider un dossier, on efface **toujours d'abord son témoin**, puis le reste. Un
+  effacement interrompu ne laisse donc pas de dossier à témoin incomplet.
+
+### Ordre des opérations de `installer(archive)`
+
+Le premier contrôle qui échoue donne son erreur. Tout échec avant l'étape 11 laisse `D`
+intact. Si l'échec survient entre 10 et 11, `A` est renommé en `D`. `N` est effacé, témoin en
+premier.
+
+1. Prendre le verrou (dans l'instance et `FileChannel.lock` sur `<nom>.verrou`), puis
+   appliquer la reprise.
+2. Ouvrir l'archive par son répertoire central (`java.util.zip.ZipFile`). Un fichier qui
+   n'est pas un zip, ou qui est tronqué, donne `ArchiveIllisible`. Un zip sans entrée utile
+   donne `StructureInvalide`.
+3. Avec `Empreinte.Sha256`, calculer l'empreinte de l'archive. Un écart donne
+   `EmpreinteInattendue(attendue, obtenue)`.
+4. Trouver la racine, puis contrôler la structure : `StructureInvalide(manquant)` ou
+   `SansGrammaireDynamique`.
+5. Faire la somme des tailles décompressées du répertoire central, sous la racine.
+6. Vérifier que `espaceDisponible(parent)` est au moins égal à cette somme plus la marge. Sinon,
+   `EspaceInsuffisant(manquant)`, et rien n'est effacé.
+7. Effacer un `N` resté là, puis décompresser dans `N` en comptant les octets écrits. Au-delà
+   de la taille déclarée, `ArchiveIllisible`. Toute entrée qui sort de `N` est refusée.
+   Toute entrée dont le chemin contient un segment `..`, même s'il reste sous la racine,
+   donne `ArchiveIllisible(raison)` (décision de Pascal du 2026-10-24).
+   `continuer` est consulté pendant la décompression : s'il devient faux, `Interrompu`.
+8. Forcer l'écriture des fichiers sur le disque (`FileChannel.force(true)`), écrire le témoin
+   dans `N`, puis forcer à nouveau.
+9. Effacer un `A` resté là.
+10. Si `D` existe, le renommer en `A` (`Files.move`, sans `REPLACE_EXISTING`).
+11. Renommer `N` en `D`.
+12. Effacer `A`, témoin en premier.
+
+### `telecharger`
+
+1. Prendre le verrou et appliquer la reprise.
+2. Si `Content-Length` est connu, vérifier que `espaceDisponible(parent)` est au moins égal à
+   cette longueur plus la marge. Sinon, `EspaceInsuffisant`.
+3. Télécharger dans `<nom>.zip`. `continuer` est consulté à chaque bloc : s'il devient faux,
+   `Interrompu`. Une coupure réseau donne `ArchiveIllisible`.
+4. Enchaîner les étapes 2 à 12 d'`installer`, l'étape 6 comptant aussi l'archive.
+5. Effacer `<nom>.zip` dans tous les cas. **Sur tout échec, `D` est intact** : le comportement
+   change, l'ancienne KDoc disait « Échec → dossier effacé ».
+
+### `supprimer`
+
+Elle prend le verrou, puis efface `D`, `N`, `A` et `<nom>.zip`, chacun témoin en premier.
+
+### Vocabulaire
+
+- `lireVocabulaire` rend `Illisible("pas de Gr.fst")` quand `graph/Gr.fst` manque. Il n'y a
+  **pas de repli sur `words.txt`** : sans `Gr.fst`, le modèle n'a pas de grammaire dynamique.
+- Elle rend `Illisible(raison)` sur un en-tête ou une table illisible, ou quand `Gr.fst` n'a
+  aucune table de symboles, et `Connus(mots)` sinon.
+- Vosk lit son lexique dans les symboles de **sortie** de `Gr.fst` (`vosk-api/src/model.cc`),
+  alors que `motsConnus` lit ceux d'**entrée**. `lireVocabulaire` lit la table de sortie si
+  elle existe, sinon celle d'entrée (décision de Pascal du 2026-10-24). Sur
+  `vosk-model-small-fr-0.22`, les deux tables sont identiques (135 774 symboles, mission 016).
+
+## Jeux d'essai
+
+Suivant la convention de `terrain-gpkg`, un script `terrain-voix/src/test/resources/modele/fabriquer.sh`
+fabrique avec Info-ZIP (`zip -X`, sans horodatage variable) des archives versionnées. Il écrit
+leurs empreintes calculées par `sha256sum` (GNU coreutils) dans `empreintes.txt`. Le code testé
+ne calcule pas les empreintes de référence. Les archives sont :
+
+- bonne (avec racine) ;
+- bonne sans racine ;
+- tronquée ;
+- vide (0 octet) ;
+- zip sans entrée ;
+- racine seule ;
+- sans `am/final.mdl` ;
+- sans `graph/disambig_tid.int` ;
+- avec un fichier vide (comme `ivector/online_cmvn.conf`), installée ;
+- à `HCLG.fst` ;
+- à `HCLG.fst` et `HCLr.fst` à la fois ;
+- avec `__MACOSX/` ;
+- avec une entrée qui sort du dossier ;
+- avec une entrée `a/../b` qui reste sous la racine.
+
+Les fichiers de modèle y sont des fichiers factices (quelques octets), sauf pour le
+vocabulaire, qui garde son jeu actuel.
+
+## Critères d'acceptation
+
+Un test par cas dans `terrain-voix`. Chaque test qui part d'un modèle installé vérifie que
+**son contenu** est intact (un fichier de l'ancien présent, un fichier du nouveau absent), pas
+seulement le témoin.
+
+1. **Table d'états** : un test par ligne R1 à R4. L'état est fabriqué directement sur le
+   disque, puis on appelle `estInstalle` (qui n'écrit rien), puis `installer`, et on vérifie
+   l'état d'arrivée.
+2. **Archives** : un test par jeu d'essai ci-dessus, avec l'erreur typée attendue. La bonne
+   archive sans racine s'installe.
+3. **Empreinte** : une empreinte fausse donne `EmpreinteInattendue`, avec l'attendue et
+   l'obtenue. Une empreinte vide, de 63 caractères ou avec un caractère non hexadécimal donne
+   `EmpreinteMalFormee` à la construction. Une empreinte en majuscules est acceptée.
+4. **`telecharger`** : une annulation, une coupure (flux tronqué) et un `Content-Length` trop
+   grand pour la place disponible laissent le modèle installé intact. Le test actuel
+   « telechargement - par URL, puis interruption » est inversé.
+5. **Espace** : avec `espaceDisponible` injecté sous le besoin, on obtient
+   `EspaceInsuffisant(manquant)` et rien n'est effacé.
+6. **Annulation pendant la décompression** : `Interrompu`, le modèle est intact et `N` est
+   absent.
+7. **Vocabulaire** : `Gr.fst` absent ou illisible donne `Illisible` ; le jeu actuel donne
+   `Connus`.
+8. **`estInstalle`** n'écrit rien sur le disque : l'arborescence est la même avant et après.
+
+Les tests ne vérifient pas le type d'exception de `Files.move`, qui dépend du système de
+fichiers. `./gradlew test` passe en CI.
+
+**Documentation** : le README décrit le nouveau constructeur et les erreurs typées. La note de
+version de v0.7.0 donne :
+
+- **pour Marculus** : le constructeur, qui perd `cache` et gagne `empreinte` ; il faut passer
+  `Empreinte.NonControlee` ou une empreinte calculée ;
+- **pour Surculus** : les tests à réécrire (`InstallationModeleTest.kt` : paramètre `sha256 =`,
+  jeux à `a.txt`, test « ECART » à remplacer par l'archive tronquée), `ModeleVoskImport.kt:31` (constructeur)
+  et `ModeleVoskImport.kt:47` (`installer` sans second argument).
+
+## Précisions du plan de la mission 018 (retenues par Pascal le 2026-10-24)
+
+- **Marge d'espace libre** : **32 Mio** (33 554 432 octets), constante, la même pour
+  `installer` et `telecharger`.
+- **Besoin d'espace** : `installer` demande la somme décompressée + marge ; `telecharger`
+  demande `Content-Length` + marge avant le téléchargement, puis la somme décompressée + marge
+  à l'étape 6 (l'archive, déjà écrite, est déjà déduite de l'espace libre). Pour
+  `vosk-model-small-fr-0.22` : 102 038 239 octets pour `installer`, 144 271 562 octets libres
+  à prévoir avant un téléchargement ; pic sur le disque ≈ 3,1 fois le décompressé.
+- **`installer(archive, continuer)`** perd le paramètre `origine` : le témoin note le nom de
+  l'archive, ou l'URL pour `telecharger`.
+- **Erreurs d'entrée-sortie** hors de la liste (disque plein en cours d'écriture, droits,
+  renommage refusé) : remontées telles quelles (`IOException`) dans le `Result` ; le modèle en
+  place reste garanti.
+- **Verrou** partagé par tout le processus, rangé par chemin canonique de `<nom>.verrou`, puis
+  `FileChannel.lock` ; il attend, il n'échoue pas. `<nom>.verrou` n'est jamais effacé.
+- **CRC-32** de chaque entrée contrôlé pendant la décompression ; un écart donne
+  `ArchiveIllisible`.
+- **Deux racines candidates** à la même profondeur : `ArchiveIllisible("plusieurs modèles")`.
+- **Refus rangés sous `ArchiveIllisible`** : nom d'entrée absolu, `..` séparé par `/` ou `\`,
+  entrée en double, taille inconnue, somme de tailles qui déborde, et réseau (injoignable,
+  erreur HTTP, URL `file:` absente : `ArchiveIllisible("réseau : …")`).
+
+## Questions ouvertes
+
+Aucune.
