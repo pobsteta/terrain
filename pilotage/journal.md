@@ -168,3 +168,4 @@
 2026-10-24 · Pascal · brief terrain-voix · décisions : modèles à HCLG.fst refusés (pas de repli sur words.txt) ; reprise : avancer quand le nouveau est vérifié ; corrections techniques de la seconde critique : toutes appliquées.
 2026-10-24 · Claude (orchestrateur) · brief terrain-voix · brief, spec (table d'états R1-R4, ordre des opérations, erreurs typées, jeux d'essai fabriqués par Info-ZIP, 8 critères) et ADR 0005 mis à jour ; porte n° 1 soumise à Pascal.
 2026-10-24 · Pascal · brief terrain-voix · porte n° 1 : brief et spec de terrain-voix validés, ADR 0005 acceptée (« oui pour les 2 ») ; /imperatrice:mission à lancer.
+2026-10-24 · Claude (orchestrateur) · terrain-voix · /imperatrice:mission : 4 missions proposées (016 référentiel du modèle, dev ; 017 tests, testeur ; 018 installation sûre, dev opus, tenu ; 019 lireVocabulaire, dev) ; porte n° 2 soumise à Pascal.
