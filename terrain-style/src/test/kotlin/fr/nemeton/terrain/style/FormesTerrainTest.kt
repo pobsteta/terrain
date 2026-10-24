@@ -12,12 +12,12 @@ import kotlin.test.assertEquals
  * Marculus ne fixe aucune forme au niveau du thème, écart E6), jamais dans le code.
  *
  * Contrat d'API attendu (types : `Int`, rayons en dp ; voir le corps de la PR) :
- * `FormesTerrain.extraSmall`, `small`, `medium`, `large`, `extraLarge` : `Int` ;
+ * `FormesTerrain.extraSmall`, `small`, `medium`, `large`, `extraLarge` : `Float` ;
  * `FormesTerrain.pilulePourcent` : `Int` (écart E4 : la pilule est `RoundedCornerShape(50)`).
  */
 class FormesTerrainTest {
 
-    private val formes: List<Pair<String, Int>> = listOf(
+    private val formes: List<Pair<String, Float>> = listOf(
         "extraSmall" to FormesTerrain.extraSmall,
         "small" to FormesTerrain.small,
         "medium" to FormesTerrain.medium,
@@ -39,7 +39,7 @@ class FormesTerrainTest {
         return formes.map { (nom, valeur) ->
             DynamicTest.dynamicTest(nom) {
                 val attendu = ref[nom] ?: error("style-marculus.md § 2 : forme $nom absente")
-                assertEquals(attendu.valeur, valeur, "$nom attendu ${attendu.valeur} dp (style-marculus.md L${attendu.numero}), obtenu $valeur")
+                assertEquals(attendu.valeur.toFloat(), valeur, "$nom attendu ${attendu.valeur} dp (style-marculus.md L${attendu.numero}), obtenu $valeur")
             }
         }
     }
@@ -47,7 +47,7 @@ class FormesTerrainTest {
     @Test
     fun `valeurs en clair, pour l oeil du relecteur (4, 8, 12, 16, 28)`() {
         // style-marculus.md § 2, tableau « Défauts M3 1.4.0 » (4 dp, 8 dp, 12 dp, 16 dp, 28 dp).
-        assertEquals(listOf(4, 8, 12, 16, 28), formes.map { it.second })
+        assertEquals(listOf(4f, 8f, 12f, 16f, 28f), formes.map { it.second })
     }
 
     @Test
