@@ -52,7 +52,7 @@ est confirmée.
 | Table des jetons | CSV `theme,role,argb` recopié du référentiel (format ouvert, pour le successeur), source des tests d'égalité | `terrain-style/src/test/resources/` |
 | Formes | rayons d'angle de `Shapes` (`extraSmall` … `extraLarge`), en dp, plus les formes propres à Marculus (par exemple la pilule `RoundedCornerShape(50)`) | code |
 | Typographie | les 15 styles de `Typography` (`displayLarge` … `labelSmall`) : taille et interligne en sp, graisse, interlettrage | code |
-| Boutons | hauteurs minimales, rayon et marges intérieures des boutons de Marculus, en dp | code |
+| Boutons | forme (pilule : `RoundedCornerShape(50)`), hauteurs minimales et marges intérieures des boutons de Material 3 1.4.0, en dp, celles que Marculus emploie | code |
 | Table de référence des rapports | CSV `argb_a,argb_b,rapport,outil,version` calculé par **deux outils tiers** nommés, pas par le code testé | `terrain-style/src/test/resources/` |
 
 API publique (noms proposés, en français comme les autres modules) :

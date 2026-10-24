@@ -46,22 +46,28 @@ remplacé par sa révision) ; reprendre Marculus. Pascal a tranché pour reprend
   | `primaryContainer` | `VertMarculus #374742` | `VertMarculus #374742` |
   | `onPrimaryContainer` | `Creme #F5EBD8` | `Creme #F5EBD8` |
   | `secondary` | `VertMarculus #374742` | `Creme #F5EBD8` |
-  | les 43 autres rôles | défaut de `lightColorScheme()` | défaut de `darkColorScheme()` |
+  | `surfaceTint` (non fixé, suit `primary` dans Material 3) | `#3E7A40` | `#3E7A40` |
+  | les 42 autres rôles | défaut de `lightColorScheme()` | défaut de `darkColorScheme()` |
 
   Les valeurs par défaut sont celles de Compose Material 3 au BOM de Marculus (`2026.02.01`,
   `gradle/libs.versions.toml` l. 5). Elles sont relevées dans
   `docs/referentiels/style-marculus.md` (mission 020).
-- **Formes, typographie, boutons** : ce que Marculus fixe, plus les valeurs par défaut de
-  Material 3 à la même version : `Shapes`, `Typography`, et les dimensions et formes de boutons
-  que Marculus utilise. Ces valeurs sont relevées dans le même référentiel.
+- **Formes, typographie, boutons** : Marculus ne fixe dans son thème que les couleurs ; ses
+  formes, sa typographie et ses boutons sont donc les valeurs par défaut de Material 3 1.4.0
+  (BOM `2026.02.01`) : `Shapes` (4, 8, 12, 16, 28 dp), les 15 styles de `Typography`, et des
+  boutons en pilule (`RoundedCornerShape(50)`), hauteur 40 dp. Ces valeurs sont relevées dans le même référentiel.
+- **Les 42 rôles par défaut** sont la palette de base de Material 3, violette et rose (par
+  exemple `tertiary` `#7D5260`, `background` `#FEF7FF`). C'est ce que Marculus affiche
+  aujourd'hui, et donc la règle.
 - **Kotlin pur, JVM 17, sans Android ni Compose** (décision du 2026-10-17) : les formes et la
   typographie sont exposées en nombres (dp, sp, graisse) et en couleurs ARGB. Chaque application
   les recopie dans son `MaterialTheme`.
 - **La règle 7:1 tombe comme règle commune.** `Contraste` reste publique pour que chaque
   application mesure ce qu'elle veut. Un rapport sous 7:1 n'empêche plus la publication.
-- **`reussi` et `alerte` restent** (ADR 0002) : `reussi` `#0F8558`, gelé le 2026-10-24, et
+- **`reussi` et `alerte` restent** (ADR 0002) : `reussi` de graine `#0F8558`, gelé le
+  2026-10-24 (`reussi.couleur` vaut `#00341F` en clair et `#BBFFD7` en sombre), et
   `alerte` `#E2AA00`. Comme le demande Marculus, l'écart de teinte entre `reussi` et le nouveau
-  `primary` (`VertVif`) est mesuré et dit.
+  `primary` (`VertVif`) est mesuré : 15,4° en clair, 16,0° en sombre (mission 020).
 - **Une palette, pas une par application** : aucun écart propre à Groma ou à Surculus.
 - **Version : v0.6.2.** La v0.6.1, publiée le 2026-10-24, porte encore la palette générée.
 - **Avant publication, le nuancier est montré à Pascal** (brief de Marculus, § 2.3). Les tests
