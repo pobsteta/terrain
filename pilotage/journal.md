@@ -145,3 +145,4 @@
 2026-10-23 · Claude (orchestrateur) · mission 014 · fusion de la PR #20 sur ordre de Pascal (CI verte) ; carte 014 passée en Terminé.
 2026-10-24 · Claude (orchestrateur) · cycle 5 · /boucle sans lancement : aucune carte en Validé, aucune PR ouverte sur terrain, pause jusqu'à l'essai au soleil ; zéro écart ; plugin toujours en 0.3.0 dans le cache ; carte « Essai au soleil » en Planifié depuis le cycle 3 (immobile au prochain cycle si l'essai n'est pas fait) ; dernier cycle passé à 5.
 2026-10-24 · Pascal · cycle 5 · décisions : livraison du cycle 5 inscrite comme mauvaise nouvelle ; PR pobsteta/methode-imperatrice#17 (brouillon, 0.3.1) laissée telle quelle jusqu'après la pause.
+2026-10-24 · Claude (orchestrateur) · méthode · plugin imperatrice mis à jour de 0.3.0 à 0.6.0 pour ce projet, sur ordre de Pascal (claude plugin update, portée projet) ; actif au prochain redémarrage de la session ; Marculus, Groma et Surculus restent en 0.3.0.
