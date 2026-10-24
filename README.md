@@ -15,7 +15,7 @@ Licence : **GPL-3.0-or-later** (`LICENSE`).
 | `terrain-gpkg` | `fr.nemeton.terrain.gpkg` : couches vecteur d'un GeoPackage en SQL simple (`GeoPackage` : couches, entités, insertion), format des géométries (`FormatGpkg`, WKB ISO / EWKB, Z et M ignorés), systèmes `Systeme` (Lambert-93, WGS 84, Web Mercator ; les autres refusés par `SystemeNonGere`) | Kotlin pur, JVM 17 ; l'application fournit une `BaseSqlite` |
 | `terrain-voix` | `fr.nemeton.terrain.voix` : `NoyauPtt` (push-to-talk : une seule session quelle que soit la source tenue, bip obligatoire, coupure pendant une annonce TTS), `NombresFrancais`, `AlphabetRadio` (replis quand le modèle ignore le mot OTAN), `GrammaireFermee` (JSON Vosk, jeton `[unk]` de rejet), `VocabulaireVosk` (mots connus du modèle, lus dans `graph/Gr.fst`), `InstallationModele` (téléchargement ou archive locale ; le modèle en place survit à tout échec ; `reprendre()` avant de charger le modèle ; empreinte explicite `Empreinte.Sha256` ou `Empreinte.NonControlee` ; erreurs typées) | Kotlin pur, JVM 17 |
 | `terrain-carte` | `fr.nemeton.terrain.carte` : couches WMTS de la Géoplateforme (`Geoplateforme` : Plan IGN, Ortho IGN, cadastre ; URL d'une tuile), `Attributions`, `Echelle` (résolution au sol, distance ronde, libellé), `Emprise` / `Tuile` / `ZoneTuiles` (tuiles à télécharger pour le hors-ligne), `GrilleWebMercator` (ortho déjà sur la grille XYZ) | Kotlin pur, JVM 17 |
-| `terrain-style` | `fr.nemeton.terrain.style` : `Contraste` (luminance relative et rapport de contraste WCAG 2.2 sur des ARGB `0xFFRRGGBB` en `Long` ; toute autre valeur refusée par `IllegalArgumentException`) | Kotlin pur, JVM 17 |
+| `terrain-style` | `fr.nemeton.terrain.style` : le style de Marculus (ADR 0006) : `StyleTerrain` (48 rôles de couleur, clair et sombre, plus `reussi` et `alerte`), `FormesTerrain`, `TypoTerrain`, `BoutonsTerrain`, et `Contraste` (rapport de contraste WCAG 2.2 sur des ARGB `0xFFRRGGBB` en `Long` ; toute autre valeur refusée par `IllegalArgumentException`) | Kotlin pur, JVM 17 |
 | `terrain-gnss` | `fr.nemeton.terrain.gnss` : NMEA (découpe du flux, GGA/GSA/GST/RMC/GSV, fix, précision, skyplot), client NTRIP (requête, réponse, sourcetable, GGA renvoyée au caster) ; `fr.nemeton.terrain.geo` : position WGS 84, aire, distance et azimut, point dans polygone, Lambert-93 ↔ WGS 84 ↔ Web Mercator | Kotlin pur, JVM 17 |
 
 Restent dans chaque application (Android, décision du 2026-10-17) : l'affichage osmdroid de la
@@ -42,7 +42,7 @@ dependencies {
     implementation("com.github.pobsteta.terrain:terrain-gpkg:v0.6.0") // apporte terrain-gnss
     implementation("com.github.pobsteta.terrain:terrain-voix:v0.6.0")
     implementation("com.github.pobsteta.terrain:terrain-carte:v0.6.0")
-    implementation("com.github.pobsteta.terrain:terrain-style:v0.6.0")
+    implementation("com.github.pobsteta.terrain:terrain-style:v0.7.1")
 }
 ```
 
@@ -126,29 +126,33 @@ ligne d'index est écrite à la main, puis ils sont recréés, dans la même tra
 Jeu d'essai : `terrain-gpkg/src/test/resources/gpkg/essai.gpkg`, fabriqué par GDAL
 (`fabriquer.sh`), avec la référence PROJ de chaque sommet en WGS 84 (`reference.csv`).
 
-### Couleurs : `terrain-style`
+### Style : `terrain-style`
 
-`StyleTerrain.clair` et `StyleTerrain.sombre` sont deux `Schema`, un champ par rôle de
-`ColorScheme` de Compose Material 3 (48 rôles, en ARGB `0xFFRRGGBB` dans un `Long`), à recopier
-dans le thème de l'application. Ils sont générés une fois par Material Color Utilities (ADR 0001 et
-0004 : VertMarculus `#374742`, variante `CONTENT`, `SPEC_2021`, contraste 1,0) puis figés ; le
-module publié ne dépend pas de MCU. Nuancier : `terrain-style/generation/nuancier.svg`.
+`terrain-style` est **le style de Marculus** (ADR 0006) : couleurs, formes, typographie et boutons,
+recopiés du référentiel `docs/referentiels/style-marculus.md` (Marculus v0.65.0 et Compose
+Material 3 1.4.0), sans rien générer ni calculer. Kotlin pur : ni Compose ni Android ; l'application
+recopie les valeurs dans son thème.
+
+- `StyleTerrain.clair` et `StyleTerrain.sombre` : deux `Schema`, un champ par rôle de `ColorScheme`
+  (48 rôles, ARGB `0xFFRRGGBB` dans un `Long`). `primary` est le VertVif de Marculus `#3E7A40`,
+  `primaryContainer` son VertMarculus `#374742` ; le reste est le défaut de Material 3.
+  Nuancier : `terrain-style/generation/nuancier.svg`.
+- `FormesTerrain` : les 5 rayons de `Shapes` en dp (`Float`) et `pilulePourcent` (50, forme des boutons).
+- `TypoTerrain` : les 15 styles de `Typography`, chacun un `StyleTexte` (taille et interligne en sp,
+  graisse, interlettrage).
+- `BoutonsTerrain` : dimensions des boutons en dp (hauteur 40, largeur 58, marges, icône, FAB, puces…).
+- `Contraste` : rapport de contraste WCAG 2.2, pour **mesurer** ; le style n'impose aucun seuil.
 
 Couleurs d'état communes (ADR 0002), chacune une `Semantique` (`couleur`, `surCouleur`,
-`conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma, sans doublon :
+`conteneur`, `surConteneur`) de chaque schéma ; l'erreur est `error*` du schéma :
 
-- `reussi` : **`#0F8558` est définitif, validé par l'essai au soleil de Pascal du 2026-10-24**
-  dans Marculus (clair et sombre ; gel : ADR 0002, note « Gel, ajoutée le 2026-10-24 »). Généré
-  par MCU avec la palette de `#0F8558` (RAL 6032, non harmonisé) à la place de la
-  palette d'erreur, donc avec les tons et les courbes de contraste d'`error` ; l'écart de teinte
-  HCT à `primary`, mesuré à chaque génération, est inscrit en tête de `StyleTerrain.kt` ;
-- `alerte` : figée hors MCU, jaune de sécurité `#E2AA00` (ISO 3864-4, Table 1, β 0,45) en
-  `couleur` et `conteneur`, noir `#000000` dessus (9,98:1), dans les deux thèmes.
+- `reussi` : `#0F8558` est définitif (essai au soleil de Pascal du 2026-10-24) ; valeurs de
+  v0.6.1 gelées (ADR 0002) ;
+- `alerte` : jaune de sécurité `#E2AA00` (ISO 3864-4) en `couleur` et `conteneur`, noir `#000000`
+  dessus, dans les deux thèmes.
 
-Rôles interdits en texte (sous 7:1 sur l'un de leurs fonds, liste `interditsEnTexte` de
-chaque schéma, calculée par le script) : `alerte.couleur`, par décision (ADR 0002), en clair
-comme en sombre ; aucun parmi les 48 rôles ni parmi les autres jetons d'état. Le jaune sert de
-fond, jamais de texte.
+`interditsEnTexte` vaut `{"alerte.couleur"}` dans chaque schéma : seul `alerte.couleur` est interdit en texte, par décision (ADR 0002) : le
+jaune sert de fond, jamais de texte.
 
 Compilé avec Kotlin 2.2 (la version la plus ancienne des applications) : lisible par
 Kotlin 2.2 et suivants.
@@ -158,58 +162,29 @@ Kotlin 2.2 et suivants.
 ```sh
 ./gradlew test                 # tests JVM
 ./gradlew publishToMavenLocal  # version « dev » dans ~/.m2, pour essayer dans une appli
-./gradlew :terrain-style:generer        # régénère les jetons de couleur (ADR 0001)
-./gradlew :terrain-style:testGeneration # tests du script de génération
+python3 -I terrain-style/generation/nuancier.py  # redessine le nuancier depuis le CSV
 ```
 
-Une correction se fait ici, avec son test, puis chaque application monte de version.
+Une correction se fait ici, avec son test, puis chaque application monte de version. La CI joue
+`./gradlew test`, redessine le nuancier et échoue sur toute différence.
 
-**Deux commandes, pas une.** `.claude/test-command` (et donc le travail des agents) ne lance
-que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue les trois
-(`test`, `generer` suivi d'un contrôle d'absence de différence, `testGeneration` : voir
-`.github/workflows/ci.yml`). Avant toute PR qui touche `terrain-style`, lancer à la main
-`./gradlew test` **et** `./gradlew :terrain-style:testGeneration`.
+### Changer le style
 
-### Changer le vert de départ de `reussi` (par exemple le repli `#00843D`)
+Le style est celui de Marculus ; on change dans cet ordre, jamais dans l'autre.
 
-**`#0F8558` est gelé** : l'essai au soleil de Pascal du 2026-10-24 (dans Marculus) l'a validé et
-il est gardé, sans repli (ADR 0002, note « Gel, ajoutée le 2026-10-24 »). Ce qui suit décrit la
-marche à suivre **si** Pascal décidait un jour de le changer ; ce n'est plus un plan en cours.
+1. **Marculus** : la valeur change d'abord dans l'application Marculus (ou dans Material 3).
+2. **Le référentiel** : relever la nouvelle valeur, avec sa source et sa version, dans
+   `docs/referentiels/style-marculus.md` ; pour une couleur, aussi dans le CSV
+   `terrain-style/src/test/resources/jetons/style-marculus.csv`. Pascal décide.
+3. **Le code** : recopier la valeur dans `StyleTerrain.kt`, `FormesTerrain.kt`, `TypoTerrain.kt`
+   ou `BoutonsTerrain.kt` ; les tests (`StyleMarculusTest`, `FormesTerrainTest`, `TypoTerrainTest`,
+   `BoutonsTerrainTest`) comparent au référentiel et échouent s'ils divergent.
+4. `python3 -I terrain-style/generation/nuancier.py`, puis `./gradlew test`.
+5. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
+   `vX.Y.Z` (voir « Publier une version »).
 
-Depuis le gel, l'autorisation d'avance du repli `#00843D` (mission 007) est **levée** (décision de
-Pascal, 2026-10-24) : changer le vert, y compris pour ce repli, demande une **nouvelle décision de
-Pascal**, consignée par une note datée de l'ADR 0002 (étape 5). **Avertissement** : `#00843D`
-(vert ANSI Z535.1) sortirait de la région verte d'ISO 3864-4, alors que `#0F8558` y est ; calcul
-approché du relecteur, non rejoué par l'acquéreur (`docs/referentiels/couleurs-etat.md`,
-ligne 113). Le repli quitte donc la norme qui fonde le choix actuel : Pascal le sait en le
-décidant.
-
-1. Dans `terrain-style/generation/src/fr/nemeton/terrain/style/generation/Generer.kt` :
-   `Reglages.REUSSI` (ligne 50, `0xFF0F8558L`) et `Reglages.SOURCE_REUSSI` (ligne 51, texte de
-   la source, repris en tête de `StyleTerrain.kt`) ; relire aussi le commentaire au-dessus
-   (lignes 44-49), qui cite RAL 6032.
-2. Dans `terrain-style/generation/test/fr/nemeton/terrain/style/generation/GenererTest.kt`,
-   le test « reussi a pour palette celle de 0F8558… » (lignes 124-125) affirme
-   `assertEquals(0xFF0F8558L, Reglages.REUSSI)`. **Cette assertion échouera exprès** : elle
-   garde la valeur décidée. À mettre à jour avec la nouvelle valeur, en PR et sur décision de
-   Pascal, jamais pour « faire passer » un test (ce fichier n'est pas à modifier à la légère).
-3. `./gradlew :terrain-style:generer` : réécrit `StyleTerrain.kt`, `jetons.csv` et
-   `nuancier.svg` (ne pas les modifier à la main : la CI régénère et échoue sur toute
-   différence).
-4. `./gradlew test` puis `./gradlew :terrain-style:testGeneration`. Si un couple tombe sous
-   7:1, le test le liste et le rôle passe « interdit en texte » ; on ne retouche pas la valeur à
-   la main. Mettre alors à jour le paragraphe « Rôles interdits en texte » de ce README.
-5. Mentions de `#0F8558` à mettre à jour hors du code généré : ce README (section
-   `terrain-style`, ligne `reussi`) et, par une note datée qui **ajoute** sans effacer, l'ADR
-   0002. `docs/brief.md` (arbitrages datés) garde la valeur décidée à sa date : on n'y touche pas.
-   **Au gel** (l'essai a eu lieu le 2026-10-24), que le vert soit changé **ou gardé**, retirer la
-   mention « provisoire » de ce README (ligne `reussi` et début de cette section), de
-   `docs/spec.md` (« Questions ouvertes ») et du code généré à la génération suivante, dans la
-   même PR que la note datée du gel (**fait le 2026-10-24**, mission 015 : gardé). **Au gel, la
-   spec repasse de « Une : l'essai au soleil » à « Aucune » question ouverte**, que le vert soit
-   changé ou gardé : la note datée de l'ADR 0002 et la PR le disent aussi.
-6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
-   `vX.Y.Z` sur le commit de `main` (voir « Publier une version », juste en dessous).
+`reussi` et `alerte` ne viennent pas de Marculus : les changer demande une décision de Pascal et une
+note datée de l'ADR 0002.
 
 ### Publier une version
 
@@ -220,9 +195,8 @@ comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte 
 depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
 de contrôle (`verification-metadata.xml`).
 
-Le vert de départ de `reussi` (`#0F8558`) est gelé depuis l'essai au soleil du 2026-10-24 : la
-v0.6.0 le porte déjà et aucune version ne le change d'avance. Pour le changer malgré tout, voir
-« Changer le vert de départ de `reussi` » (juste au-dessus).
+Le vert de départ de `reussi` (`#0F8558`) est gelé depuis l'essai au soleil du 2026-10-24 ;
+aucune version ne le change d'avance (ADR 0002).
 
 Jusqu'à v0.1.2, le dépôt n'avait qu'un module, publié par JitPack sous
 `com.github.pobsteta:terrain` ; depuis v0.2.0, chaque module a ses coordonnées.

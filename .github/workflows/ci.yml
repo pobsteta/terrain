@@ -28,14 +28,13 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew test
-      # ADR 0001 : la génération des jetons se rejoue à l'octet près.
-      - name: Rejeu de la génération des jetons
+      # ADR 0006 : plus de génération MCU ; le nuancier se redessine à l'identique depuis le CSV du référentiel.
+      - name: Rejeu du nuancier
         run: |
-          ./gradlew :terrain-style:generer
+          python3 -I terrain-style/generation/nuancier.py
           git diff --exit-code
-          test -z "$(git status --porcelain)" || { git status --porcelain; echo "::error::fichiers non suivis après la génération"; exit 1; }
-      - run: ./gradlew :terrain-style:testGeneration
-      # ADR 0001 : le jar publié ne contient aucune classe de MCU.
+          test -z "$(git status --porcelain)" || { git status --porcelain; echo "::error::fichiers non suivis après le nuancier"; exit 1; }
+      # Le jar publié ne contient rien hors de fr/nemeton.
       - name: Le jar de terrain-style ne dépend pas de MCU
         run: |
           set -euo pipefail
