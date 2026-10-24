@@ -69,7 +69,7 @@ remplacé par sa révision) ; reprendre Marculus. Pascal a tranché pour reprend
   `alerte` `#E2AA00`. Comme le demande Marculus, l'écart de teinte entre `reussi` et le nouveau
   `primary` (`VertVif`) est mesuré : 15,4° en clair, 16,0° en sombre (mission 020).
 - **Une palette, pas une par application** : aucun écart propre à Groma ou à Surculus.
-- **Version : v0.6.2.** La v0.6.1, publiée le 2026-10-24, porte encore la palette générée.
+- **Version : v0.7.1.** La v0.6.1, publiée le 2026-10-24, porte encore la palette générée.
 - **Avant publication, le nuancier est montré à Pascal** (brief de Marculus, § 2.3). Les tests
   vérifient l'égalité au relevé, rôle par rôle. Marculus montre ensuite une capture avant/après
   identique (sa mission 006).
@@ -102,3 +102,7 @@ remplacé par sa révision) ; reprendre Marculus. Pascal a tranché pour reprend
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?
+
+## Note du 2026-10-24 : version v0.7.1
+
+La v0.7.0 (`terrain-voix`) a été publiée avant le style de Marculus. Le style sort donc en **v0.7.1**, et non en v0.6.2, qui se trierait avant v0.7.0. Les mentions « v0.6.2 » de ce dépôt sont remplacées par v0.7.1.

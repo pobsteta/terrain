@@ -28,7 +28,7 @@ _Modèle de carte :_
   - Moyens : après 020 ; branche de 020
 - [022-style-marculus](missions/022-style-marculus.md) · depuis le cycle 6
   - Homme : `dev` (sonnet)
-  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.6.2 après le « c'est vert » de Pascal
+  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.7.1 après le « c'est vert » de Pascal
   - Moyens : après 021 ; branche de 021
 ## Planifié
 
