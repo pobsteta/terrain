@@ -84,3 +84,17 @@ Retouches du relecteur :
 4. Relance `fabriquer.sh`, `sha256sum -c` et le comptage des tests, puis rends les nouveaux chiffres.
 
 Liste de contrôle jointe de nouveau.
+
+## Remarques du relecteur (aller-retour 2/3, 2026-10-24)
+
+Verdict de la relecture 2 : prêt. Pascal a tranché le 2026-10-24 (spec à jour) :
+
+- **`StructureInvalide.manquant`** contient le chemin relatif du premier fichier obligatoire absent, par exemple `"graph/disambig_tid.int"`. Vérifie-le dans chaque test `StructureInvalide` où un seul fichier manque (sans `am/final.mdl`, sans `disambig_tid.int`).
+- **Empreinte suivie d'un retour à la ligne** : elle est refusée, sans `trim`. Ton test reste tel quel.
+- **`Gr.fst` sans table de symboles** : `Illisible`. Ton test reste tel quel.
+
+Retouches mineures du relecteur :
+1. `InstallationModeleTest.kt`, l. 619 : le commentaire est inversé. `continuer = { !nouveau.exists() }` est **vrai** tant que `modele.nouveau` n'existe pas.
+2. Contrôle la mise en minuscules : une empreinte fausse donnée en majuscules doit donner `attendue` en minuscules.
+
+Relance le comptage des tests et `sha256sum -c`. Liste de contrôle jointe de nouveau.

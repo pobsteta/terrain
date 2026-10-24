@@ -168,9 +168,9 @@ validé en clair et en sombre. Les deux questions d'origine sont tranchées par 
 |---|---|
 | Dossier du modèle | `dossier` ; à côté, dans le même parent : `<nom>.nouveau`, `<nom>.ancien`, `<nom>.zip` (archive téléchargée), `<nom>.verrou`. Plus rien dans le cache de l'application, qu'Android peut vider. |
 | Témoin | fichier `.installe` dans un dossier de modèle ; il contient l'origine. |
-| Empreinte | `Empreinte.Sha256(hex)` : 64 caractères hexadécimaux (FIPS 180-4), normalisés en minuscules ; sinon `EmpreinteMalFormee`. `Empreinte.NonControlee` : refus de contrôler, écrit par l'appelant. Pas de valeur par défaut. |
+| Empreinte | `Empreinte.Sha256(hex)` : 64 caractères hexadécimaux (FIPS 180-4), normalisés en minuscules ; sinon `EmpreinteMalFormee`. La forme est stricte, sans `trim` : un retour à la ligne final est refusé (décisions de Pascal du 2026-10-24). `Empreinte.NonControlee` : refus de contrôler, écrit par l'appelant. Pas de valeur par défaut. |
 | Espace disponible | `espaceDisponible: (File) -> Long`, par défaut `File::getUsableSpace`. Sur Android, l'application peut passer `StorageManager.getAllocatableBytes`. Les tests injectent une valeur. |
-| Erreurs | exceptions typées, portées par le `Result` : `EmpreinteMalFormee(valeur)`, `EmpreinteInattendue(attendue, obtenue)`, `ArchiveIllisible(raison)`, `StructureInvalide(manquant)`, `SansGrammaireDynamique`, `EspaceInsuffisant(manquant)`, `Interrompu`. L'application traduit, et les tests vérifient le type et les champs. |
+| Erreurs | exceptions typées, portées par le `Result` : `EmpreinteMalFormee(valeur)`, `EmpreinteInattendue(attendue, obtenue)`, `ArchiveIllisible(raison)`, `StructureInvalide(manquant)` (`manquant` : chemin relatif du premier fichier obligatoire absent, par exemple `"graph/disambig_tid.int"`), `SansGrammaireDynamique`, `EspaceInsuffisant(manquant)`, `Interrompu`. L'application traduit, et les tests vérifient le type et les champs. |
 | Vocabulaire | nouvelle fonction `VocabulaireVosk.lireVocabulaire(dossier, candidats)` qui rend `Connus(mots)` ou `Illisible(raison)`. `motsConnus` est inchangé. |
 
 `InstallationModele.empreinte(InputStream)` reste publique, car Surculus l'appelle.
@@ -264,8 +264,8 @@ Elle prend le verrou, puis efface `D`, `N`, `A` et `<nom>.zip`, chacun témoin e
 
 - `lireVocabulaire` rend `Illisible("pas de Gr.fst")` quand `graph/Gr.fst` manque. Il n'y a
   **pas de repli sur `words.txt`** : sans `Gr.fst`, le modèle n'a pas de grammaire dynamique.
-- Elle rend `Illisible(raison)` sur un en-tête ou une table illisible, et `Connus(mots)`
-  sinon.
+- Elle rend `Illisible(raison)` sur un en-tête ou une table illisible, ou quand `Gr.fst` n'a
+  aucune table de symboles, et `Connus(mots)` sinon.
 - Vosk lit son lexique dans les symboles de **sortie** de `Gr.fst` (`vosk-api/src/model.cc`),
   alors que `motsConnus` lit ceux d'**entrée**. `lireVocabulaire` lit la table de sortie si
   elle existe, sinon celle d'entrée (décision de Pascal du 2026-10-24). Sur
