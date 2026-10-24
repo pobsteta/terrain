@@ -20,17 +20,22 @@ _Modèle de carte :_
 
 ## Bac à sable
 
-## Validé
+- Brief Surculus : écarts de `terrain-voix` ([issue #23](https://github.com/pobsteta/terrain/issues/23)) · depuis le cycle 5
+  - Homme : `contradicteur` (critique), puis Pascal (porte n° 1)
+  - Mission : 4 écarts d'`InstallationModele` et 1 choix de `VocabulaireVosk` à corriger ou à garder par écrit
+  - Moyens : brief `surculus/pilotage/briefs/vers-terrain/2026-10-24-ecarts-terrain-voix.md` ; code de `terrain-voix` ; appels de Marculus
 
-- [015-gel-reussi](missions/015-gel-reussi.md) · depuis le cycle 5
-  - Homme : `archiviste` (sonnet)
-  - Mission : geler `#0F8558` après l'essai au soleil (note datée de l'ADR 0002, mention « provisoire » retirée, spec à « Aucune ») ; lancée le 2026-10-24
-  - Moyens : README, spec, ADR 0002, `couleurs-etat.md` ; liste de contrôle jointe ; PR
+## Validé
 
 ## Planifié
 
 ## Terminé
 
+- [015-gel-reussi](missions/015-gel-reussi.md) · depuis le cycle 5
+  - Homme : `archiviste` (sonnet)
+  - Mission : geler `#0F8558` après l'essai au soleil (note datée de l'ADR 0002, mention « provisoire » retirée, spec à « Aucune ») ; lancée le 2026-10-24
+  - Moyens : README, spec, ADR 0002, `couleurs-etat.md` ; liste de contrôle jointe ; PR
+  - Livré : PR #24 fusionnée (1 aller-retour de relecture)
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 5
   - Homme : Pascal, hors agents
   - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
