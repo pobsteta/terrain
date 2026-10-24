@@ -73,3 +73,14 @@ Verdict de la relecture 1 : prêt. Toutes les mesures ont été rejouées et son
 2. **Intitulé du tableau** : remplace « fichiers que terrain-voix attend (ADR 0005) » par « fichiers que la fiche demande de vérifier ». `ivector/` et `graph/words.txt` viennent de la fiche, pas de l'ADR.
 3. **§7 « Rejouer »** : donne des chemins absolus séparés pour le venv, `cmp.py` et le modèle extrait, sans lancer de script depuis le dossier extrait.
 4. **Symboles** : précise que les 135 774 symboles comprennent des symboles spéciaux (`<eps>`, `#0`, `<s>`, `</s>`, `[unk]`).
+
+## Remarques du relecteur (aller-retour 2/3, 2026-10-24)
+
+Verdict de la relecture 2 : à reprendre. Le §7 a été rejoué de bout en bout et les mesures sont identiques. Il reste :
+
+A. **Six symboles spéciaux, pas cinq.** `!SIL` (clé 135 768, le mot du silence de Kaldi) échappe au filtre « commence par `<`, `[` ou `#` ». Relevé du relecteur : seuls `<eps>`, `!SIL`, `[unk]`, `#0`, `<s>` et `</s>` ne commencent pas par une lettre, ce qui laisse 135 768 mots ordinaires. Corrige le §4. Ajoute au §7 (par exemple dans `cmp.py`) les lignes qui listent ces symboles, signalent la clé en double (`<s>` et `</s>`, 135 773) et la clé 135 772 inutilisée, pour que le chiffre se rejoue.
+B. **« Vosk s'arrête » est inexact.** `KALDI_ERR` lève une exception, et `vosk_model_new` la rattrape pour renvoyer NULL (`src/vosk_api.cc`, commit `4ab9821`, l. 31-38). Écris : « le chargement du modèle échoue ».
+C. **Source.** Au §5, l'URL de `recognizer.cc` pointe sur `master` : prends celle du commit `4ab9821`.
+D. **Corps de la PR.** Ajoute `graph/disambig_tid.int` à la liste des fichiers présents, et la mention « liste de contrôle passée » (ou les points non cochés).
+
+Liste de contrôle jointe de nouveau.
