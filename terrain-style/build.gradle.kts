@@ -19,50 +19,14 @@ kotlin {
     }
 }
 
-// Génération des jetons (ADR 0001) : sources MCU recopiées et script, dans un source set à
-// part. Rien n'en entre dans le jar publié, qui ne dépend pas de MCU.
-val generation: SourceSet by sourceSets.creating {
-    compileClasspath += sourceSets.main.get().output
-    runtimeClasspath += sourceSets.main.get().output
-}
-val testGeneration: SourceSet by sourceSets.creating {
-    compileClasspath += generation.output + sourceSets.main.get().output
-    runtimeClasspath += generation.output + sourceSets.main.get().output
-}
-kotlin.sourceSets.named("generation") {
-    kotlin.srcDirs("generation/mcu", "generation/src")
-}
-kotlin.sourceSets.named("testGeneration") {
-    kotlin.srcDirs("generation/test")
-}
-
 dependencies {
     testImplementation(kotlin("test"))
-    "testGenerationImplementation"(kotlin("test-junit5"))
 }
 
 tasks.test {
     useJUnitPlatform()
-    // Les lignes MARGE des tests de contraste sortent dans la console.
+    // Les lignes RAPPORT des tests de contraste sortent dans la console.
     testLogging { showStandardStreams = true }
-}
-
-// Rejoue la génération : réécrit StyleTerrain.kt, la table des jetons et le nuancier. La CI
-// vérifie ensuite qu'aucun fichier n'a changé (`git diff --exit-code`).
-tasks.register<JavaExec>("generer") {
-    group = "generation"
-    description = "Génère les schémas clair et sombre par Material Color Utilities (ADR 0001)"
-    classpath = generation.runtimeClasspath
-    mainClass.set("fr.nemeton.terrain.style.generation.GenererKt")
-    args(projectDir.absolutePath)
-}
-
-tasks.register<Test>("testGeneration") {
-    group = "verification"
-    description = "Tests du script de génération"
-    testClassesDirs = testGeneration.output.classesDirs
-    classpath = testGeneration.runtimeClasspath
-    useJUnitPlatform()
 }
 
 publishing {
