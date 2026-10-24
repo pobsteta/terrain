@@ -6,7 +6,7 @@
 > colonne ; on change ce numéro chaque fois qu'elle change de colonne.
 > **Une carte qui ne bouge pas est souvent la mauvaise nouvelle à dire tout de suite.**
 
-**Dernier cycle :** 4 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
+**Dernier cycle :** 5 _(augmenté de 1 à la fin de chaque `/boucle`, même quand elle n'a
 rien lancé. Une carte est immobile quand dernier cycle − N ≥ 2.)_
 
 _Modèle de carte :_
@@ -127,3 +127,4 @@ l'inscrit avec ce qu'elle nous apprend._
 - cycle 4 · plugin `imperatrice` v0.5.0 : rubrique « Valeur provisoire » et liste de contrôle avant « prêt », tirées du Pareto du bilan n° 1 · pour l'orchestrateur et les agents de tous les projets qui utilisent le plugin · une méthode qui vise 60 % des incidents du bilan, au lieu d'une palette (acceptée par Pascal)
 - cycle 4 (complément) · plugin `imperatrice` v0.6.0 : rubrique « Dépend de / rouge attendu jusqu'à » · mêmes bénéficiaires que la ligne « cycle 4 » · complète cette livraison, n'en est pas une nouvelle
 - bilan du 2026-10-23 (n° 2) · méthode outillée contre les causes A, B et C (plugin v0.6.0) et terrain dont l'état ouvert se lit en une minute · pour l'orchestrateur, les agents et un successeur · le successeur passe sans réserve (avec réserves au bilan n° 1) et les trois remèdes existent, pas encore en service ici (acceptée par Pascal)
+- cycle 5 · mauvaise nouvelle : rien de lancé (pause décidée au bilan n° 2) ; le plugin v0.6.0 n'est pas encore installé ici (cache en 0.3.0), donc les trois remèdes du bilan n° 2 ne servent pas encore, et le vert de réussi attend toujours sa mesure · pour les développeurs de Marculus, Groma et Surculus · la prochaine livraison est l'essai au soleil de Pascal, d'ici le 2026-10-30 (acceptée par Pascal)
