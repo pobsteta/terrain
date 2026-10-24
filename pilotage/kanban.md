@@ -22,7 +22,20 @@ _Modèle de carte :_
 
 ## Validé
 
+- [023-corrections-bilan-3](missions/023-corrections-bilan-3.md) · depuis le cycle 6
+  - Homme : `archiviste` (sonnet)
+  - Mission : corrections P1 et P2 du test du successeur (brief, spec, jetons.csv, equipe, README Versions et migration)
+  - Moyens : rapport de l'archiviste ; liste de contrôle jointe ; PR
+- [024-decisions-et-contrat-avant-lancement](missions/024-decisions-et-contrat-avant-lancement.md) · depuis le cycle 6
+  - Homme : `archiviste` (sonnet)
+  - Mission : rubrique « Décisions et contrat avant lancement » et lecture des briefs entrants (plugin, causes B et C)
+  - Moyens : dépôt du plugin ; PR ; version 0.7.0
 ## Planifié
+
+- [025-controle-des-recopies](missions/025-controle-des-recopies.md) · depuis le cycle 6
+  - Homme : `archiviste` (plugin), `testeur` (terrain)
+  - Mission : contrôle mécanique des recopies (cause G)
+  - Moyens : après 024
 
 ## Terminé
 
@@ -171,3 +184,4 @@ l'inscrit avec ce qu'elle nous apprend._
 - bilan du 2026-10-23 (n° 2) · méthode outillée contre les causes A, B et C (plugin v0.6.0) et terrain dont l'état ouvert se lit en une minute · pour l'orchestrateur, les agents et un successeur · le successeur passe sans réserve (avec réserves au bilan n° 1) et les trois remèdes existent, pas encore en service ici (acceptée par Pascal)
 - cycle 5 · mauvaise nouvelle : rien de lancé (pause décidée au bilan n° 2) ; le plugin v0.6.0 n'est pas encore installé ici (cache en 0.3.0), donc les trois remèdes du bilan n° 2 ne servent pas encore, et le vert de réussi attend toujours sa mesure · pour les développeurs de Marculus, Groma et Surculus · la prochaine livraison est l'essai au soleil de Pascal, d'ici le 2026-10-30 (acceptée par Pascal)
 - cycle 6 · `terrain-style` v0.7.1, le style de Marculus (couleurs, formes, typographie, boutons), et `terrain-voix` v0.7.0 (installation sûre du modèle Vosk) · pour les développeurs de Marculus, Groma et Surculus · une seule palette, celle que Pascal a validée au soleil, au lieu d'une palette générée qui avait perdu le vert ; et un modèle de dictée qui survit aux coupures (proposée par l'orchestrateur)
+- bilan du 2026-10-24 (n° 3) · `terrain-style` v0.7.1 (le style de Marculus, validé par Pascal) et `terrain-voix` v0.7.0 (un modèle de dictée qui survit aux coupures) · pour les développeurs de Marculus, Groma et Surculus · deux versions dont les applications se servent, au lieu de la seule méthode au bilan n° 2 (acceptée par Pascal)

@@ -5,12 +5,12 @@
 > questions, jamais un agent « par principe ».
 
 - **Statut :** validée
-- **Validée par :** Pascal, le 2026-10-23 ; missions 016 à 019 validées le 2026-10-24
+- **Validée par :** Pascal, le 2026-10-23 ; missions 016 à 019 validées le 2026-10-24 ; 020 à 022 lancées le 2026-10-24 sur le cap de Pascal (« c'est la règle et la loi ») ; 023 à 025 décidées au bilan n° 3
 
 ## Plafond humain
 
 - **PR ouvertes en même temps, au plus :** 3
-- **Rythme de relecture de Pascal :** 10 PR par semaine (Pascal, bilan n° 2 du 2026-10-23)
+- **Rythme de relecture de Pascal :** au fil de l'eau, sans limite par semaine ; plafond de 3 PR ouvertes (Pascal, bilan n° 3 du 2026-10-24 ; remplace « 10 PR par semaine » du bilan n° 2)
 - **Version du plugin attendue :** `imperatrice` ≥ 0.6.0
 
 ## Le vivier (catalogue, pas une équipe)
@@ -50,7 +50,10 @@
 | [019](missions/019-lire-vocabulaire.md) `lireVocabulaire` | `dev` | sonnet | appuyer | oui / oui / après 016 et 018 | 6 |
 | [020](missions/020-referentiel-style-marculus.md) référentiel du style de Marculus | `dev` | sonnet | appuyer | oui / oui / oui | 6 |
 | [021](missions/021-tests-style-marculus.md) tests d'égalité au style de Marculus | `testeur` | sonnet | appuyer | oui / oui / après 020 | 6 |
-| [022](missions/022-style-marculus.md) terrain-style reprend le style de Marculus (v0.6.2) | `dev` | sonnet | appuyer | oui / oui / après 020 et 021 | 6 |
+| [022](missions/022-style-marculus.md) terrain-style reprend le style de Marculus (v0.7.1) | `dev` | sonnet | appuyer | oui / oui / après 020 et 021 | 6 |
+| [023](missions/023-corrections-bilan-3.md) corrections du bilan n° 3 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 3 |
+| [024](missions/024-decisions-et-contrat-avant-lancement.md) décisions et contrat avant lancement (plugin) | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 3 |
+| [025](missions/025-controle-des-recopies.md) contrôle des recopies (plugin et terrain) | `archiviste`, `testeur` | sonnet | appuyer | oui / oui / après 024 | bilan 3 |
 | [014](missions/014-corrections-bilan-2.md) corrections du bilan n° 2 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 2 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
