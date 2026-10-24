@@ -89,8 +89,9 @@ class VocabulaireVoskTest {
 
     @Test
     fun `critere 7 - lireVocabulaire - lit la table de SORTIE, pas celle d'entree`() {
-        // Dépend de la spec (« lireVocabulaire lit la table de sortie ») ; la question ouverte
-        // sur l'identité des deux tables du vrai modèle reste à Pascal et au dev.
+        // Décision de Pascal (2026-10-24) : on lit la table de sortie si elle existe, sinon celle
+        // d'entrée. Sur vosk-model-small-fr-0.22, les deux tables sont identiques (135 774 symboles,
+        // mission 016) : le jeu d'essai les distingue exprès, pour savoir laquelle est lue.
         ecrireFst(mots = listOf("<eps>", "entree_seule"), drapeaux = 3, sortie = listOf("<eps>", "hetre", "fox"))
         val r = VocabulaireVosk.lireVocabulaire(dossier, setOf("hetre", "fox", "entree_seule"))
         assertEquals(setOf("hetre", "fox"), assertIs<Connus>(r).mots)

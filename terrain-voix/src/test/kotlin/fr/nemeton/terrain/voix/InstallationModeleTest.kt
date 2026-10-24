@@ -353,14 +353,53 @@ class InstallationModeleTest {
     }
 
     @Test
-    fun `critere 2 - entree qui sort du dossier - refusee, rien n'ecrit hors du dossier, l'ancien est intact`() {
+    fun `critere 2 - sans graph-disambig_tid-int - StructureInvalide, l'ancien est intact`() {
         poserAncien()
-        val r = installation().installer(archive("evasion.zip"))
-        assertTrue(r.isFailure, "l'entrée vosk-model-test/../../evade-017.txt doit faire échouer l'installation")
-        assertFalse(File(racine, "evade-017.txt").exists())
-        assertFalse(File(racine.parentFile, "evade-017.txt").exists())
-        assertFalse(File(cible, "evade-017.txt").exists())
-        assertAncienIntact("évasion")
+        erreur<StructureInvalide>(installation().installer(archive("sans-disambig.zip")))
+        assertAncienIntact("sans disambig_tid.int")
+    }
+
+    @Test
+    fun `critere 2 - bonne archive avec un fichier vide (ivector-online_cmvn-conf) - installee, le fichier vide est la`() {
+        poserAncien()
+        val i = installation()
+        assertTrue(i.installer(archive("avec-fichier-vide.zip")).isSuccess)
+        assertTrue(i.estInstalle)
+        assertNouveauInstalle("fichier vide")
+        val vide = File(cible, "ivector/online_cmvn.conf")
+        assertTrue(vide.isFile, "le fichier vide doit être installé")
+        assertEquals(0L, vide.length())
+    }
+
+    @Test
+    fun `critere 2 - entree qui sort du dossier - ArchiveIllisible, rien n'ecrit hors du dossier, l'ancien est intact`() {
+        // L'entrée « vosk-model-test/../../evade-017.txt » viserait le parent de « modele.nouveau »
+        // (ou de la racine de l'archive) : le dossier temporaire du test, ou /tmp. On nettoie avant
+        // et après les emplacements possibles, pour qu'un échec n'en laisse pas dans /tmp.
+        val traces = listOf(
+            File(racine, "evade-017.txt"),
+            File(racine.parentFile, "evade-017.txt"),
+            File(cible, "evade-017.txt"),
+            File(nouveau, "evade-017.txt"),
+        )
+        traces.forEach { it.delete() }
+        try {
+            poserAncien()
+            erreur<ArchiveIllisible>(installation().installer(archive("evasion.zip")))
+            traces.forEach { assertFalse(it.exists(), "${it.path} ne doit pas exister") }
+            assertAncienIntact("évasion")
+        } finally {
+            traces.forEach { it.delete() }
+        }
+    }
+
+    @Test
+    fun `critere 2 - entree a-point-point-b qui reste sous la racine - ArchiveIllisible, l'ancien est intact`() {
+        poserAncien()
+        erreur<ArchiveIllisible>(installation().installer(archive("point-point-interne.zip")))
+        assertFalse(File(cible, "b").exists())
+        assertFalse(File(racine, "b").exists())
+        assertAncienIntact("a/../b")
     }
 
     // ================================================================ critère 3 : empreinte
@@ -629,6 +668,14 @@ class InstallationModeleTest {
     }
 
     @Test
+    fun `critere 8 - le constructeur n'ecrit rien - ni dossier, ni verrou, ni reprise`() {
+        poserPartiel(cible); poserPartiel(nouveau); poserAncien(ancien)
+        val avant = photo(racine)
+        installation()
+        assertEquals(avant, photo(racine), "le constructeur a modifié le disque")
+    }
+
+    @Test
     fun `critere 8 - estInstalle n'ecrit rien quand le parent est vide - ni dossier, ni verrou`() {
         assertEstInstalleSansEcriture(false)
         assertEquals(emptyList<String>(), racine.list()!!.toList())
@@ -636,8 +683,8 @@ class InstallationModeleTest {
 
     private companion object {
         const val TEMOIN = ".installe"
-        /** 6 + 5 + 5 + 3 + 8 octets décompressés dans bonne.zip (voir fabriquer.sh). */
-        const val TAILLE_BONNE = 27L
+        /** 6 + 5 + 5 + 3 + 9 + 8 octets décompressés dans bonne.zip (voir fabriquer.sh). */
+        const val TAILLE_BONNE = 36L
         /** 1 Tio : très au-dessus du besoin, sans risque de dépassement avec une marge. */
         const val PLENTY = 1L shl 40
     }
