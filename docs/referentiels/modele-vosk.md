@@ -72,7 +72,7 @@ pas de `__MACOSX/`). Les 6 dossiers sont des entrées explicites de taille 0 : r
 
 Total : 68 483 807 octets, 14 fichiers.
 
-### Présence des fichiers que `terrain-voix` attend (ADR 0005)
+### Présence des fichiers que la fiche demande de vérifier
 
 | Fichier | Présent ? |
 |---|---|
@@ -80,18 +80,30 @@ Total : 68 483 807 octets, 14 fichiers.
 | `conf/model.conf` | **oui** (289 octets) |
 | `graph/HCLr.fst` | **oui** (18 331 442 octets) |
 | `graph/Gr.fst` | **oui** (24 029 163 octets) |
+| `graph/disambig_tid.int` | **oui** (380 octets) |
 | `graph/HCLG.fst` | **non** (le modèle n'est donc pas refusé pour `SansGrammaireDynamique`) |
 | `ivector/` | **oui** (dossier ; 6 fichiers, dont `online_cmvn.conf` **vide**) |
 | `graph/words.txt` | **non : absent de l'archive** |
 
-Deux faits à ne pas manquer pour les missions suivantes :
+Dans ce tableau, `ivector/` et `graph/words.txt` viennent de la fiche de mission, non de l'ADR 0005 ;
+`graph/disambig_tid.int` a été ajouté aux fichiers obligatoires de la spec par Pascal le 2026-10-24.
+
+Trois faits à ne pas manquer pour les missions suivantes :
 
 1. **`graph/words.txt` n'existe pas dans cette archive.** Un contrôle de structure qui l'exigerait
    refuserait le modèle. Le vocabulaire est dans les tables de symboles de `Gr.fst` (§4). Dans
    `src/model.cc` de vosk-api (`master`, commit `4ab9821510b488efb7740094714a130bd3545e90`, lu le
    2026-10-24), `words.txt` n'est lu (l. 309-315) que si ni `HCLG.fst` ni `Gr.fst` ne porte de table de
    symboles de sortie (l. 304-308) ; ici `Gr.fst` en porte une.
-2. **`ivector/online_cmvn.conf` est un fichier vide** (0 octet, entrée de fichier et non de dossier).
+2. **`graph/disambig_tid.int` est obligatoire en grammaire dynamique.** Dans `src/model.cc` (commit
+   `4ab9821`), quand `graph/HCLG.fst` est absent (ce qui est le cas ici), le code charge `HCLr.fst` et
+   `Gr.fst` puis lit `disambig_tid.int` (chemin fixé l. 203) ; si la lecture échoue, il appelle
+   `KALDI_ERR` « Could not read disambig symbol table » : Vosk s'arrête (l. 291-302, dont l. 298-300).
+   Le fichier est présent ici (380 octets). `ivector/`, elle, n'est chargée que si `ivector/final.ie`
+   existe (l. 258-275) : sinon, si le réseau attend un i-vecteur (`IvectorDim() > 0`), `KALDI_ERR`
+   « Can't find required ivector extractor » (l. 272-273), sinon le modèle fonctionne sans i-vecteurs
+   (l. 274-276). `final.ie` est présent ici (9 927 287 octets).
+3. **`ivector/online_cmvn.conf` est un fichier vide** (0 octet, entrée de fichier et non de dossier).
    Un contrôle « aucun fichier vide » le refuserait à tort. `model.cc` (l. 263) le nomme dans la
    configuration de l'extracteur d'i-vecteurs ; la mesure ne dit pas si Vosk en tolère le vide
    (modèle non chargé).
@@ -103,7 +115,10 @@ donne des WER de 23,95 % (cv), 19,30 % (mtedx) et 27,25 % (podcast), repris tels
 
 ## 4. Les tables de symboles d'entrée et de sortie de `graph/Gr.fst`
 
-**Réponse : identiques, octet pour octet.** Chaque table compte 135 774 symboles, porte le même nom
+**Réponse : identiques, octet pour octet.** Chaque table compte 135 774 symboles, **dont 5 symboles spéciaux** (`<eps>` clé 0, `[unk]` clé 135 769,
+`#0` clé 135 771, `<s>` et `</s>` clé 135 773, la même clé pour les deux ; relevé sur l'archive le
+2026-10-24 par un script qui lit les paires (symbole, clé) de la table d'entrée et filtre les symboles
+commençant par `<`, `[` ou `#` : ces 5 seulement, donc 135 769 mots ordinaires), porte le même nom
 (`exp/chain_a/tdnn/lgraph/words.txt`) et la même clé libre (135 774) ; les paires (symbole, clé) sont les
 mêmes, dans le même ordre ; et les 2 826 405 octets de chacune sont égaux (table d'entrée : octets 65 à
 2 826 470 exclu ; table de sortie : 2 826 470 à 5 652 875 exclu ; fichier de 24 029 163 octets).
@@ -136,7 +151,7 @@ l'hexadécimal de `Gr.fst` (`xxd -s 0x70 -l 100`), `<eps>` a la clé 0 et `[unk]
 |---|---|
 | https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip | l'archive (curl) |
 | https://alphacephei.com/vosk/models | taille « 41M » ; absence d'empreinte (curl, page HTML) |
-| https://raw.githubusercontent.com/alphacep/vosk-api/master/src/model.cc (commit `4ab9821`, `master` le 2026-10-24, relevé par `https://api.github.com/repos/alphacep/vosk-api/commits/master`) | l. 195-216 : disposition `am/`, `conf/`, `graph/`, `ivector/` ; l. 263 : `online_cmvn.conf` ; l. 291-315 : `HCLG.fst` sinon `HCLr.fst` + `Gr.fst`, `words.txt` en dernier recours |
+| https://raw.githubusercontent.com/alphacep/vosk-api/4ab9821510b488efb7740094714a130bd3545e90/src/model.cc (commit `4ab9821`, `master` le 2026-10-24, relevé par `https://api.github.com/repos/alphacep/vosk-api/commits/master` ; lignes relues sur ce commit le 2026-10-24) | l. 195-216 : disposition `am/`, `conf/`, `graph/`, `ivector/` ; l. 203 : chemin de `disambig_tid.int` ; l. 258-276 : `ivector/` si `final.ie` existe ; l. 263 : `online_cmvn.conf` ; l. 291-302 : `HCLG.fst` sinon `HCLr.fst` + `Gr.fst` + `disambig_tid.int` obligatoire (l. 298-300) ; l. 304-315 : `words.txt` en dernier recours |
 | https://raw.githubusercontent.com/alphacep/vosk-api/master/src/recognizer.cc (même commit) | l. 58-61 et 284-285 : « Runtime graphs are not supported by this model » si `hcl_fst_` est absent |
 | `terrain-voix/src/main/kotlin/fr/nemeton/terrain/voix/VocabulaireVosk.kt` (branche `pilotage/brief-voix`) | format de l'en-tête OpenFst, indicateurs |
 
@@ -156,16 +171,23 @@ avec l'espace libre d'un téléphone de terrain pendant une mise à jour ?
 
 ## 7. Rejouer
 
+Chemins absolus, séparés : `$T` (dossier de travail, hors du dépôt), `$T/ex` (modèle extrait),
+`$T/v` (environnement virtuel), `$S` (dossier du script `cmp.py`, différent de `$T`). Aucun script
+n'est lancé depuis le dossier extrait.
+
 ```sh
-cd "$(mktemp -d)"                                   # hors du dépôt
+T="$(mktemp -d)"; S="$(mktemp -d)"                  # deux dossiers distincts, hors du dépôt
 curl -sSIL https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip | grep -i -E '^(HTTP|content-length|last-modified|etag)'
-curl -sSL -o m.zip https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
-stat -c %s m.zip; sha256sum m.zip; unzip -tq m.zip
-unzip -l m.zip; zipinfo -t m.zip
-mkdir ex && unzip -q m.zip -d ex && cd ex/vosk-model-small-fr-0.22
-find . -type f -printf '%s\n' | awk '{s+=$1}END{print s, NR}'; find . -type f | sort | xargs sha256sum; du -sk .
-# tables de Gr.fst (cmp.py ci-dessous, rangé dans un autre dossier) :
-# python3 -m venv v && v/bin/pip install pynini && v/bin/python -I cmp.py graph/Gr.fst
+curl -sSL -o "$T/m.zip" https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
+stat -c %s "$T/m.zip"; sha256sum "$T/m.zip"; unzip -tq "$T/m.zip"
+unzip -l "$T/m.zip"; zipinfo -t "$T/m.zip"
+mkdir "$T/ex" && unzip -q "$T/m.zip" -d "$T/ex"
+M="$T/ex/vosk-model-small-fr-0.22"
+find "$M" -type f -printf '%s\n' | awk '{s+=$1}END{print s, NR}'
+(cd "$M" && find . -type f | sort | xargs sha256sum); du -sk "$M"
+# tables de Gr.fst : enregistrer le script ci-dessous sous "$S/cmp.py", puis
+python3 -m venv "$T/v" && "$T/v/bin/pip" install pynini
+"$T/v/bin/python" -I "$S/cmp.py" "$M/graph/Gr.fst"
 ```
 
 Script `cmp.py` (hors du dépôt, Python 3.12, `pynini` 2.1.7) :
