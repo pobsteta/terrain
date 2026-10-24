@@ -27,6 +27,7 @@ _Modèle de carte :_
 - Essai au soleil (critère 6 de la spec) · depuis le cycle 3
   - Homme : Pascal, hors agents
   - Mission : six bandeaux d'état en clair, `tertiary` contre `error` en sombre, bord de la pastille d'alerte ; d'ici le 2026-10-30
+  - Dépend de : l'intégration de terrain-style dans Marculus (faite par Pascal, hors de ce dépôt) ; l'essai se fait dans Marculus
   - Moyens : même écran, plein soleil, fiche en thème clair ; repli `#00843D` (v0.6.1) si réussi se confond avec `primary`
   - Résultat : une ligne `écart` au carnet des écarts de `pilotage/journal.md`, puis une note datée de gel dans l'ADR 0002 (même PR que la levée de la mention « provisoire », marche à suivre du README)
 
