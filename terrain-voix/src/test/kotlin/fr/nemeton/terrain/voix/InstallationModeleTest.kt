@@ -328,7 +328,8 @@ class InstallationModeleTest {
     @Test
     fun `critere 2 - sans am-final-mdl - StructureInvalide, l'ancien est intact`() {
         poserAncien()
-        erreur<StructureInvalide>(installation().installer(archive("sans-final-mdl.zip")))
+        val e = erreur<StructureInvalide>(installation().installer(archive("sans-final-mdl.zip")))
+        assertEquals("am/final.mdl", e.manquant)
         assertAncienIntact("sans final.mdl")
     }
 
@@ -355,7 +356,8 @@ class InstallationModeleTest {
     @Test
     fun `critere 2 - sans graph-disambig_tid-int - StructureInvalide, l'ancien est intact`() {
         poserAncien()
-        erreur<StructureInvalide>(installation().installer(archive("sans-disambig.zip")))
+        val e = erreur<StructureInvalide>(installation().installer(archive("sans-disambig.zip")))
+        assertEquals("graph/disambig_tid.int", e.manquant)
         assertAncienIntact("sans disambig_tid.int")
     }
 
@@ -427,6 +429,17 @@ class InstallationModeleTest {
         val maj = Empreinte.Sha256(reference.getValue("bonne.zip").uppercase())
         assertTrue(installation(maj).installer(archive("bonne.zip")).isSuccess)
         assertNouveauInstalle("majuscules")
+    }
+
+    @Test
+    fun `critere 3 - empreinte fausse donnee en majuscules - EmpreinteInattendue, attendue en minuscules`() {
+        poserAncien()
+        val e = erreur<EmpreinteInattendue>(
+            installation(Empreinte.Sha256("AB".repeat(32))).installer(archive("bonne.zip")),
+        )
+        assertEquals("ab".repeat(32), e.attendue)
+        assertEquals(reference.getValue("bonne.zip"), e.obtenue)
+        assertAncienIntact("fausse en majuscules")
     }
 
     @Test
@@ -616,8 +629,8 @@ class InstallationModeleTest {
     @Test
     fun `critere 6 - annulation pendant la decompression - Interrompu, l'ancien est intact, nouveau absent`() {
         poserAncien()
-        // Faux tant que la décompression n'a pas créé « modele.nouveau » : prouve que continuer
-        // est consulté pendant la décompression, pas seulement avant.
+        // Vrai tant que « modele.nouveau » n'existe pas, faux dès que la décompression l'a créé :
+        // prouve que continuer est consulté pendant la décompression, pas seulement avant.
         val i = installation()
         erreur<Interrompu>(i.installer(archive("bonne.zip"), continuer = { !nouveau.exists() }))
         assertAncienIntact("annulation pendant décompression")
