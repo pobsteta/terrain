@@ -8,7 +8,10 @@
 
 **En une phrase (quoi, et pourquoi) :** Geler le vert de départ de réussi `#0F8558` (gardé, sans repli) par une note datée de l'ADR 0002 et retirer la mention « provisoire » du README, de la spec et de `docs/referentiels/couleurs-etat.md`, la spec repassant à « Aucune » question ouverte, parce que l'essai au soleil de Pascal du 2026-10-24 a validé le style.
 
-**Redite par l'agent :** _à compléter par l'agent avant d'agir — s'il n'y arrive pas, il s'arrête._
+**Redite par l'agent :** Geler `#0F8558` (gardé, sans repli) par une note datée de l'ADR 0002 et retirer « provisoire »
+du README, de la spec (à « Aucune ») et du référentiel, parce que l'essai au soleil de Pascal du
+2026-10-24 a validé le style ; au renvoi 1/3 : citer Pascal mot pour mot, recopier les trois
+points de la carte, lever l'autorisation d'avance du repli, corriger la date de l'étape 5.
 
 ## Les trois questions (règle de staffing)
 

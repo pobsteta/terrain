@@ -122,9 +122,9 @@ que `./gradlew test`, qui **ne joue pas** `testGeneration` ; la CI, elle, joue l
 il est gardé, sans repli (ADR 0002, note « Gel, ajoutée le 2026-10-24 »). Ce qui suit décrit la
 marche à suivre **si** Pascal décidait un jour de le changer ; ce n'est plus un plan en cours.
 
-Cas prévu et **autorisé d'avance** par la décision de Pascal (mission 007) : repli `#00843D` si
-l'essai au soleil confond `reussi` et `primary`. Aucune nouvelle ADR n'est requise ; le passage
-au repli se consigne par une note datée dans l'ADR 0002 (étape 5). **Avertissement** : `#00843D`
+Depuis le gel, l'autorisation d'avance du repli `#00843D` (mission 007) est **levée** (décision de
+Pascal, 2026-10-24) : changer le vert, y compris pour ce repli, demande une **nouvelle décision de
+Pascal**, consignée par une note datée de l'ADR 0002 (étape 5). **Avertissement** : `#00843D`
 (vert ANSI Z535.1) sortirait de la région verte d'ISO 3864-4, alors que `#0F8558` y est ; calcul
 approché du relecteur, non rejoué par l'acquéreur (`docs/referentiels/couleurs-etat.md`,
 ligne 113). Le repli quitte donc la norme qui fonde le choix actuel : Pascal le sait en le
@@ -148,12 +148,12 @@ décidant.
 5. Mentions de `#0F8558` à mettre à jour hors du code généré : ce README (section
    `terrain-style`, ligne `reussi`) et, par une note datée qui **ajoute** sans effacer, l'ADR
    0002. `docs/brief.md` (arbitrages datés) garde la valeur décidée à sa date : on n'y touche pas.
-   **Au gel** (après l'essai du 2026-10-30), que le vert soit changé **ou gardé**, retirer la
+   **Au gel** (l'essai a eu lieu le 2026-10-24), que le vert soit changé **ou gardé**, retirer la
    mention « provisoire » de ce README (ligne `reussi` et début de cette section), de
    `docs/spec.md` (« Questions ouvertes ») et du code généré à la génération suivante, dans la
-   même PR que la note datée du gel (**fait le 2026-10-24**, mission 015 : gardé). **Au gel, la spec repasse de « Une : l'essai au soleil » à
-   « Aucune » question ouverte**, que le vert soit changé ou gardé : la note datée de l'ADR 0002
-   et la PR le disent aussi.
+   même PR que la note datée du gel (**fait le 2026-10-24**, mission 015 : gardé). **Au gel, la
+   spec repasse de « Une : l'essai au soleil » à « Aucune » question ouverte**, que le vert soit
+   changé ou gardé : la note datée de l'ADR 0002 et la PR le disent aussi.
 6. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
    `vX.Y.Z` sur le commit de `main` (voir « Publier une version », juste en dessous).
 

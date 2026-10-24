@@ -122,17 +122,23 @@ ISO 22324 et IEC 60073 à comparer).
 
 - **Gel, ajoutée le 2026-10-24 (mission 015).** Le vert de départ de `reussi`, **`#0F8558`, est
   gardé, sans repli `#00843D`**. Mesure : essai au soleil de Pascal, dans Marculus avec
-  `terrain-style` intégré, le 2026-10-24 : « le style est validé, en clair comme en sombre, tout
-  est lisible » (journal, lignes du 2026-10-24 « essai au soleil », décision de Pascal ; critère 6
-  de la spec). Limite : Pascal n'a pas détaillé un par un les trois points de la carte (confusion
-  avec `primary`, bord de l'alerte sur surface claire, etc.) ; le verdict est global. Levée de la
-  réserve : la note « Valeur provisoire » du 2026-10-23 est **levée le 2026-10-24** (elle reste
-  écrite ci-dessus) ; la mention « provisoire » est retirée du README, de la spec
-  (« Questions ouvertes » repasse à « Aucune ») et de `docs/referentiels/couleurs-etat.md`
-  (ligne datée ajoutée). Pas de changement de code ni de nouveau tag : la v0.6.0 porte déjà
-  `#0F8558`. Le code généré n'est pas touché par cette mission (il ne contient pas de mention
-  « provisoire » à retirer : vérifié par recherche). Complète les notes « Valeur provisoire » et
-  « Spec au gel » sans les modifier.
+  `terrain-style` intégré, le 2026-10-24. Mots de Pascal, tels qu'écrits : « le test au soleil de
+  marculus valide le style en clair comme en sombre tout est lisible » (journal, lignes du
+  2026-10-24 « essai au soleil », la ligne de correction comprise ; critère 6 de la spec).
+  Limite : Pascal n'a pas détaillé un par un les trois points de la carte « Essai au soleil » (les
+  six bandeaux d'état en clair, `tertiary` contre `error` en sombre, le bord de la pastille
+  d'alerte) ; le verdict est global. Le risque de confusion de `reussi` avec `primary` (même
+  luminance, rapport 1,005) vient de la ligne « écart » du journal, non de la carte ; il n'a pas
+  non plus été détaillé. **Repli levé :** l'autorisation d'avance du repli `#00843D` (mission 007)
+  tombe au gel (décision de Pascal, 2026-10-24) ; un changement de vert demande désormais une
+  nouvelle décision de Pascal, consignée par une note datée de cet ADR. Levée de la réserve : la
+  note « Valeur provisoire » du 2026-10-23 est **levée le 2026-10-24** (elle reste écrite
+  ci-dessus) ; la mention « provisoire » est retirée du README, de la spec (« Questions
+  ouvertes » repasse à « Aucune ») et de `docs/referentiels/couleurs-etat.md` (ligne datée
+  ajoutée). Pas de changement de code ni de nouveau tag : la v0.6.0 porte déjà `#0F8558`. Le code
+  généré n'est pas touché par cette mission (il ne contient pas de mention « provisoire » à
+  retirer : vérifié par recherche). Complète les notes « Valeur provisoire » et « Spec au gel »
+  sans les modifier. Dépend de la PR #22 (lignes du journal citées) : fusion #22 puis #24.
 
 ## Question de contrôle
 
