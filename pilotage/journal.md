@@ -188,3 +188,4 @@
 2026-10-24 · testeur · mission 017 · renvoi 2/3 rendu (commit d7f3540) : manquant vérifié dans les 2 tests à un seul fichier absent, test de l'empreinte fausse en majuscules, commentaire de l'annulation corrigé ; 59 + 10 tests ; 13 archives, sha256sum -c 13 OK ; rouge de compilation seul.
 2026-10-24 · relecteur · mission 017 · relecture 3 : prêt pour Pascal ; les tests compilent contre une ébauche du contrat de la PR ; CI rouge sur compileTestKotlin seule, comme annoncé ; 2 remarques cosmétiques ; PR #26 en brouillon jusqu'à 019 (fusion groupée).
 2026-10-24 · Claude (orchestrateur) · mission 018 · moyens prêts (016 mesurée, 017 prête) ; dev (opus) lancé en « tenir » : plan seulement, sans exécution, à soumettre à Pascal.
+2026-10-24 · Claude (orchestrateur) · mission 016 · fusion de la PR #27 sur ordre de Pascal (« Fusionne er merge »), CI verte ; carte 016 en Terminé.

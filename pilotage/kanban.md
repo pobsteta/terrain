@@ -22,10 +22,6 @@ _Modèle de carte :_
 
 ## Validé
 
-- [016-referentiel-modele-vosk](missions/016-referentiel-modele-vosk.md) · depuis le cycle 5
-  - Homme : `dev` (sonnet)
-  - Mission : relever le vrai modèle small-fr-0.22 (fichiers, tailles, empreinte, tables de `Gr.fst`)
-  - Moyens : réseau, `sha256sum`, `zipinfo` ; `docs/referentiels/modele-vosk.md` ; PR
 - [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 5
   - Homme : `testeur` (sonnet)
   - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`
@@ -43,6 +39,11 @@ _Modèle de carte :_
 
 ## Terminé
 
+- [016-referentiel-modele-vosk](missions/016-referentiel-modele-vosk.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : relever le vrai modèle small-fr-0.22 (fichiers, tailles, empreinte, tables de `Gr.fst`)
+  - Moyens : réseau, `sha256sum`, `zipinfo` ; `docs/referentiels/modele-vosk.md` ; PR
+  - Livré : PR #27 fusionnée (2 allers-retours) ; `docs/referentiels/modele-vosk.md`
 - [015-gel-reussi](missions/015-gel-reussi.md) · depuis le cycle 5
   - Homme : `archiviste` (sonnet)
   - Mission : geler `#0F8558` après l'essai au soleil (note datée de l'ADR 0002, mention « provisoire » retirée, spec à « Aucune ») ; lancée le 2026-10-24
