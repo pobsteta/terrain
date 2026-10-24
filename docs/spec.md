@@ -183,8 +183,9 @@ Un modèle est valide s'il contient `am/final.mdl`, `conf/model.conf`, `graph/HC
 `graph/Gr.fst` et `graph/disambig_tid.int` (sans ce dernier, Vosk s'arrête en grammaire
 dynamique : `vosk-api/src/model.cc`, commit `4ab9821`, l. 298-300 ; décision de Pascal du
 2026-10-24). Un fichier vide n'est pas une faute : `ivector/online_cmvn.conf` fait 0 octet
-dans le vrai modèle (`docs/referentiels/modele-vosk.md`). Un modèle à `graph/HCLG.fst` sans `HCLr.fst` est refusé par
-`SansGrammaireDynamique` : Vosk n'y applique pas de grammaire (« Runtime graphs are not
+dans le vrai modèle (`docs/referentiels/modele-vosk.md`). Un modèle qui contient `graph/HCLG.fst`, avec ou sans `HCLr.fst`, est refusé par
+`SansGrammaireDynamique` (Vosk charge `HCLG.fst` dès qu'il existe ; décision de Pascal du
+2026-10-24) : Vosk n'y applique pas de grammaire (« Runtime graphs are not
 supported by this model », `vosk-api/src/recognizer.cc`), et terrain ne sert que la grammaire
 fermée (décision de Pascal du 2026-10-24). Ces fichiers sont nécessaires, pas suffisants : un
 modèle qui demande `ivector/` échouera encore au chargement.
@@ -288,6 +289,7 @@ ne calcule pas les empreintes de référence. Les archives sont :
 - sans `graph/disambig_tid.int` ;
 - avec un fichier vide (comme `ivector/online_cmvn.conf`), installée ;
 - à `HCLG.fst` ;
+- à `HCLG.fst` et `HCLr.fst` à la fois ;
 - avec `__MACOSX/` ;
 - avec une entrée qui sort du dossier ;
 - avec une entrée `a/../b` qui reste sous la racine.
@@ -329,9 +331,32 @@ version de v0.7.0 donne :
 - **pour Marculus** : le constructeur, qui perd `cache` et gagne `empreinte` ; il faut passer
   `Empreinte.NonControlee` ou une empreinte calculée ;
 - **pour Surculus** : les tests à réécrire (`InstallationModeleTest.kt` : paramètre `sha256 =`,
-  jeux à `a.txt`, test « ECART » à remplacer par l'archive tronquée) et `ModeleVoskImport.kt:31`.
+  jeux à `a.txt`, test « ECART » à remplacer par l'archive tronquée), `ModeleVoskImport.kt:31` (constructeur)
+  et `ModeleVoskImport.kt:47` (`installer` sans second argument).
+
+## Précisions du plan de la mission 018 (retenues par Pascal le 2026-10-24)
+
+- **Marge d'espace libre** : **32 Mio** (33 554 432 octets), constante, la même pour
+  `installer` et `telecharger`.
+- **Besoin d'espace** : `installer` demande la somme décompressée + marge ; `telecharger`
+  demande `Content-Length` + marge avant le téléchargement, puis la somme décompressée + marge
+  à l'étape 6 (l'archive, déjà écrite, est déjà déduite de l'espace libre). Pour
+  `vosk-model-small-fr-0.22` : 102 038 239 octets pour `installer`, 144 271 562 octets libres
+  à prévoir avant un téléchargement ; pic sur le disque ≈ 3,1 fois le décompressé.
+- **`installer(archive, continuer)`** perd le paramètre `origine` : le témoin note le nom de
+  l'archive, ou l'URL pour `telecharger`.
+- **Erreurs d'entrée-sortie** hors de la liste (disque plein en cours d'écriture, droits,
+  renommage refusé) : remontées telles quelles (`IOException`) dans le `Result` ; le modèle en
+  place reste garanti.
+- **Verrou** partagé par tout le processus, rangé par chemin canonique de `<nom>.verrou`, puis
+  `FileChannel.lock` ; il attend, il n'échoue pas. `<nom>.verrou` n'est jamais effacé.
+- **CRC-32** de chaque entrée contrôlé pendant la décompression ; un écart donne
+  `ArchiveIllisible`.
+- **Deux racines candidates** à la même profondeur : `ArchiveIllisible("plusieurs modèles")`.
+- **Refus rangés sous `ArchiveIllisible`** : nom d'entrée absolu, `..` séparé par `/` ou `\`,
+  entrée en double, taille inconnue, somme de tailles qui déborde, et réseau (injoignable,
+  erreur HTTP, URL `file:` absente : `ArchiveIllisible("réseau : …")`).
 
 ## Questions ouvertes
 
-- **La marge d'espace libre** : valeur provisoire, que le `dev` propose et que Pascal fixe
-  (décision du 2026-10-24).
+Aucune.

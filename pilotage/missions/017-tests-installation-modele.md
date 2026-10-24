@@ -98,3 +98,9 @@ Retouches mineures du relecteur :
 2. Contrôle la mise en minuscules : une empreinte fausse donnée en majuscules doit donner `attendue` en minuscules.
 
 Relance le comptage des tests et `sha256sum -c`. Liste de contrôle jointe de nouveau.
+
+## Complément du 2026-10-24 (plan de la mission 018, décision de Pascal)
+
+Ce n'est pas un aller-retour de relecture, mais une décision nouvelle. Pascal a décidé que tout modèle qui contient `graph/HCLG.fst` est refusé, même s'il a aussi `graph/HCLr.fst`.
+
+Ajoute à `fabriquer.sh` une archive `hclg-et-hclr.zip`. Elle contient les cinq fichiers obligatoires, plus `graph/HCLG.fst`. Ajoute son test, qui attend `SansGrammaireDynamique`, et son empreinte dans `empreintes.txt`. Ne change rien d'autre.

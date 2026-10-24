@@ -77,3 +77,16 @@ Les tests de 017 supposent des noms et des types, reportés dans le corps de la 
 - `graph/disambig_tid.int` est obligatoire.
 - Toute entrée qui sort du dossier ou contient `..` donne `ArchiveIllisible`.
 - Le constructeur n'écrit rien sur le disque.
+
+## Plan validé par Pascal (2026-10-24)
+
+Le plan rendu le 2026-10-24 (journal) est validé. On l'exécute tel quel, avec les décisions de Pascal :
+
+- **Marge** : 32 Mio (33 554 432 octets), constante, la même pour `installer` et `telecharger` ; elle n'est plus provisoire.
+- **E1** : tout `graph/HCLG.fst` donne `SansGrammaireDynamique`, même avec `HCLr.fst`. Le testeur ajoute l'archive `hclg-et-hclr.zip` avant toi.
+- **E2 à E6, E8, E9** : retenus tels que proposés. L'archive n'est pas comptée deux fois. Les erreurs d'entrée-sortie remontent en `IOException`. Le verrou est partagé par processus, par chemin canonique. Le CRC-32 est contrôlé. Deux racines candidates donnent `ArchiveIllisible`. Les refus de E8 sont rangés sous `ArchiveIllisible`, réseau compris. `<nom>.verrou` n'est jamais effacé.
+- **E7** : `installer` perd le paramètre `origine`.
+
+Le détail est dans la spec, rubrique « Précisions du plan de la mission 018 ».
+
+Tes tests unitaires, en plus de ceux de 017, sont annoncés au §5 du plan : états fabriqués après chaque étape, deux instances en parallèle, `Content-Length` trop grand, CRC faux. Pendant la mission, tu peux mettre `VocabulaireVoskTest.kt` de côté en local, sans jamais le committer ni le modifier. La CI reste rouge jusqu'à 019, comme le dit la rubrique « Dépend de ».

@@ -72,7 +72,7 @@ Le détail (table d'états, ordre des opérations, erreurs, jeux d'essai) est da
   - Il a lieu avant le téléchargement (`Content-Length`) et avant la décompression (somme des
     tailles du répertoire central).
   - Les octets réellement écrits sont comptés.
-  - La marge est provisoire : le `dev` la propose, Pascal la fixe.
+  - La marge est fixée par Pascal le 2026-10-24 à 32 Mio (plan de la mission 018).
 - **Empreinte : choix explicite.**
   - `Empreinte.Sha256(hex)` : forme contrôlée à la construction (64 caractères hexadécimaux,
     FIPS 180-4), normalisée en minuscules.

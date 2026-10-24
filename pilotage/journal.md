@@ -190,3 +190,5 @@
 2026-10-24 · Claude (orchestrateur) · mission 018 · moyens prêts (016 mesurée, 017 prête) ; dev (opus) lancé en « tenir » : plan seulement, sans exécution, à soumettre à Pascal.
 2026-10-24 · Claude (orchestrateur) · mission 016 · fusion de la PR #27 sur ordre de Pascal (« Fusionne er merge »), CI verte ; carte 016 en Terminé.
 2026-10-24 · dev · mission 018 · plan rendu (tenir) : prototype jetable, 59/59 tests d'installation de 017 verts, rien gardé ; marge proposée 32 Mio (installer : décompressé + M = 102 038 239 o ; telecharger : archive + décompressé + M = 144 271 562 o ; pic ≈ 3,1 fois le décompressé) ; écarts E1-E9 soumis à Pascal ; CI rouge jusqu'à 019 (tests de terrain-voix compilés d'un bloc).
+2026-10-24 · Pascal · mission 018 · plan validé ; marge d'espace fixée à 32 Mio ; tout HCLG.fst refusé, même avec HCLr.fst ; paramètre origine retiré d'installer ; précisions E2-E6, E8, E9 retenues ; spec et ADR 0005 mises à jour.
+2026-10-24 · Claude (orchestrateur) · missions 017-018 · complément à 017 (archive hclg-et-hclr.zip, décision nouvelle, pas un aller-retour) confié au testeur, puis exécution de 018 au dev (opus) sur la branche de 017.
