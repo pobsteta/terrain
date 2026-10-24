@@ -3,7 +3,10 @@
 - **Statut :** validée par Pascal le 2026-10-23 (porte n° 1)
 - **Tirée de :** `docs/brief.md` (arbitrages de Pascal du 2026-10-23), issue
   [#1](https://github.com/pobsteta/terrain/issues/1)
-- **Décisions structurantes :** ADR 0001 à 0004 (`docs/adr/`), acceptées par Pascal le 2026-10-23
+- **Décisions structurantes :** ADR 0006 (2026-10-24, **le style de Marculus**), qui remplace
+  ADR 0001 et 0004 ; ADR 0002 (réussi, alerte) et 0003 (publication) restent
+- **Révisée le 2026-10-24** (cap de Pascal, ADR 0006) : `terrain-style` reprend le style de
+  Marculus, couleurs, formes, typographie et boutons ; la règle 7:1 tombe comme règle commune
 - **Critiquée par :** `contradicteur`, 2026-10-23 (corrections reportées)
 
 ## Parcours
@@ -45,8 +48,11 @@ est confirmée.
 | Rôles couverts | **les propriétés de `ColorScheme` de Compose Material 3** (Fixed compris) : `primary` … `onTertiaryFixedVariant`, `background`, `surface*`, `inverse*`, `outline*`, `scrim`, `surfaceTint`, `error*`. Sont exclus : couleurs clés (`*PaletteKeyColor`), `*Dim` de SPEC_2025+, rôles propres à Android (`controlActivated`…) | code |
 | Couleur sémantique | `reussi` et `alerte`, chacune en quatre rôles : `couleur`, `surCouleur`, `conteneur`, `surConteneur` ; l'erreur est `error*` du schéma, sans doublon | code |
 | Rôle interdit en texte | liste par thème (dont `alerte.couleur`), dans le code (KDoc) et dans le README | code, `README.md` |
-| Réglages de génération | couleur de départ #374742, variante `CONTENT` (ADR 0004, au lieu de `FIDELITY`), `SPEC_2021` (imposée par la variante), contraste 1,0, plateforme `PHONE`, commit MCU, teinte de `reussi`, valeurs d'`alerte` et leur source | en tête du code généré et `terrain-style/generation/` |
-| Table des jetons | CSV `theme,role,argb` produit par le script (format ouvert, pour le successeur) | `terrain-style/src/test/resources/` |
+| Source du style | thème de Marculus à un tag nommé (aujourd'hui v0.65.0, `Theme.kt` l. 10-28) et valeurs par défaut de Compose Material 3 au BOM de Marculus (`2026.02.01`) pour tout ce que Marculus ne fixe pas (ADR 0006) | `docs/referentiels/style-marculus.md` |
+| Table des jetons | CSV `theme,role,argb` recopié du référentiel (format ouvert, pour le successeur), source des tests d'égalité | `terrain-style/src/test/resources/` |
+| Formes | rayons d'angle de `Shapes` (`extraSmall` … `extraLarge`), en dp, plus les formes propres à Marculus (par exemple la pilule `RoundedCornerShape(50)`) | code |
+| Typographie | les 15 styles de `Typography` (`displayLarge` … `labelSmall`) : taille et interligne en sp, graisse, interlettrage | code |
+| Boutons | hauteurs minimales, rayon et marges intérieures des boutons de Marculus, en dp | code |
 | Table de référence des rapports | CSV `argb_a,argb_b,rapport,outil,version` calculé par **deux outils tiers** nommés, pas par le code testé | `terrain-style/src/test/resources/` |
 
 API publique (noms proposés, en français comme les autres modules) :
@@ -57,6 +63,9 @@ class Schema(val primary: Long, val onPrimary: Long, /* … tous les rôles de C
              val reussi: Semantique, val alerte: Semantique,
              val interditsEnTexte: Set<String>)
 class Semantique(val couleur: Long, val surCouleur: Long, val conteneur: Long, val surConteneur: Long)
+object FormesTerrain { /* rayons en dp, nommés comme Shapes */ }
+object TypoTerrain { /* un Style(tailleSp, interligneSp, graisse, interlettrageSp) par rôle de Typography */ }
+object BoutonsTerrain { /* hauteurs minimales, rayon, marges, en dp */ }
 object Contraste {
     fun luminance(argb: Long): Double   // WCAG 2.2, seuil 0,04045
     fun rapport(a: Long, b: Long): Double // (L1 + 0,05) / (L2 + 0,05), L1 ≥ L2
@@ -65,11 +74,12 @@ object Contraste {
 
 ## Comportement
 
-- **Génération** (une fois, hors du build publié, ADR 0001) : le script construit les deux
-  schémas MCU, vérifie `scheme.specVersion == SPEC_2021`, écrit `Schema` en Kotlin et la
-  table des jetons. Le build publié ne dépend pas de MCU. La CI rejoue la génération et
-  échoue si le résultat diffère (`git diff --exit-code`).
-- **Réussi** (ADR 0002) : un schéma MCU de plus, construit avec la palette de `reussi`
+- **Valeurs** (ADR 0006) : les 48 rôles, les formes, la typographie et les boutons sont
+  recopiés du référentiel `docs/referentiels/style-marculus.md`, lui-même relevé dans
+  Marculus et dans Compose Material 3. Ils ne sont plus générés par Material Color Utilities.
+  Pour changer le style, on change d'abord Marculus, puis le référentiel, puis le code, par
+  une note datée de l'ADR 0006.
+- **Réussi** (ADR 0002) : valeurs de v0.6.1 gardées, gelées le 2026-10-24. Elles avaient été obtenues par un schéma MCU de plus, construit avec la palette de `reussi`
   passée à la place de celle d'`error` (`errorPalette` de `DynamicScheme`), dont on lit
   `error`, `onError`, `errorContainer`, `onErrorContainer` : mêmes courbes de contraste
   que `error`. Mécanisme **vérifié** (mission 001) : le constructeur `DynamicScheme(errorPalette)` est public ;
@@ -79,26 +89,32 @@ object Contraste {
   en `couleur` et `conteneur`, noir `#000000` en `surCouleur` et `surConteneur` (9,98:1),
   dans les deux thèmes ; valeurs figées, source inscrite ; `alerte.couleur` est interdit
   en texte.
-- **Erreur** : rôles `error*` du schéma, palette par défaut de MCU, non harmonisée.
+- **Erreur** : rôles `error*` du schéma, valeurs par défaut de Material 3 (Marculus ne les fixe pas).
 - **Contraste** : luminance relative de WCAG 2.2 (sRGB, seuil de linéarisation 0,04045),
   rapport (L1 + 0,05) / (L2 + 0,05).
-- **Test de contraste** : sur l'ARGB 8 bits final, chaque couple listé tient
-  `rapport ≥ 7,0`, rapport **tronqué** à 3 décimales, jamais arrondi (WCAG : 4,499:1 ne
-  tient pas 4,5:1) ; le test affiche la marge de chaque couple. Une valeur qui échoue n'est
-  pas retouchée : le couple est listé et le rôle passe « interdit en texte ».
+- **Contraste, pour information** (ADR 0006) : la règle 7:1 tombe comme règle commune. Un
+  test affiche le rapport des couples de la liste du critère 2, sans échouer. `Contraste`
+  reste publique pour que chaque application mesure ses propres couples.
+  `interditsEnTexte` ne contient plus que `alerte.couleur`, par décision (ADR 0002).
+- **Réussi et `primary`** : l'écart de teinte HCT entre `reussi.couleur` et `primary`
+  (`VertVif`) est mesuré et inscrit dans le référentiel, en clair et en sombre (brief de
+  Marculus, § 2.2).
 
 ## Hors périmètre
 
-Repris du brief : `MaterialTheme` Compose ; palette d'état propre à Surculus au-delà de
-réussi, alerte et erreur ; luminosité, taille et graisse du texte, polarité (aux
-applications) ; l'icône ou le libellé qui double chaque couleur d'état (WCAG 1.4.1, aux
+Repris du brief : `MaterialTheme` Compose (chaque application recopie les valeurs) ;
+palette d'état propre à Surculus au-delà de réussi, alerte et erreur ; luminosité, polarité
+(aux applications) ; l'icône ou le libellé qui double chaque couleur d'état (WCAG 1.4.1, aux
 applications) ; niveaux de contraste 0 et 0,5 et le réglage de contraste d'Android 14+ ;
 les autres briques.
 
 ## Critères d'acceptation
 
 1. `./gradlew :terrain-style:test` passe, en CI comme en local.
-2. Couples à 7:1, dans chacun des deux thèmes, sauf rôle « interdit en texte » :
+2. **Égalité au style de Marculus** (ADR 0006) : chacun des 48 rôles, dans chacun des deux
+   thèmes, est égal à la valeur du référentiel ; de même chaque forme, chaque style de
+   typographie et chaque dimension de bouton. *Ancien critère « couples à 7:1 », remplacé le
+   2026-10-24 ; la liste qui suit sert au test informatif du contraste :*
    - chaque `onX` sur son fond `X` : `primary`, `primaryContainer`, `secondary`,
      `secondaryContainer`, `tertiary`, `tertiaryContainer`, `error`, `errorContainer`,
      `background`, `surface`, `surfaceVariant`, `inverseOnSurface`/`inverseSurface` ;
@@ -112,14 +128,18 @@ les autres briques.
    - `surCouleur`/`couleur` et `surConteneur`/`conteneur` de `reussi` et d'`alerte`.
 3. `Contraste.rapport` redonne la table de référence des deux outils tiers, dont
    `0xFFFFFFFF` / `0xFF3E7A40` = 5,17 à 0,01 près.
-4. Le script, rejoué avec les réglages inscrits, redonne la table des jetons à l'octet
-   près (ARGB seulement), en CI.
+4. Le nuancier, clair et sombre, est montré à Pascal avant la publication, et il dit « c'est
+   le vert de Marculus ». *Ancien critère « le script MCU redonne la table », remplacé le
+   2026-10-24.*
 5. Chaque jeton est dans [`0xFF000000`, `0xFFFFFFFF`].
 6. Un essai au soleil (même écran, plein soleil, lecture d'une fiche en thème clair) est
    fait et noté au carnet des écarts de `pilotage/journal.md`. *Fait le 2026-10-24 par Pascal,
    dans Marculus : style validé en clair et en sombre.*
 7. Un tag est publié sur un commit de `main` à CI verte, construit par JitPack, et le
-   README liste `terrain-style` et les rôles interdits en texte.
+   README liste `terrain-style` et les rôles interdits en texte. Pour le style de Marculus,
+   c'est **v0.6.2**.
+8. Marculus réadopte `terrain-style` sans changement visible : sa capture avant et après est
+   identique, en clair et en sombre (sa mission 006).
 
 ## Besoins en référentiels (pour l'`acquereur`)
 

@@ -148,6 +148,28 @@
   écarts, à vérifier pendant l'essai au soleil.
 
 
+
+## Arbitrage de Pascal (2026-10-24) — le style de Marculus est la règle (ADR 0006)
+
+> « rédige la consigne d'intégration dans terrain-style du style de Marculus, c'est la règle et
+> la loi et ma décision […] les couleurs, forme, bouton, etc. de terrain-style doivent reprendre
+> le style de marculus » — Pascal, 2026-10-24.
+
+Cet arbitrage remplace, sur `terrain-style`, tout ce qui précède : la génération par Material
+Color Utilities depuis `#374742`, les variantes `FIDELITY` puis `CONTENT`, le niveau de
+contraste 1,0, et le seuil de 7:1 pour tous les couples.
+
+- **Ce que fait `terrain-style`** : il fournit le style de Marculus (couleurs des 48 rôles en
+  clair et en sombre, formes, typographie, boutons) à Marculus, Groma et Surculus. Ce que
+  Marculus ne fixe pas vaut la valeur par défaut de Material 3.
+- **Couleurs de Marculus v0.65.0** : `primary` `VertVif #3E7A40`, `onPrimary` blanc,
+  `primaryContainer` `VertMarculus #374742`, `onPrimaryContainer` `Creme #F5EBD8`,
+  `secondary` `VertMarculus` en clair et `Creme` en sombre.
+- **Gardés** : `reussi` `#0F8558`, gelé le 2026-10-24 ; `alerte` `#E2AA00` ; `Contraste` ;
+  Kotlin pur, sans Compose.
+- **Critère d'acceptation** : égalité au référentiel relevé dans Marculus et Material 3 ;
+  nuancier montré à Pascal ; Marculus réadopte sans changement visible ; tag **v0.6.2**.
+
 ---
 
 # Deuxième objet : corrections de `terrain-voix` (issue #23)

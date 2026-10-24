@@ -1,7 +1,7 @@
 # ADR 0004 — variante `CONTENT` à la place de `FIDELITY`, pour distinguer tertiary d'error
 
 - **Date :** 2026-10-23
-- **Statut :** acceptée par Pascal le 2026-10-23 ; amende l'ADR 0001 (réglage « variante »)
+- **Statut :** acceptée par Pascal le 2026-10-23 ; amende l'ADR 0001 (réglage « variante ») ; **remplacée par l'ADR 0006 le 2026-10-24** (le style de Marculus est la règle)
 - **Proposée par :** `dev` de la mission 007 (mesures), Claude (orchestrateur)
 - **Tranchée par :** Pascal
 
@@ -68,3 +68,7 @@ Options mesurées (mission 007, aucune n'ajoute de rôle interdit en texte) :
 ## Question de contrôle
 
 Cette décision tient-elle nos six valeurs, et que sommes-nous prêts à payer pour cela ?
+
+## Note du 2026-10-24 : remplacée par l'ADR 0006
+
+Le 2026-10-24, Pascal a décidé que `terrain-style` reprend le style de Marculus (ADR 0006). Les 48 rôles ne sont plus générés par Material Color Utilities, et cette décision ne s'applique plus. Elle est gardée pour la mémoire.

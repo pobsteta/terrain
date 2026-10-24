@@ -22,6 +22,18 @@ _Modèle de carte :_
 
 ## Validé
 
+- [020-referentiel-style-marculus](missions/020-referentiel-style-marculus.md) · depuis le cycle 6 — **priorité absolue (Pascal)**
+  - Homme : `dev` (sonnet)
+  - Mission : relever le style de Marculus v0.65.0 et les défauts de Material 3 (BOM 2026.02.01)
+  - Moyens : dépôt Marculus, jars Material 3 ; référentiel et CSV ; PR
+- [021-tests-style-marculus](missions/021-tests-style-marculus.md) · depuis le cycle 6
+  - Homme : `testeur` (sonnet)
+  - Mission : tests d'égalité au style de Marculus ; 7:1 devient informatif
+  - Moyens : après 020 ; branche de 020
+- [022-style-marculus](missions/022-style-marculus.md) · depuis le cycle 6
+  - Homme : `dev` (sonnet)
+  - Mission : `terrain-style` = style de Marculus, nuancier, README ; tag v0.6.2 après le « c'est vert » de Pascal
+  - Moyens : après 021 ; branche de 021
 - [017-tests-installation-modele](missions/017-tests-installation-modele.md) · depuis le cycle 5
   - Homme : `testeur` (sonnet)
   - Mission : jeux d'essai figés et tests d'acceptation 1 à 8 de la spec `terrain-voix`

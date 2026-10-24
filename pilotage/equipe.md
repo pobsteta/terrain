@@ -48,6 +48,9 @@
 | [017](missions/017-tests-installation-modele.md) tests d'acceptation de l'installation du modèle | `testeur` | sonnet | appuyer | oui / oui / oui | 6 |
 | [018](missions/018-installation-modele-sure.md) installation sûre du modèle (ADR 0005) | `dev` | opus | **tenir** | oui / oui (API publique : plan d'abord) / après 016 et 017 | 6 |
 | [019](missions/019-lire-vocabulaire.md) `lireVocabulaire` | `dev` | sonnet | appuyer | oui / oui / après 016 et 018 | 6 |
+| [020](missions/020-referentiel-style-marculus.md) référentiel du style de Marculus | `dev` | sonnet | appuyer | oui / oui / oui | 6 |
+| [021](missions/021-tests-style-marculus.md) tests d'égalité au style de Marculus | `testeur` | sonnet | appuyer | oui / oui / après 020 | 6 |
+| [022](missions/022-style-marculus.md) terrain-style reprend le style de Marculus (v0.6.2) | `dev` | sonnet | appuyer | oui / oui / après 020 et 021 | 6 |
 | [014](missions/014-corrections-bilan-2.md) corrections du bilan n° 2 | `archiviste` | sonnet | appuyer | oui / oui / oui | bilan 2 |
 
 Hors agents : l'**essai au soleil** (critère 6 de la spec) est fait par Pascal, sur le
