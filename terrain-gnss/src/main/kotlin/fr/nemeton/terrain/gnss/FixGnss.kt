@@ -84,4 +84,11 @@ data class FixGnss(
     val satellites: List<SatelliteGsv> = emptyList(),
     /** Origine du fix ; [OrigineFix.EXTERNE] par défaut (cas des trames NMEA d'un récepteur). */
     val origine: OrigineFix = OrigineFix.EXTERNE,
+    /**
+     * Heure UTC du fix (ms depuis l'époque Unix) : heure de la GGA sur le jour de la RMC. Null sans
+     * RMC valide (statut `A`) ou sans heure de GGA.
+     */
+    val heureUtcMs: Long? = null,
+    /** Lecture de l'horloge monotone à la réception du fix (ms) ; null si aucune horloge fournie. */
+    val recuMonotoneMs: Long? = null,
 )
