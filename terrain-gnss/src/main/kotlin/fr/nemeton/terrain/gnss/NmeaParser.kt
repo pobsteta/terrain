@@ -12,6 +12,8 @@ data class TrameGga(
     val altitudeM: Double?,
     val ageCorrectionsS: Double?,
     val stationRef: String? = null,
+    /** Heure UTC du jour du fix (ms depuis 00:00:00 UTC, champ 1 de la GGA) ; null si absente ou mal formée. */
+    val heureJourMs: Long? = null,
 )
 
 /** Trame GSA décodée : dilutions de précision (position, horizontale, verticale). */
@@ -21,7 +23,15 @@ data class TrameGsa(val pdop: Double?, val hdop: Double?, val vdop: Double?)
  * Trame RMC décodée : cap et vitesse **sur le fond** (déplacement). [capDeg] absent à l'arrêt
  * (champ vide), [vitesseMs] convertie depuis les nœuds. Sert à orienter le cône de direction.
  */
-data class TrameRmc(val capDeg: Double?, val vitesseMs: Double?)
+data class TrameRmc(
+    val capDeg: Double?,
+    val vitesseMs: Double?,
+    /**
+     * Instant UTC complet (date `ddmmyy` + heure, ms depuis l'époque Unix), renseigné **seulement
+     * si le statut RMC est `A`** (fix valide) et la date et l'heure bien formées ; null sinon.
+     */
+    val instantUtcMs: Long? = null,
+)
 
 /** Une trame GSV (un message d'une séquence) : satellites en vue d'un système. */
 data class TrameGsv(
@@ -90,6 +100,7 @@ object NmeaParser {
             altitudeM = f.getOrNull(9)?.toDoubleOrNull(),
             ageCorrectionsS = f.getOrNull(13)?.toDoubleOrNull(),
             stationRef = f.getOrNull(14)?.takeIf { it.isNotBlank() },
+            heureJourMs = heureJour(f.getOrNull(1)),
         )
     }
 
@@ -121,9 +132,17 @@ object NmeaParser {
         val f = champs(phrase) ?: return null
         if (f.isEmpty() || !f[0].endsWith("RMC")) return null
         val vitesseNoeuds = f.getOrNull(7)?.toDoubleOrNull()
+        val instant = if (f.getOrNull(2) == "A") {
+            val jour = jourEpoch(f.getOrNull(9))
+            val heure = heureJour(f.getOrNull(1))
+            if (jour != null && heure != null) jour * JOUR_MS + heure else null
+        } else {
+            null
+        }
         return TrameRmc(
             capDeg = f.getOrNull(8)?.toDoubleOrNull(),
             vitesseMs = vitesseNoeuds?.let { it * NOEUD_EN_MS },
+            instantUtcMs = instant,
         )
     }
 
@@ -157,6 +176,8 @@ object NmeaParser {
         gst: TrameGst? = null,
         gsa: TrameGsa? = null,
         rmc: TrameRmc? = null,
+        satellites: List<SatelliteGsv> = emptyList(),
+        recuMonotoneMs: Long? = null,
     ): FixGnss = FixGnss(
         position = gga.position,
         qualite = gga.qualite,
@@ -170,7 +191,56 @@ object NmeaParser {
         stationRef = gga.stationRef,
         capDeg = rmc?.capDeg,
         vitesseMs = rmc?.vitesseMs,
+        satellites = satellites,
+        heureUtcMs = heureUtcComplete(gga.heureJourMs, rmc),
+        recuMonotoneMs = recuMonotoneMs,
     )
+
+    private const val JOUR_MS = 86_400_000L
+
+    /** `hhmmss` ou `hhmmss.ss` → ms depuis minuit UTC ; null si mal formé. */
+    internal fun heureJour(v: String?): Long? {
+        if (v == null || v.length < 6 || !v.take(6).all { it.isDigit() }) return null
+        val h = v.substring(0, 2).toInt()
+        val m = v.substring(2, 4).toInt()
+        val s = v.substring(4, 6).toInt()
+        if (h > 23 || m > 59 || s > 60) return null
+        val frac = if (v.length > 6) {
+            if (v[6] != '.' || v.length == 7 || !v.substring(7).all { it.isDigit() }) return null
+            Math.round(("0." + v.substring(7)).toDouble() * 1000)
+        } else {
+            0L
+        }
+        return ((h * 60L + m) * 60 + s) * 1000 + frac
+    }
+
+    /** `ddmmyy` (année 20yy) → jours depuis 1970-01-01 ; null si mal formé. */
+    internal fun jourEpoch(v: String?): Long? {
+        if (v == null || v.length != 6 || !v.all { it.isDigit() }) return null
+        val j = v.substring(0, 2).toInt()
+        val mo = v.substring(2, 4).toInt()
+        val a = 2000 + v.substring(4, 6).toInt()
+        if (mo !in 1..12 || j !in 1..31) return null
+        // Jours depuis l'époque, algorithme « days from civil » (H. Hinnant).
+        val y = if (mo <= 2) a - 1 else a
+        val era = y / 400
+        val yoe = y - era * 400
+        val doy = (153 * (mo + (if (mo > 2) -3 else 9)) + 2) / 5 + j - 1
+        val doe = yoe * 365 + yoe / 4 - yoe / 100 + doy
+        return era * 146097L + doe - 719468
+    }
+
+    /**
+     * Heure UTC complète d'une GGA : son heure du jour sur le jour de la RMC. Autour de minuit UTC,
+     * on retient le jour (veille, même jour, lendemain) qui rapproche le plus la GGA de l'instant
+     * de la RMC. Null sans RMC valide (statut `A`) ou sans heure de GGA.
+     */
+    internal fun heureUtcComplete(heureJourMs: Long?, rmc: TrameRmc?): Long? {
+        val r = rmc?.instantUtcMs ?: return null
+        if (heureJourMs == null) return null
+        val jourRmc = Math.floorDiv(r, JOUR_MS)
+        return (-1L..1L).map { (jourRmc + it) * JOUR_MS + heureJourMs }.minByOrNull { kotlin.math.abs(it - r) }
+    }
 
     /** Convertit une coordonnée NMEA `ddmm.mmmm` + hémisphère en degrés décimaux signés. */
     private fun coordonnee(valeur: String?, hemisphere: String?): Double? {

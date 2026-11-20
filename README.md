@@ -57,6 +57,17 @@ val fix = NmeaParser.fixDepuis(gga)
 if (fix.qualite == QualiteFix.RTK_FIXE) { /* position centimétrique */ }
 ```
 
+Flux continu et heure du fix (ajout additif de la **v0.8.0**, mission 030) : `LecteurNmea` recolle les
+trames d'un flux fragmenté et complète chaque GGA (GST, GSA, RMC, GSV complètes) ; `FixGnss.heureUtcMs`
+vaut l'heure UTC de la GGA sur le jour de la RMC (null sans RMC de statut `A`) et `recuMonotoneMs` la
+lecture de l'horloge monotone injectée.
+
+```kotlin
+val lecteur = LecteurNmea(horlogeMonotoneMs = { SystemClock.elapsedRealtime() })
+val (trames, fixes) = lecteur.pousser(texteRecu)   // fixes : un FixGnss par GGA
+val gga = lecteur.derniereGga                       // à renvoyer au caster NTRIP
+```
+
 ### Modèle Vosk : `terrain-voix`
 
 `InstallationModele` installe un modèle Vosk à grammaire dynamique (ADR 0005, spec de
