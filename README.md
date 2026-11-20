@@ -57,7 +57,7 @@ val fix = NmeaParser.fixDepuis(gga)
 if (fix.qualite == QualiteFix.RTK_FIXE) { /* position centimétrique */ }
 ```
 
-Flux continu et heure du fix (ajout additif de la **v0.8.0**, mission 030) : `LecteurNmea` recolle les
+Flux continu et heure du fix (ajout additif de la mission 030, publié dans la **v2026.11.1** ; la « v0.8.0 » d'abord annoncée n'a jamais été posée, voir « Publier une version ») : `LecteurNmea` recolle les
 trames d'un flux fragmenté et complète chaque GGA (GST, GSA, RMC, GSV complètes) ; `FixGnss.heureUtcMs`
 vaut l'heure UTC de la GGA sur le jour de la RMC (null sans RMC de statut `A`) et `recuMonotoneMs` la
 lecture de l'horloge monotone injectée.
@@ -192,19 +192,29 @@ Le style est celui de Marculus ; on change dans cet ordre, jamais dans l'autre.
    `BoutonsTerrainTest`) comparent au référentiel et échouent s'ils divergent.
 4. `python3 -I terrain-style/generation/nuancier.py`, puis `./gradlew test`.
 5. PR vers `main` (jamais de push direct), CI verte, relecture, puis **Pascal pose le tag**
-   `vX.Y.Z` (voir « Publier une version »).
+   `vAAAA.M.N` (voir « Publier une version »).
 
 `reussi` et `alerte` ne viennent pas de Marculus : les changer demande une décision de Pascal et une
 note datée de l'ADR 0002.
 
 ### Publier une version
 
-Pascal pose le tag `vX.Y.Z` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
+Pascal pose le tag `vAAAA.M.N` **sur un commit de `main`** ; la CI rejoue les tests sur le tag et
 échoue si le commit n'est pas sur `main` (ADR 0003). JitPack construit à la première demande,
 sans les tests. Une application qui épingle par sécurité utilise le **SHA court** de ce commit
 comme version (`com.github.pobsteta.terrain:terrain-style:<sha court>`), compte ses 7 jours
 depuis la première construction JitPack (après quoi l'artefact est immuable) et fige la somme
 de contrôle (`verification-metadata.xml`).
+
+**Notation calendaire `vAAAA.M.N`** (depuis le 2026-11-20, mission 033) : année, mois **sans zéro
+en tête** (`v2026.1.1`, jamais `v2026.01.1`), numéro de la version dans le mois (repart à 1 chaque
+mois). Même convention que `nemeton` (« Consignes de release pour ce projet » de son `CLAUDE.md`,
+https://github.com/pobsteta/nemeton). La CI (`scripts/verifier-tag.sh`, testé par `./gradlew test`)
+refuse un tag hors format, ou dont l'année et le mois ne sont ni ceux du commit taggé ni ceux du
+jour ; après les tests, elle crée la release GitHub du tag (notes générées). **v0.7.1 est la
+dernière version 0.x** ; la suivante est **v2026.11.1** (2026.11.1 > 0.7.1 dans l'ordre de Gradle).
+Les tags `v0.x` restent servis par JitPack. *Note du 2026-11-20 :* la v0.8.0 annoncée pour la
+mission 030 n'a jamais été posée ; son contenu paraît dans la v2026.11.1.
 
 Le vert de départ de `reussi` (`#0F8558`) est gelé depuis l'essai au soleil du 2026-10-24 ;
 aucune version ne le change d'avance (ADR 0002).
