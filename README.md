@@ -68,6 +68,14 @@ val (trames, fixes) = lecteur.pousser(texteRecu)   // fixes : un FixGnss par GGA
 val gga = lecteur.derniereGga                       // à renvoyer au caster NTRIP
 ```
 
+**Rupture (depuis v2026.11.2) : `Ntrip.requete` exige `agent`**, le nom de l'application envoyé au
+caster (`User-Agent: NTRIP <agent>`). Le défaut « Marculus » est retiré ; un nom vide, blanc, avec
+espace ou caractère de contrôle est refusé (`IllegalArgumentException`). L'appel à écrire :
+
+```kotlin
+val requete = Ntrip.requete(mountpoint, hote, port, utilisateur, motDePasse, agent = "Marculus")
+```
+
 ### Modèle Vosk : `terrain-voix`
 
 `InstallationModele` installe un modèle Vosk à grammaire dynamique (ADR 0005, spec de

@@ -4,6 +4,7 @@ import fr.nemeton.terrain.geo.Position
 import java.util.Base64
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class NtripTest {
@@ -13,7 +14,7 @@ class NtripTest {
 
     @Test
     fun `requete GET avec ntrip-version et auth basic`() {
-        val r = Ntrip.requete("CT", "caster.centipede.fr", 2101, "user", "pass")
+        val r = Ntrip.requete("CT", "caster.centipede.fr", 2101, "user", "pass", agent = "Test")
         assertTrue(r.startsWith("GET /CT HTTP/1.1\r\n"))
         assertTrue(r.contains("Ntrip-Version: Ntrip/2.0\r\n"))
         assertTrue(r.endsWith("\r\n\r\n"))
@@ -23,8 +24,28 @@ class NtripTest {
     }
 
     @Test
+    fun `la ligne User-Agent reprend exactement le nom passe`() {
+        val r = Ntrip.requete("CT", "h", 2101, "u", "p", agent = "Groma-2026.11")
+        assertTrue(r.lineSequence().any { it == "User-Agent: NTRIP Groma-2026.11" })
+    }
+
+    @Test
+    fun `agent vide ou blanc refuse`() {
+        for (a in listOf("", "   ", "\t")) {
+            assertFailsWith<IllegalArgumentException> { Ntrip.requete("CT", "h", 2101, "u", "p", agent = a) }
+        }
+    }
+
+    @Test
+    fun `agent avec espace ou caractere de controle refuse`() {
+        for (a in listOf("Mon App", "App\r\nX-Evil: 1", "App\n", "App\u0000")) {
+            assertFailsWith<IllegalArgumentException> { Ntrip.requete("CT", "h", 2101, "u", "p", agent = a) }
+        }
+    }
+
+    @Test
     fun `le mountpoint recoit un slash initial une seule fois`() {
-        assertTrue(Ntrip.requete("/CT", "h", 2101, "u", "p").startsWith("GET /CT HTTP/1.1"))
+        assertTrue(Ntrip.requete("/CT", "h", 2101, "u", "p", agent = "Test").startsWith("GET /CT HTTP/1.1"))
     }
 
     @Test

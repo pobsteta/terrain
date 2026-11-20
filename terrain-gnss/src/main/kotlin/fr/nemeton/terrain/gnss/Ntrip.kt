@@ -18,15 +18,26 @@ enum class StatutNtrip { OK, SOURCETABLE, NON_AUTORISE, INCONNU }
  */
 object Ntrip {
 
-    /** Requête NTRIP/2.0 « GET mountpoint » avec authentification Basic, terminée par une ligne vide. */
+    /**
+     * Requête NTRIP/2.0 « GET mountpoint » avec authentification Basic, terminée par une ligne vide.
+     *
+     * [agent] est le nom de l'application, envoyé au caster (`User-Agent: NTRIP <agent>`). Il est
+     * **obligatoire** (depuis v2026.11.2) : aucune application ne se présente sous le nom d'une autre.
+     * Refusé (`IllegalArgumentException`) s'il est vide, blanc, ou contient un espace ou un caractère
+     * de contrôle, car il finirait dans une ligne d'en-tête HTTP.
+     */
     fun requete(
         mountpoint: String,
         hote: String,
         port: Int,
         utilisateur: String,
         motDePasse: String,
-        agent: String = "Marculus",
+        agent: String,
     ): String {
+        require(agent.isNotBlank()) { "agent NTRIP vide : chaque application doit dire son nom au caster" }
+        require(agent.none { it.isWhitespace() || it.isISOControl() }) {
+            "agent NTRIP invalide (espace ou caractère de contrôle interdit) : \"${agent.replace(Regex("\\p{Cntrl}"), "?")}\""
+        }
         val mp = if (mountpoint.startsWith("/")) mountpoint else "/$mountpoint"
         val auth = Base64.getEncoder().encodeToString("$utilisateur:$motDePasse".toByteArray(Charsets.UTF_8))
         return buildString {
