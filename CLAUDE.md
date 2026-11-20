@@ -76,6 +76,10 @@ Règles de test propres au projet :
   compilés avec Kotlin 2.2, la version la plus ancienne des applications.
 - Une correction se fait ici, avec son test, puis chaque application monte de version
   (publication par tag via JitPack).
+- **Versions calendaires `vAAAA.M.N`** (mois sans zéro en tête, N repart à 1 chaque mois) depuis
+  le 2026-11-20, comme `nemeton` (§ « Consignes de release pour ce projet » de son `CLAUDE.md`) ;
+  v0.7.1 est la dernière 0.x, la suivante est v2026.11.1. La CI refuse un tag hors format
+  (`scripts/verifier-tag.sh`). Détail : `README.md` § « Publier une version ».
 
 ## Règles techniques communes
 

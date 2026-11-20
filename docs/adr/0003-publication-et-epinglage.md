@@ -56,6 +56,13 @@ une étape qui échoue si `git merge-base --is-ancestor "$GITHUB_SHA" origin/mai
 - **Indépendance d'un tiers** : JitPack est un service gratuit, sans engagement de
   service.
 
+## Note du 2026-11-20 — notation calendaire (mission 033)
+
+Sur la consigne de Pascal, les tags suivent `vAAAA.M.N` (mois sans zéro en tête), comme `nemeton` ;
+v0.7.1 est la dernière version 0.x, la suivante est v2026.11.1. La CI contrôle le format et le
+mois du tag (`scripts/verifier-tag.sh`) après le contrôle ci-dessus, qui reste, puis crée la
+release GitHub. Rien n'est retagué.
+
 ## Sources
 
 - JitPack, documentation (construction à la demande, immutabilité après 7 jours, SHA

@@ -6,6 +6,9 @@ on:
     tags: ['v*']
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,6 +25,10 @@ jobs:
             echo "::error::Le tag $GITHUB_REF_NAME ($GITHUB_SHA) n'est pas sur main : publication refusée (ADR 0003)."
             exit 1
           fi
+      # Mission 033 : le nom du tag suit la notation calendaire vAAAA.M.N (mois sans zéro).
+      - name: Le tag suit la notation vAAAA.M.N
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: scripts/verifier-tag.sh "$GITHUB_REF_NAME"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -46,3 +53,22 @@ jobs:
           test -n "$contenu"
           intrus=$(printf '%s\n' "$contenu" | grep -v -e '^META-INF/' -e '^fr/$' -e '^fr/nemeton/' || true)
           if [ -n "$intrus" ]; then echo "::error::classes hors de fr/nemeton dans le jar : $intrus"; exit 1; fi
+
+  # Tests verts sur un tag : release GitHub avec notes générées ; sans effet si elle existe déjà.
+  release:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release GitHub du tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "La release $GITHUB_REF_NAME existe déjà."
+          else
+            gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag
+          fi
